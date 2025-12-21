@@ -49,14 +49,14 @@
                 <!-- Desktop Navigation -->
                 <ul class="hidden md:flex space-x-8">
                     <li><a href="#hero" class="nav-link">Home</a></li>
-                    <li><a href="#timeline" class="nav-link">Zeitplan</a></li>
-                    <li><a href="#location" class="nav-link">Anfahrt</a></li>
-                    <li><a href="#gallery" class="nav-link">Galerie</a></li>
-                    <li><a href="#zusagen" class="nav-link-cta">Zusagen</a></li>
+                    <li class="protected-nav"><a href="#timeline" class="nav-link">Zeitplan</a></li>
+                    <li class="protected-nav"><a href="#location" class="nav-link">Anfahrt</a></li>
+                    <li class="protected-nav"><a href="#gallery" class="nav-link">Galerie</a></li>
+                    <li class="protected-nav"><a href="#zusagen" class="nav-link-cta">Zusagen</a></li>
                 </ul>
                 
                 <!-- Mobile Hamburger -->
-                <button id="mobile-menu-btn" class="md:hidden text-metal-light hover:text-metal-red transition-colors" aria-label="Menü öffnen" aria-expanded="false">
+                <button id="mobile-menu-btn" class="md:hidden text-metal-light hover:text-metal-red transition-colors protected-nav" aria-label="Menü öffnen" aria-expanded="false">
                     <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
                     </svg>
@@ -67,10 +67,10 @@
             <div id="mobile-menu" class="hidden md:hidden mt-4 pb-4">
                 <ul class="flex flex-col space-y-4">
                     <li><a href="#hero" class="mobile-nav-link">Home</a></li>
-                    <li><a href="#timeline" class="mobile-nav-link">Zeitplan</a></li>
-                    <li><a href="#location" class="mobile-nav-link">Anfahrt</a></li>
-                    <li><a href="#gallery" class="mobile-nav-link">Galerie</a></li>
-                    <li><a href="#zusagen" class="mobile-nav-link text-metal-red font-bold">Zusagen</a></li>
+                    <li class="protected-nav"><a href="#timeline" class="mobile-nav-link">Zeitplan</a></li>
+                    <li class="protected-nav"><a href="#location" class="mobile-nav-link">Anfahrt</a></li>
+                    <li class="protected-nav"><a href="#gallery" class="mobile-nav-link">Galerie</a></li>
+                    <li class="protected-nav"><a href="#zusagen" class="mobile-nav-link text-metal-red font-bold">Zusagen</a></li>
                 </ul>
             </div>
         </div>
@@ -155,7 +155,7 @@
                 </div>
                 
                 <!-- CTA Button -->
-                <a href="#zusagen" class="cta-button group">
+                <a href="#zusagen" class="cta-button group protected-cta">
                     <span>🤘 Ich bin dabei!</span>
                     <svg class="w-5 h-5 ml-2 transform group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3"/>
@@ -164,13 +164,39 @@
             </div>
         </div>
         
-        <!-- Scroll Indicator -->
-        <div class="absolute bottom-8 left-1/2 transform -translate-x-1/2 animate-bounce">
+        <!-- Scroll Indicator (nur für Admins) -->
+        <div class="absolute bottom-8 left-1/2 transform -translate-x-1/2 animate-bounce protected-content">
             <svg class="w-8 h-8 text-metal-red" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3"/>
             </svg>
         </div>
     </section>
+
+    <!-- Coming Soon Banner (nur sichtbar wenn nicht eingeloggt) -->
+    <section id="coming-soon" class="py-16 bg-metal-black guest-hidden">
+        <div class="container mx-auto px-4">
+            <div class="coming-soon-banner">
+                <div class="banner-wimpel">
+                    <div class="wimpel-content">
+                        <span class="wimpel-icon">🎸</span>
+                        <h2 class="wimpel-title">Coming Soon</h2>
+                        <p class="wimpel-text">Mehr Infos folgen...</p>
+                        <span class="wimpel-icon">💀</span>
+                    </div>
+                    <div class="wimpel-bottom"></div>
+                </div>
+                <p class="text-center text-metal-light/60 mt-8 max-w-md mx-auto">
+                    Merkt euch den Termin schon mal vor! <br>
+                    Details zu Zeitplan, Anfahrt und Zusage folgen in Kürze.
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <!-- ============================================ -->
+    <!-- PROTECTED CONTENT (nur für eingeloggte User) -->
+    <!-- ============================================ -->
+    <div id="protected-content" class="protected-content">
 
     <!-- Timeline Section -->
     <section id="timeline" class="py-20 bg-metal-gray" aria-labelledby="timeline-title">
@@ -444,6 +470,8 @@
         </div>
     </section>
 
+    </div><!-- Ende protected-content -->
+
     <!-- Footer -->
     <footer id="contact" class="py-12 bg-metal-gray border-t border-metal-black">
         <div class="container mx-auto px-4">
@@ -478,6 +506,11 @@
                     <ul class="space-y-2">
                         <li><a href="#" class="footer-link">Impressum</a></li>
                         <li><a href="#" class="footer-link">Datenschutz</a></li>
+                        <li>
+                            <button id="admin-login-btn" class="footer-link text-metal-light/40 hover:text-metal-red text-xs mt-2">
+                                🔐 Admin
+                            </button>
+                        </li>
                     </ul>
                     <p class="text-metal-light/60 text-sm mt-4">
                         Diese Seite verwendet keine Cookies.<br>
@@ -499,7 +532,40 @@
         </div>
     </footer>
 
-    <!-- Scripts -->
-    <script src="scripts.js"></script>
-</body>
-</html>
+    <!-- Login Modal -->
+    <div id="login-modal" class="login-modal hidden" role="dialog" aria-modal="true" aria-labelledby="login-title">
+        <div class="login-modal-backdrop" onclick="closeLoginModal()"></div>
+        <div class="login-modal-content">
+            <button class="login-modal-close" onclick="closeLoginModal()" aria-label="Schließen">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+                </svg>
+            </button>
+            <h2 id="login-title" class="font-metal text-2xl text-metal-red mb-6 text-center">🔐 Admin Login</h2>
+            <form id="login-form" onsubmit="handleLogin(event)">
+                <div class="mb-4">
+                    <label for="login-user" class="block text-metal-light text-sm mb-2">Benutzername</label>
+                    <input type="text" id="login-user" name="user" required 
+                           class="w-full px-4 py-2 bg-metal-black border border-metal-gray rounded-lg text-metal-light focus:border-metal-red focus:outline-none"
+                           autocomplete="username">
+                </div>
+                <div class="mb-6">
+                    <label for="login-pass" class="block text-metal-light text-sm mb-2">Passwort</label>
+                    <input type="password" id="login-pass" name="pass" required 
+                           class="w-full px-4 py-2 bg-metal-black border border-metal-gray rounded-lg text-metal-light focus:border-metal-red focus:outline-none"
+                           autocomplete="current-password">
+                </div>
+                <p id="login-error" class="text-red-500 text-sm mb-4 hidden">Falscher Benutzername oder Passwort.</p>
+                <button type="submit" class="w-full cta-button">
+                    Einloggen
+                </button>
+            </form>
+            <p id="logged-in-message" class="hidden text-center">
+                <span class="text-green-500">✓ Eingeloggt als Admin</span>
+                <button onclick="handleLogout()" class="block mx-auto mt-4 text-metal-red hover:underline">
+                    Ausloggen
+                </button>
+            </p>
+        </div>
+    </div>
+

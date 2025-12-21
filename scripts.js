@@ -315,6 +315,7 @@ document.addEventListener('DOMContentLoaded', () => {
     initNavbarScroll();
     initActiveSection();
     initTimelineAnimations();
+    initLoginSystem();
     
     console.log('🤘 Save The Date loaded successfully!');
 });
@@ -323,3 +324,175 @@ document.addEventListener('DOMContentLoaded', () => {
 // Make lightbox functions globally available
 window.openLightbox = openLightbox;
 window.closeLightbox = closeLightbox;
+
+
+// ================================================
+// ADMIN LOGIN SYSTEM
+// Two-stage visibility: 
+// - Stage 1 (Guest): Only Hero + Countdown + Coming Soon
+// - Stage 2 (Admin): Full content visible
+// ================================================
+
+const ADMIN_CREDENTIALS = {
+    username: 'bromag',
+    password: 'admin'
+};
+
+const STORAGE_KEY = 'savethedate_admin_logged_in';
+
+/**
+ * Check if user is logged in (from localStorage)
+ */
+function isLoggedIn() {
+    return localStorage.getItem(STORAGE_KEY) === 'true';
+}
+
+/**
+ * Update page visibility based on login state
+ */
+function updateVisibility() {
+    if (isLoggedIn()) {
+        document.body.classList.add('is-admin');
+        updateLoginModal(true);
+    } else {
+        document.body.classList.remove('is-admin');
+        updateLoginModal(false);
+    }
+}
+
+/**
+ * Update login modal content based on login state
+ */
+function updateLoginModal(loggedIn) {
+    const loginForm = document.getElementById('login-form');
+    const loggedInMessage = document.getElementById('logged-in-message');
+    const loginError = document.getElementById('login-error');
+    
+    if (!loginForm || !loggedInMessage) return;
+    
+    if (loggedIn) {
+        loginForm.classList.add('hidden');
+        loggedInMessage.classList.remove('hidden');
+    } else {
+        loginForm.classList.remove('hidden');
+        loggedInMessage.classList.add('hidden');
+        if (loginError) loginError.classList.add('hidden');
+    }
+}
+
+/**
+ * Handle login form submission
+ */
+function handleLogin(event) {
+    event.preventDefault();
+    
+    const userInput = document.getElementById('login-user');
+    const passInput = document.getElementById('login-pass');
+    const loginError = document.getElementById('login-error');
+    
+    if (!userInput || !passInput) return;
+    
+    const username = userInput.value.trim();
+    const password = passInput.value;
+    
+    if (username === ADMIN_CREDENTIALS.username && password === ADMIN_CREDENTIALS.password) {
+        // Success!
+        localStorage.setItem(STORAGE_KEY, 'true');
+        updateVisibility();
+        
+        // Clear form
+        userInput.value = '';
+        passInput.value = '';
+        
+        // Close modal after short delay to show success
+        setTimeout(() => {
+            closeLoginModal();
+        }, 500);
+        
+        console.log('🔓 Admin logged in');
+    } else {
+        // Error
+        if (loginError) {
+            loginError.classList.remove('hidden');
+            loginError.classList.add('login-error');
+        }
+        
+        // Shake the form
+        const modalContent = document.querySelector('.login-modal-content');
+        if (modalContent) {
+            modalContent.style.animation = 'none';
+            setTimeout(() => {
+                modalContent.style.animation = 'shake 0.5s ease-in-out';
+            }, 10);
+        }
+    }
+}
+
+/**
+ * Handle logout
+ */
+function handleLogout() {
+    localStorage.removeItem(STORAGE_KEY);
+    updateVisibility();
+    console.log('🔒 Admin logged out');
+}
+
+/**
+ * Open login modal
+ */
+function openLoginModal() {
+    const modal = document.getElementById('login-modal');
+    if (modal) {
+        modal.classList.remove('hidden');
+        document.body.style.overflow = 'hidden';
+        
+        // Focus first input
+        const firstInput = modal.querySelector('input');
+        if (firstInput && !isLoggedIn()) {
+            setTimeout(() => firstInput.focus(), 100);
+        }
+    }
+}
+
+/**
+ * Close login modal
+ */
+function closeLoginModal() {
+    const modal = document.getElementById('login-modal');
+    if (modal) {
+        modal.classList.add('hidden');
+        document.body.style.overflow = '';
+    }
+}
+
+/**
+ * Initialize login system
+ */
+function initLoginSystem() {
+    // Check login state on page load
+    updateVisibility();
+    
+    // Setup admin login button
+    const adminBtn = document.getElementById('admin-login-btn');
+    if (adminBtn) {
+        adminBtn.addEventListener('click', openLoginModal);
+    }
+    
+    // Close modal on Escape key
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape') {
+            const modal = document.getElementById('login-modal');
+            if (modal && !modal.classList.contains('hidden')) {
+                closeLoginModal();
+            }
+        }
+    });
+    
+    console.log(isLoggedIn() ? '🔓 Admin session active' : '🔒 Guest mode');
+}
+
+// Make login functions globally available
+window.handleLogin = handleLogin;
+window.handleLogout = handleLogout;
+window.openLoginModal = openLoginModal;
+window.closeLoginModal = closeLoginModal;
