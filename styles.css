@@ -529,7 +529,7 @@ body.is-admin .protected-cta {
 
 /* Hero Dog Images - visible swing animation */
 .hero-dog-swing {
-    animation: dog-swing 4s ease-in-out infinite !important;
+    animation: dog-swing 8s ease-in-out infinite !important;
     transform-origin: 50% 50%;
     will-change: transform;
     display: inline-block;

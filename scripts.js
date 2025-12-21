@@ -363,27 +363,13 @@ function downloadICS() {
     ].join('\r\n');
     
     if (isIOS()) {
-        // iOS: Create a Blob with proper filename and use webcal-style approach
-        // Using a base64 data URL with proper MIME type for iOS Calendar
-        const blob = new Blob([icsContent], { type: 'text/calendar;charset=utf-8' });
-        const url = URL.createObjectURL(blob);
+        // iOS: Use base64 data URI - this is the most reliable method for iOS Safari
+        // to trigger the native "Add to Calendar" dialog
+        const base64 = btoa(unescape(encodeURIComponent(icsContent)));
+        const dataUri = 'data:text/calendar;base64,' + base64;
         
-        // Create a temporary link that iOS Safari can handle
-        const link = document.createElement('a');
-        link.href = url;
-        link.setAttribute('download', 'Hochzeit-Kathrin-Tobi.ics');
-        link.style.display = 'none';
-        document.body.appendChild(link);
-        
-        // For iOS, we need to use window.open instead of click
-        // This triggers the native calendar import dialog
-        window.open(url, '_blank');
-        
-        // Cleanup
-        setTimeout(() => {
-            document.body.removeChild(link);
-            URL.revokeObjectURL(url);
-        }, 1000);
+        // Redirect to data URI - iOS will recognize it as a calendar file
+        window.location.href = dataUri;
         
         console.log('📅 ICS opened for iOS Calendar!');
     } else {
