@@ -529,16 +529,16 @@ body.is-admin .protected-cta {
 
 /* Hero Dog Images - visible swing animation */
 .hero-dog-swing {
-    animation: dog-swing 4.5s ease-in-out infinite !important;
+    animation: dog-swing 4s ease-in-out infinite !important;
     transform-origin: 50% 50%;
     will-change: transform;
     display: inline-block;
 }
 
 @keyframes dog-swing {
-    0% { transform: rotate(-40deg); }
-    50% { transform: rotate(40deg); }
-    100% { transform: rotate(-40deg); }
+    0% { transform: rotate(-25deg); }
+    50% { transform: rotate(25deg); }
+    100% { transform: rotate(-25deg); }
 }
 
 .wimpel-content {
