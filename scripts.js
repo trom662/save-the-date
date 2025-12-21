@@ -321,6 +321,57 @@ function enterSite() {
 window.enterSite = enterSite;
 
 
+// ================================================
+// ADD TO CALENDAR (ICS Download)
+// ================================================
+
+/**
+ * Generate and download ICS file for the wedding date
+ */
+function downloadICS() {
+    const eventTitle = 'Hochzeit von Kathrin & Tobi';
+    const eventDate = '20260919'; // YYYYMMDD format
+    const eventLocation = 'to be announced';
+    const eventDescription = 'Save the Date!';
+    
+    // ICS file content (all-day event)
+    const icsContent = [
+        'BEGIN:VCALENDAR',
+        'VERSION:2.0',
+        'PRODID:-//Save The Date//Kathrin & Tobi//DE',
+        'CALSCALE:GREGORIAN',
+        'METHOD:PUBLISH',
+        'BEGIN:VEVENT',
+        `DTSTART;VALUE=DATE:${eventDate}`,
+        `DTEND;VALUE=DATE:${eventDate}`,
+        `SUMMARY:${eventTitle}`,
+        `DESCRIPTION:${eventDescription}`,
+        `LOCATION:${eventLocation}`,
+        `UID:hochzeit-kathrin-tobi-2026@savethedate`,
+        'STATUS:CONFIRMED',
+        'END:VEVENT',
+        'END:VCALENDAR'
+    ].join('\r\n');
+    
+    // Create Blob and download
+    const blob = new Blob([icsContent], { type: 'text/calendar;charset=utf-8' });
+    const url = URL.createObjectURL(blob);
+    
+    const link = document.createElement('a');
+    link.href = url;
+    link.download = 'Hochzeit-Kathrin-Tobi-2026.ics';
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    URL.revokeObjectURL(url);
+    
+    console.log('📅 ICS file downloaded!');
+}
+
+// Make downloadICS globally available
+window.downloadICS = downloadICS;
+
+
 // Make lightbox functions globally available
 window.openLightbox = openLightbox;
 window.closeLightbox = closeLightbox;
