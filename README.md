@@ -189,6 +189,11 @@ Alle Utility-Klassen können direkt im HTML verwendet werden:
    - z.B. `sarah-und-max.de`
    - CNAME in GitHub Pages konfigurieren
 
+10. **[ ] Gästeliste-Filter für Akt 1+2**
+    - Nur eingeladene Gäste für die ersten beiden Akte
+    - Später per RSVP/Backend umsetzen
+    - Unterscheidung "enger Kreis" vs. "Party only"
+
 ---
 
 ## 🎨 Design-Entscheidungen
