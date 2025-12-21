@@ -326,7 +326,16 @@ window.enterSite = enterSite;
 // ================================================
 
 /**
+ * Detect if user is on iOS device
+ */
+function isIOS() {
+    return /iPad|iPhone|iPod/.test(navigator.userAgent) || 
+           (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+}
+
+/**
  * Generate and download ICS file for the wedding date
+ * Handles iOS differently to open directly in Calendar app
  */
 function downloadICS() {
     const eventTitle = 'Hochzeit von Kathrin & Tobi';
@@ -353,19 +362,27 @@ function downloadICS() {
         'END:VCALENDAR'
     ].join('\r\n');
     
-    // Create Blob and download
-    const blob = new Blob([icsContent], { type: 'text/calendar;charset=utf-8' });
-    const url = URL.createObjectURL(blob);
-    
-    const link = document.createElement('a');
-    link.href = url;
-    link.download = 'Hochzeit-Kathrin-Tobi-2026.ics';
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
-    URL.revokeObjectURL(url);
-    
-    console.log('📅 ICS file downloaded!');
+    if (isIOS()) {
+        // iOS: Use data URI to open directly in Calendar app
+        // This avoids the download popup and opens the calendar directly
+        const dataUri = 'data:text/calendar;charset=utf-8,' + encodeURIComponent(icsContent);
+        window.location.href = dataUri;
+        console.log('📅 ICS opened for iOS Calendar!');
+    } else {
+        // Desktop: Normal download with attachment
+        const blob = new Blob([icsContent], { type: 'text/calendar;charset=utf-8' });
+        const url = URL.createObjectURL(blob);
+        
+        const link = document.createElement('a');
+        link.href = url;
+        link.download = 'Hochzeit-Kathrin-Tobi-2026.ics';
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+        URL.revokeObjectURL(url);
+        
+        console.log('📅 ICS file downloaded!');
+    }
 }
 
 // Make downloadICS globally available

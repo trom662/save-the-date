@@ -527,6 +527,12 @@ body.is-admin .protected-cta {
     50% { transform: rotate(1deg); }
 }
 
+/* Hero Dog Images - same swing animation as wimpel */
+.hero-dog-swing {
+    animation: wimpel-swing 4s ease-in-out infinite;
+    transform-origin: center center;
+}
+
 .wimpel-content {
     display: flex;
     flex-direction: column;
