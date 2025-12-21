@@ -329,58 +329,105 @@ window.enterSite = enterSite;
  * Detect if user is on iOS device
  */
 function isIOS() {
-    return /iPad|iPhone|iPod/.test(navigator.userAgent) || 
-           (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+  return /iPad|iPhone|iPod/.test(navigator.userAgent) ||
+         (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+}
+
+/**
+ * Generate UTC timestamp for ICS (YYYYMMDDTHHMMSSZ)
+ */
+function makeTimestampUTC(date = new Date()) {
+  const pad = n => String(n).padStart(2, '0');
+  return date.getUTCFullYear()
+    + pad(date.getUTCMonth() + 1)
+    + pad(date.getUTCDate())
+    + 'T'
+    + pad(date.getUTCHours())
+    + pad(date.getUTCMinutes())
+    + pad(date.getUTCSeconds())
+    + 'Z';
+}
+
+/**
+ * Generate unique ID for ICS event
+ */
+function makeUID() {
+  if (typeof crypto !== 'undefined' && crypto.randomUUID) {
+    return crypto.randomUUID() + '@savethedate.example';
+  }
+  // Fallback
+  return 'uid-' + Date.now() + '-' + Math.floor(Math.random() * 1e6) + '@savethedate.example';
 }
 
 /**
  * Generate and download ICS file for the wedding date
- * iOS: Opens Blob URL directly (triggers native calendar import)
+ * iOS: Opens without download attribute (triggers calendar app)
  * Desktop: Downloads ICS file normally
  */
 function downloadICS() {
-    const eventTitle = 'Hochzeit von Kathrin & Tobi';
-    const eventDate = '20260919';
-    const eventLocation = 'to be announced';
-    const eventDescription = 'Save the Date!';
-    
-    const icsContent = [
-        'BEGIN:VCALENDAR',
-        'VERSION:2.0',
-        'PRODID:-//Save The Date//Kathrin & Tobi//DE',
-        'CALSCALE:GREGORIAN',
-        'METHOD:PUBLISH',
-        'BEGIN:VEVENT',
-        `DTSTAMP:${new Date().toISOString().replace(/[-:]/g, '').split('.')[0]}Z`,
-        `DTSTART;VALUE=DATE:${eventDate}`,
-        `DTEND;VALUE=DATE:20260920`,
-        `SUMMARY:${eventTitle}`,
-        `DESCRIPTION:${eventDescription}`,
-        `LOCATION:${eventLocation}`,
-        `UID:${crypto.randomUUID()}`,
-        'STATUS:CONFIRMED',
-        'END:VEVENT',
-        'END:VCALENDAR'
-    ].join('\r\n');
-    
-    const blob = new Blob([icsContent], { type: 'text/calendar;charset=utf-8' });
-    const url = URL.createObjectURL(blob);
-    
-    if (isIOS()) {
-        // iOS: Open Blob URL directly - triggers native calendar import dialog
-        window.location.href = url;
-        console.log('📅 ICS opened for iOS Calendar!');
-    } else {
-        // Desktop: Normal download with filename
-        const link = document.createElement('a');
-        link.href = url;
-        link.download = 'Hochzeit-Kathrin-Tobi-2026.ics';
-        document.body.appendChild(link);
-        link.click();
-        document.body.removeChild(link);
-        URL.revokeObjectURL(url);
-        console.log('📅 ICS file downloaded!');
-    }
+  const eventTitle = 'Hochzeit von Kathrin & Tobi';
+  const eventDate = '20260919'; // YYYYMMDD (ganztägig)
+  const eventEndDate = '20260920';
+  const eventLocation = 'to be announced';
+  const eventDescription = 'Save the Date!';
+  const dtstamp = makeTimestampUTC();
+  const uid = makeUID();
+
+  const icsLines = [
+    'BEGIN:VCALENDAR',
+    'VERSION:2.0',
+    'PRODID:-//Save The Date//Kathrin & Tobi//DE',
+    'CALSCALE:GREGORIAN',
+    'METHOD:PUBLISH',
+    'BEGIN:VEVENT',
+    `UID:${uid}`,
+    `DTSTAMP:${dtstamp}`,
+    `DTSTART;VALUE=DATE:${eventDate}`,
+    `DTEND;VALUE=DATE:${eventEndDate}`,
+    `SUMMARY:${eventTitle}`,
+    `DESCRIPTION:${eventDescription}`,
+    `LOCATION:${eventLocation}`,
+    'STATUS:CONFIRMED',
+    'SEQUENCE:0',
+    'END:VEVENT',
+    'END:VCALENDAR'
+  ];
+
+  // CRLF per RFC
+  const icsContent = icsLines.join('\r\n');
+
+  const blob = new Blob([icsContent], { type: 'text/calendar;charset=utf-8' });
+  const url = URL.createObjectURL(blob);
+
+  // Helper to revoke after delay (give browser time to start download/open)
+  const revokeLater = (u) => {
+    setTimeout(() => URL.revokeObjectURL(u), 10000);
+  };
+
+  if (isIOS()) {
+    // iOS: create an <a> without download attribute and click it.
+    // This is more reliable than window.location.href for triggering the "open in Calendar" flow.
+    const a = document.createElement('a');
+    a.href = url;
+    a.style.display = 'none';
+    // no a.download on iOS — we want the browser to treat it as inline/open
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    revokeLater(url);
+    console.log('📅 ICS opened (iOS attempt).');
+  } else {
+    // Desktop: use download attribute to suggest filename
+    const link = document.createElement('a');
+    link.href = url;
+    link.download = 'Hochzeit-Kathrin-Tobi-2026.ics';
+    link.style.display = 'none';
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    revokeLater(url);
+    console.log('📅 ICS file download triggered (desktop).');
+  }
 }
 
 // Make downloadICS globally available
