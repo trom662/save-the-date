@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Save the Date - Tests</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 20px;
+            background: #f5f5f5;
+        }
+        
+        h1 {
+            color: #333;
+        }
+        
+        .test-suite {
+            background: white;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        
+        .test-result {
+            padding: 10px;
+            margin: 5px 0;
+            border-radius: 4px;
+        }
+        
+        .test-result.pass {
+            background: #d4edda;
+            color: #155724;
+            border-left: 4px solid #28a745;
+        }
+        
+        .test-result.fail {
+            background: #f8d7da;
+            color: #721c24;
+            border-left: 4px solid #dc3545;
+        }
+        
+        .summary {
+            margin-top: 20px;
+            padding: 15px;
+            background: #e9ecef;
+            border-radius: 4px;
+            font-weight: bold;
+        }
+        
+        .summary.all-pass {
+            background: #d4edda;
+            color: #155724;
+        }
+        
+        .summary.has-fail {
+            background: #f8d7da;
+            color: #721c24;
+        }
+    </style>
+</head>
+<body>
+    <h1>Save the Date - Test Suite</h1>
+    <div id="test-results"></div>
+    <div id="summary" class="summary"></div>
+
+    <script>
+        // Simple test framework
+        class TestRunner {
+            constructor() {
+                this.tests = [];
+                this.passed = 0;
+                this.failed = 0;
+            }
+
+            test(description, testFn) {
+                this.tests.push({ description, testFn });
+            }
+
+            expect(actual) {
+                return {
+                    toBe: (expected) => {
+                        if (actual !== expected) {
+                            throw new Error(`Expected ${expected} but got ${actual}`);
+                        }
+                    },
+                    toContain: (expected) => {
+                        if (!actual.includes(expected)) {
+                            throw new Error(`Expected to contain "${expected}" but got "${actual}"`);
+                        }
+                    },
+                    toBeNull: () => {
+                        if (actual !== null) {
+                            throw new Error(`Expected null but got ${actual}`);
+                        }
+                    },
+                    toBeGreaterThan: (expected) => {
+                        if (actual <= expected) {
+                            throw new Error(`Expected ${actual} to be greater than ${expected}`);
+                        }
+                    },
+                    toBeInstanceOf: (expectedClass) => {
+                        if (!(actual instanceof expectedClass)) {
+                            throw new Error(`Expected instance of ${expectedClass.name}`);
+                        }
+                    },
+                    toBeElement: () => {
+                        if (!actual || typeof actual.nodeType !== 'number' || actual.nodeType !== 1) {
+                            throw new Error(`Expected element but got ${actual}`);
+                        }
+                    }
+                };
+            }
+
+            async run() {
+                const resultsDiv = document.getElementById('test-results');
+                
+                for (const test of this.tests) {
+                    const resultDiv = document.createElement('div');
+                    resultDiv.className = 'test-result';
+                    
+                    try {
+                        await test.testFn();
+                        resultDiv.classList.add('pass');
+                        resultDiv.textContent = `✓ ${test.description}`;
+                        this.passed++;
+                    } catch (error) {
+                        resultDiv.classList.add('fail');
+                        resultDiv.textContent = `✗ ${test.description}: ${error.message}`;
+                        this.failed++;
+                    }
+                    
+                    resultsDiv.appendChild(resultDiv);
+                }
+
+                this.showSummary();
+            }
+
+            showSummary() {
+                const summaryDiv = document.getElementById('summary');
+                const total = this.passed + this.failed;
+                summaryDiv.textContent = `Tests: ${this.passed} passed, ${this.failed} failed, ${total} total`;
+                summaryDiv.classList.add(this.failed === 0 ? 'all-pass' : 'has-fail');
+            }
+        }
+
+        const runner = new TestRunner();
+
+        // Load the page in an iframe for testing
+        const iframe = document.createElement('iframe');
+        iframe.style.display = 'none';
+        document.body.appendChild(iframe);
+        
+        iframe.onload = function() {
+            const iframeDoc = iframe.contentDocument || iframe.contentWindow.document;
+
+            // Test Suite
+            runner.test('Page title should be "Save the Date"', () => {
+                const title = iframeDoc.getElementById('title');
+                runner.expect(title).toBeElement();
+                runner.expect(title.textContent).toBe('Save the Date');
+            });
+
+            runner.test('Event date should be displayed', () => {
+                const eventDate = iframeDoc.getElementById('event-date');
+                runner.expect(eventDate).toBeElement();
+                runner.expect(eventDate.textContent).toContain('2025');
+            });
+
+            runner.test('Event name should be displayed', () => {
+                const eventName = iframeDoc.getElementById('event-name');
+                runner.expect(eventName).toBeElement();
+                runner.expect(eventName.textContent.length).toBeGreaterThan(0);
+            });
+
+            runner.test('Location should be displayed', () => {
+                const location = iframeDoc.getElementById('location');
+                runner.expect(location).toBeElement();
+                runner.expect(location.textContent).toContain('Deutschland');
+            });
+
+            runner.test('Countdown should have days element', () => {
+                const days = iframeDoc.getElementById('days');
+                runner.expect(days).toBeElement();
+            });
+
+            runner.test('Countdown should have hours element', () => {
+                const hours = iframeDoc.getElementById('hours');
+                runner.expect(hours).toBeElement();
+            });
+
+            runner.test('Countdown should have minutes element', () => {
+                const minutes = iframeDoc.getElementById('minutes');
+                runner.expect(minutes).toBeElement();
+            });
+
+            runner.test('Countdown should have seconds element', () => {
+                const seconds = iframeDoc.getElementById('seconds');
+                runner.expect(seconds).toBeElement();
+            });
+
+            runner.test('RSVP button should exist', () => {
+                const button = iframeDoc.getElementById('rsvp-button');
+                runner.expect(button).toBeElement();
+                runner.expect(button.textContent).toContain('Zusagen');
+            });
+
+            runner.test('RSVP message should be initially hidden', () => {
+                const message = iframeDoc.getElementById('rsvp-message');
+                runner.expect(message).toBeElement();
+                runner.expect(message.classList.contains('hidden')).toBe(true);
+            });
+
+            runner.test('RSVP button click should show confirmation message', () => {
+                const button = iframeDoc.getElementById('rsvp-button');
+                const message = iframeDoc.getElementById('rsvp-message');
+                
+                button.click();
+                
+                runner.expect(message.classList.contains('hidden')).toBe(false);
+                runner.expect(message.textContent).toContain('Vielen Dank');
+            });
+
+            runner.test('RSVP button should be disabled after clicking', () => {
+                const button = iframeDoc.getElementById('rsvp-button');
+                runner.expect(button.disabled).toBe(true);
+            });
+
+            // Run all tests
+            runner.run();
+        };
+
+        iframe.src = 'index.html';
+    </script>
+</body>
+</html>

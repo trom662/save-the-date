@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Save the Date</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <h1 id="title">Save the Date</h1>
+        <div class="event-info">
+            <p class="date" id="event-date">21. Dezember 2025</p>
+            <p class="event-name" id="event-name">Unsere besondere Veranstaltung</p>
+            <p class="location" id="location">Berlin, Deutschland</p>
+        </div>
+        <div class="countdown" id="countdown">
+            <div class="countdown-item">
+                <span class="countdown-value" id="days">0</span>
+                <span class="countdown-label">Tage</span>
+            </div>
+            <div class="countdown-item">
+                <span class="countdown-value" id="hours">0</span>
+                <span class="countdown-label">Stunden</span>
+            </div>
+            <div class="countdown-item">
+                <span class="countdown-value" id="minutes">0</span>
+                <span class="countdown-label">Minuten</span>
+            </div>
+            <div class="countdown-item">
+                <span class="countdown-value" id="seconds">0</span>
+                <span class="countdown-label">Sekunden</span>
+            </div>
+        </div>
+        <button id="rsvp-button" class="rsvp-button">Zusagen</button>
+        <div id="rsvp-message" class="rsvp-message hidden"></div>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>
