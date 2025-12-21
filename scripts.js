@@ -335,44 +335,42 @@ function isIOS() {
 
 /**
  * Generate and download ICS file for the wedding date
- * iOS: Opens static ICS file (triggers native calendar import)
- * Desktop: Downloads generated ICS file
+ * iOS: Opens Blob URL directly (triggers native calendar import)
+ * Desktop: Downloads ICS file normally
  */
 function downloadICS() {
+    const eventTitle = 'Hochzeit von Kathrin & Tobi';
+    const eventDate = '20260919';
+    const eventLocation = 'to be announced';
+    const eventDescription = 'Save the Date!';
+    
+    const icsContent = [
+        'BEGIN:VCALENDAR',
+        'VERSION:2.0',
+        'PRODID:-//Save The Date//Kathrin & Tobi//DE',
+        'CALSCALE:GREGORIAN',
+        'METHOD:PUBLISH',
+        'BEGIN:VEVENT',
+        `DTSTART;VALUE=DATE:${eventDate}`,
+        `DTEND;VALUE=DATE:20260920`,
+        `SUMMARY:${eventTitle}`,
+        `DESCRIPTION:${eventDescription}`,
+        `LOCATION:${eventLocation}`,
+        `UID:hochzeit-kathrin-tobi-2026@savethedate`,
+        'STATUS:CONFIRMED',
+        'END:VEVENT',
+        'END:VCALENDAR'
+    ].join('\r\n');
+    
+    const blob = new Blob([icsContent], { type: 'text/calendar;charset=utf-8' });
+    const url = URL.createObjectURL(blob);
+    
     if (isIOS()) {
-        // iOS: Link to static ICS file - this is the ONLY reliable method
-        // GitHub Pages serves .ics files with correct MIME type (text/calendar)
-        // which triggers iOS Safari to open the native "Add to Calendar" dialog
-        window.location.href = 'assets/hochzeit-kathrin-tobi.ics';
+        // iOS: Open Blob URL directly - triggers native calendar import dialog
+        window.location.href = url;
         console.log('📅 ICS opened for iOS Calendar!');
     } else {
-        // Desktop: Generate and download ICS file
-        const eventTitle = 'Hochzeit von Kathrin & Tobi';
-        const eventDate = '20260919';
-        const eventLocation = 'to be announced';
-        const eventDescription = 'Save the Date!';
-        
-        const icsContent = [
-            'BEGIN:VCALENDAR',
-            'VERSION:2.0',
-            'PRODID:-//Save The Date//Kathrin & Tobi//DE',
-            'CALSCALE:GREGORIAN',
-            'METHOD:PUBLISH',
-            'BEGIN:VEVENT',
-            `DTSTART;VALUE=DATE:${eventDate}`,
-            `DTEND;VALUE=DATE:20260920`,
-            `SUMMARY:${eventTitle}`,
-            `DESCRIPTION:${eventDescription}`,
-            `LOCATION:${eventLocation}`,
-            `UID:hochzeit-kathrin-tobi-2026@savethedate`,
-            'STATUS:CONFIRMED',
-            'END:VEVENT',
-            'END:VCALENDAR'
-        ].join('\r\n');
-        
-        const blob = new Blob([icsContent], { type: 'text/calendar;charset=utf-8' });
-        const url = URL.createObjectURL(blob);
-        
+        // Desktop: Normal download with filename
         const link = document.createElement('a');
         link.href = url;
         link.download = 'Hochzeit-Kathrin-Tobi-2026.ics';
@@ -380,7 +378,6 @@ function downloadICS() {
         link.click();
         document.body.removeChild(link);
         URL.revokeObjectURL(url);
-        
         console.log('📅 ICS file downloaded!');
     }
 }
