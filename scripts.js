@@ -363,10 +363,28 @@ function downloadICS() {
     ].join('\r\n');
     
     if (isIOS()) {
-        // iOS: Use data URI to open directly in Calendar app
-        // This avoids the download popup and opens the calendar directly
-        const dataUri = 'data:text/calendar;charset=utf-8,' + encodeURIComponent(icsContent);
-        window.location.href = dataUri;
+        // iOS: Create a Blob with proper filename and use webcal-style approach
+        // Using a base64 data URL with proper MIME type for iOS Calendar
+        const blob = new Blob([icsContent], { type: 'text/calendar;charset=utf-8' });
+        const url = URL.createObjectURL(blob);
+        
+        // Create a temporary link that iOS Safari can handle
+        const link = document.createElement('a');
+        link.href = url;
+        link.setAttribute('download', 'Hochzeit-Kathrin-Tobi.ics');
+        link.style.display = 'none';
+        document.body.appendChild(link);
+        
+        // For iOS, we need to use window.open instead of click
+        // This triggers the native calendar import dialog
+        window.open(url, '_blank');
+        
+        // Cleanup
+        setTimeout(() => {
+            document.body.removeChild(link);
+            URL.revokeObjectURL(url);
+        }, 1000);
+        
         console.log('📅 ICS opened for iOS Calendar!');
     } else {
         // Desktop: Normal download with attachment
@@ -572,6 +590,7 @@ window.closeLoginModal = closeLoginModal;
 
 /**
  * Initialize background music with user interaction requirement
+ * Also pauses when tab is not visible
  */
 function initBackgroundMusic() {
     const audio = document.getElementById('bg-music');
@@ -581,6 +600,7 @@ function initBackgroundMusic() {
     if (!audio || !toggleBtn || !musicIcon) return;
     
     let isPlaying = false;
+    let wasPlayingBeforeHidden = false; // Track if music was playing before tab switch
     
     // Check if user previously enabled music
     const musicWasEnabled = localStorage.getItem(MUSIC_STORAGE_KEY) === 'true';
@@ -616,6 +636,25 @@ function initBackgroundMusic() {
             playMusic();
         }
     }
+    
+    // Pause music when tab becomes hidden, resume when visible
+    document.addEventListener('visibilitychange', () => {
+        if (document.hidden) {
+            // Tab is now hidden - pause if playing
+            if (isPlaying) {
+                wasPlayingBeforeHidden = true;
+                audio.pause();
+                console.log('🎵 Music paused (tab hidden)');
+            }
+        } else {
+            // Tab is now visible - resume if was playing before
+            if (wasPlayingBeforeHidden) {
+                wasPlayingBeforeHidden = false;
+                playMusic();
+                console.log('🎵 Music resumed (tab visible)');
+            }
+        }
+    });
     
     // Toggle button click
     toggleBtn.addEventListener('click', toggleMusic);
