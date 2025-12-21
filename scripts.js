@@ -258,8 +258,8 @@ function initActiveSection() {
 // ================================================
 
 document.addEventListener('DOMContentLoaded', () => {
-    // Wedding date: September 19, 2026 at 14:00
-    initCountdown('2026-09-19T14:00:00');
+    // Wedding date: September 19, 2026 at 15:00
+    initCountdown('2026-09-19T15:00:00');
     
     initMobileNav();
     initSmoothScroll();
