@@ -267,6 +267,7 @@ document.addEventListener('DOMContentLoaded', () => {
     initNavbarScroll();
     initActiveSection();
     initLoginSystem();
+    initBackgroundMusic();
     
     console.log('🤘 Save The Date loaded successfully!');
 });
@@ -447,3 +448,71 @@ window.handleLogin = handleLogin;
 window.handleLogout = handleLogout;
 window.openLoginModal = openLoginModal;
 window.closeLoginModal = closeLoginModal;
+
+
+// ================================================
+// BACKGROUND MUSIC
+// ================================================
+
+const MUSIC_STORAGE_KEY = 'savethedate_music_enabled';
+
+/**
+ * Initialize background music with user interaction requirement
+ */
+function initBackgroundMusic() {
+    const audio = document.getElementById('bg-music');
+    const toggleBtn = document.getElementById('music-toggle');
+    const musicIcon = document.getElementById('music-icon');
+    
+    if (!audio || !toggleBtn || !musicIcon) return;
+    
+    let isPlaying = false;
+    
+    // Check if user previously enabled music
+    const musicWasEnabled = localStorage.getItem(MUSIC_STORAGE_KEY) === 'true';
+    
+    function updateIcon() {
+        musicIcon.textContent = isPlaying ? '🔊' : '🔇';
+        toggleBtn.setAttribute('aria-label', isPlaying ? 'Musik ausschalten' : 'Musik einschalten');
+    }
+    
+    function toggleMusic() {
+        if (isPlaying) {
+            audio.pause();
+            isPlaying = false;
+            localStorage.setItem(MUSIC_STORAGE_KEY, 'false');
+        } else {
+            audio.play().then(() => {
+                isPlaying = true;
+                localStorage.setItem(MUSIC_STORAGE_KEY, 'true');
+            }).catch(err => {
+                console.log('Audio playback failed:', err);
+            });
+        }
+        updateIcon();
+    }
+    
+    // Toggle button click
+    toggleBtn.addEventListener('click', toggleMusic);
+    
+    // Try to autoplay if user previously enabled music
+    if (musicWasEnabled) {
+        // Attempt to play on first user interaction
+        const tryAutoplay = () => {
+            audio.play().then(() => {
+                isPlaying = true;
+                updateIcon();
+            }).catch(() => {
+                // Autoplay blocked, wait for user interaction
+            });
+            document.removeEventListener('click', tryAutoplay);
+            document.removeEventListener('touchstart', tryAutoplay);
+        };
+        
+        document.addEventListener('click', tryAutoplay, { once: true });
+        document.addEventListener('touchstart', tryAutoplay, { once: true });
+    }
+    
+    updateIcon();
+    console.log('🎵 Background music initialized');
+}
