@@ -383,11 +383,32 @@ body {
     text-align: center;
 }
 
-/* ---- Google Form Container ---- */
+/* ---- Google Form Container (Responsive) ---- */
 .google-form-container {
     background-color: white;
     border-radius: 0.5rem;
     overflow: hidden;
+}
+
+/* Responsive height adjustments for different screen sizes */
+@media (min-width: 640px) {
+    .google-form-container {
+        padding-bottom: 120% !important;
+    }
+}
+
+@media (min-width: 768px) {
+    .google-form-container {
+        padding-bottom: 100% !important;
+        min-height: 700px !important;
+    }
+}
+
+@media (min-width: 1024px) {
+    .google-form-container {
+        padding-bottom: 80% !important;
+        min-height: 800px !important;
+    }
 }
 
 /* ---- Footer Links ---- */
