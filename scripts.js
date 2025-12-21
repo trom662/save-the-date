@@ -4,6 +4,11 @@
  */
 
 // ================================================
+// GLOBAL CONSTANTS
+// ================================================
+const MUSIC_STORAGE_KEY = 'savethedate_music_enabled';
+
+// ================================================
 // COUNTDOWN TIMER
 // ================================================
 
@@ -496,8 +501,6 @@ window.closeLoginModal = closeLoginModal;
 // ================================================
 // BACKGROUND MUSIC
 // ================================================
-
-const MUSIC_STORAGE_KEY = 'savethedate_music_enabled';
 
 /**
  * Initialize background music with user interaction requirement
