@@ -360,8 +360,8 @@ function makeUID() {
 }
 
 /**
- * Handle iOS calendar import via data:text/calendar URI scheme
- * Uses encodeURIComponent to avoid special character issues
+ * Handle iOS calendar import via Blob + <a download>
+ * Uses URL.createObjectURL for better iOS Chrome compatibility
  * @param {string} summary - Event title
  * @param {string} description - Event description
  * @param {string} location - Event location
@@ -398,13 +398,25 @@ function handleIOSCalendar(summary, description, location, dtstart, dtend) {
   // CRLF per RFC 5545
   const icsContent = icsLines.join('\r\n');
   
-  // Create data URI with proper encoding
-  const dataUri = 'data:text/calendar;charset=utf-8,' + encodeURIComponent(icsContent);
+  // Create Blob and Object URL for iOS Chrome compatibility
+  const blob = new Blob([icsContent], { type: 'text/calendar;charset=utf-8' });
+  const url = URL.createObjectURL(blob);
   
-  // Open the data URI - iOS Safari should offer to add to Calendar
-  window.location.href = dataUri;
+  // Create temporary <a> element with download attribute
+  const link = document.createElement('a');
+  link.href = url;
+  link.download = 'Hochzeit-Kathrin-Tobi-2026.ics';
+  link.style.display = 'none';
   
-  console.log('📅 iOS Calendar: data URI triggered');
+  // Append, click, remove
+  document.body.appendChild(link);
+  link.click();
+  document.body.removeChild(link);
+  
+  // Revoke URL after delay
+  setTimeout(() => URL.revokeObjectURL(url), 10000);
+  
+  console.log('📅 iOS Calendar: Blob + download attribute triggered');
 }
 
 /**
