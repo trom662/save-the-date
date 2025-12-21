@@ -290,7 +290,7 @@
                         <h3 class="timeline-time">14:00 Uhr</h3>
                         <h4 class="timeline-title">Die Zeremonie</h4>
                         <p class="timeline-desc">Der offizielle Teil. Wir sagen „Ja" – ihr sagt „Endlich!". Tränen erlaubt, Headbanging erwünscht.</p>
-                        <p class="timeline-location">📍 Alte Scheune, Musterstraße 42</p>
+                        <p class="timeline-location">📍 Kulturscheune, Marktpl. 4, 96172 Mühlhausen</p>
                     </div>
                 </div>
                 
@@ -330,10 +330,11 @@
                 <div class="map-container">
                     <iframe 
                         title="Anfahrtskarte zur Location"
-                        src="https://www.openstreetmap.org/export/embed.html?bbox=11.5%2C48.1%2C11.6%2C48.2&layer=mapnik&marker=48.15%2C11.55"
+                        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2548.8!2d10.7873!3d49.8625!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x47a2231c8d5c6b7d%3A0x4c7d9c3e2b1a0f9e!2sMarktpl.%204%2C%2096172%20M%C3%BChlhausen!5e0!3m2!1sde!2sde!4v1703158800000!5m2!1sde!2sde"
                         class="w-full h-80 md:h-96 rounded-lg border-2 border-metal-gray"
                         loading="lazy"
                         allowfullscreen
+                        referrerpolicy="no-referrer-when-downgrade"
                     ></iframe>
                 </div>
                 
@@ -342,16 +343,22 @@
                     <div class="bg-metal-gray p-6 rounded-lg">
                         <h3 class="text-xl font-bold text-white mb-3">📍 Adresse</h3>
                         <address class="not-italic text-metal-light/80">
-                            Alte Scheune am Waldrand<br>
-                            Musterstraße 42<br>
-                            12345 Beispielstadt
+                            Kulturscheune<br>
+                            Marktpl. 4<br>
+                            96172 Mühlhausen
                         </address>
+                        <a href="https://www.google.com/maps/search/?api=1&query=Kulturscheune+Marktpl.+4+96172+Mühlhausen" 
+                           target="_blank" 
+                           rel="noopener noreferrer"
+                           class="inline-block mt-3 text-metal-red hover:underline text-sm">
+                            🗺️ In Google Maps öffnen
+                        </a>
                     </div>
                     
                     <div class="bg-metal-gray p-6 rounded-lg">
                         <h3 class="text-xl font-bold text-white mb-3">🚗 Parken</h3>
                         <p class="text-metal-light/80">
-                            Großer Parkplatz direkt vor Ort. Wer betrunken ist, nimmt ein Taxi – oder schläft im Zelt (Wiese vorhanden).
+                            Parkmöglichkeit gegenüber des Tors am Marktplatz. Wer betrunken ist, nimmt ein Taxi – oder fragt nach einer Mitfahrgelegenheit.
                         </p>
                     </div>
                     
@@ -374,48 +381,48 @@
             
             <div class="gallery-grid mt-12">
                 <!-- Gallery Item 1 -->
-                <button class="gallery-item" onclick="openLightbox('assets/design-hero.jpg', 'Wir zwei beim ersten Date')" aria-label="Bild vergrößern: Wir zwei beim ersten Date">
-                    <img src="assets/design-hero.jpg" alt="Wir zwei beim ersten Date" class="gallery-img" loading="lazy">
+                <button class="gallery-item" onclick="openLightbox('assets/gallery-1.jpg', 'Wir zwei beim ersten Date')" aria-label="Bild vergrößern: Wir zwei beim ersten Date">
+                    <img src="assets/gallery-1.jpg" alt="Wir zwei beim ersten Date" class="gallery-img" loading="lazy">
                     <div class="gallery-overlay">
                         <span class="text-white text-lg">🔍 Vergrößern</span>
                     </div>
                 </button>
                 
                 <!-- Gallery Item 2 -->
-                <button class="gallery-item" onclick="openLightbox('assets/design-hero.jpg', 'Der Antrag - ja, wirklich so')" aria-label="Bild vergrößern: Der Antrag">
-                    <img src="assets/design-hero.jpg" alt="Der Antrag - ja, wirklich so" class="gallery-img" loading="lazy">
+                <button class="gallery-item" onclick="openLightbox('assets/gallery-2.JPG', 'Der Antrag - ja, wirklich so')" aria-label="Bild vergrößern: Der Antrag">
+                    <img src="assets/gallery-2.JPG" alt="Der Antrag - ja, wirklich so" class="gallery-img" loading="lazy">
                     <div class="gallery-overlay">
                         <span class="text-white text-lg">🔍 Vergrößern</span>
                     </div>
                 </button>
                 
                 <!-- Gallery Item 3 -->
-                <button class="gallery-item" onclick="openLightbox('assets/design-hero.jpg', 'Unser erstes Konzert zusammen')" aria-label="Bild vergrößern: Erstes Konzert zusammen">
-                    <img src="assets/design-hero.jpg" alt="Unser erstes Konzert zusammen" class="gallery-img" loading="lazy">
+                <button class="gallery-item" onclick="openLightbox('assets/gallery-3.JPG', 'Unser erstes Konzert zusammen')" aria-label="Bild vergrößern: Erstes Konzert zusammen">
+                    <img src="assets/gallery-3.JPG" alt="Unser erstes Konzert zusammen" class="gallery-img" loading="lazy">
                     <div class="gallery-overlay">
                         <span class="text-white text-lg">🔍 Vergrößern</span>
                     </div>
                 </button>
                 
                 <!-- Gallery Item 4 -->
-                <button class="gallery-item" onclick="openLightbox('assets/design-hero.jpg', 'Die Location')" aria-label="Bild vergrößern: Die Location">
-                    <img src="assets/design-hero.jpg" alt="Die Location - hier wird gefeiert" class="gallery-img" loading="lazy">
+                <button class="gallery-item" onclick="openLightbox('assets/gallery-4.JPG', 'Die Location')" aria-label="Bild vergrößern: Die Location">
+                    <img src="assets/gallery-4.JPG" alt="Die Location - hier wird gefeiert" class="gallery-img" loading="lazy">
                     <div class="gallery-overlay">
                         <span class="text-white text-lg">🔍 Vergrößern</span>
                     </div>
                 </button>
                 
                 <!-- Gallery Item 5 -->
-                <button class="gallery-item" onclick="openLightbox('assets/design-hero.jpg', 'Unsere Ringe')" aria-label="Bild vergrößern: Unsere Ringe">
-                    <img src="assets/design-hero.jpg" alt="Unsere Ringe - ja, sie sind schwarz" class="gallery-img" loading="lazy">
+                <button class="gallery-item" onclick="openLightbox('assets/gallery-5.JPG', 'Unsere Ringe')" aria-label="Bild vergrößern: Unsere Ringe">
+                    <img src="assets/gallery-5.JPG" alt="Unsere Ringe - ja, sie sind schwarz" class="gallery-img" loading="lazy">
                     <div class="gallery-overlay">
                         <span class="text-white text-lg">🔍 Vergrößern</span>
                     </div>
                 </button>
                 
                 <!-- Gallery Item 6 -->
-                <button class="gallery-item" onclick="openLightbox('assets/design-hero.jpg', 'Coming Soon')" aria-label="Bild vergrößern: Coming Soon">
-                    <img src="assets/design-hero.jpg" alt="Mehr Bilder folgen nach der Hochzeit" class="gallery-img" loading="lazy">
+                <button class="gallery-item" onclick="openLightbox('assets/gallery-6.JPG', 'Coming Soon')" aria-label="Bild vergrößern: Coming Soon">
+                    <img src="assets/gallery-6.JPG" alt="Mehr Bilder folgen nach der Hochzeit" class="gallery-img" loading="lazy">
                     <div class="gallery-overlay">
                         <span class="text-white text-lg">🔍 Vergrößern</span>
                     </div>
