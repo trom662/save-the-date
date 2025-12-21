@@ -173,44 +173,100 @@
     </section>
 
     <!-- Timeline Section -->
-    <section id="timeline" class="py-20 bg-metal-gray">
+    <section id="timeline" class="py-20 bg-metal-gray" aria-labelledby="timeline-title">
         <div class="container mx-auto px-4">
-            <h2 class="section-title">Der Zeitplan</h2>
+            <h2 id="timeline-title" class="section-title">Der Zeitplan</h2>
             <p class="section-subtitle">Drei Akte. Ein epischer Tag. Kein Zugabe-Verbot.</p>
             
-            <div class="max-w-3xl mx-auto mt-12">
-                <!-- Event 1: Ceremony -->
-                <div class="timeline-item">
-                    <div class="timeline-marker">💍</div>
-                    <div class="timeline-content">
-                        <h3 class="timeline-time">14:00 Uhr</h3>
-                        <h4 class="timeline-title">Die Zeremonie</h4>
-                        <p class="timeline-desc">Der offizielle Teil. Wir sagen „Ja" – ihr sagt „Endlich!". Tränen erlaubt, Headbanging erwünscht.</p>
-                        <p class="timeline-location">📍 Kulturscheune, Marktpl. 4, 96172 Mühlhausen</p>
+            <div class="max-w-4xl mx-auto mt-12">
+                <!-- Akt 1: Get-together -->
+                <article class="timeline-card" data-animate aria-labelledby="akt1-title">
+                    <div class="timeline-card-marker">
+                        <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"/>
+                        </svg>
                     </div>
-                </div>
+                    <div class="timeline-card-content">
+                        <div class="flex flex-wrap items-center gap-3 mb-2">
+                            <time datetime="2026-09-19T14:00" class="timeline-time">14:00 Uhr</time>
+                            <span class="timeline-badge timeline-badge-private">Nur enger Kreis</span>
+                        </div>
+                        <h3 id="akt1-title" class="timeline-title">Get-together — Zeit genießen</h3>
+                        <p class="timeline-desc">Ankommen, anstoßen, quatschen. Nur der engste Kreis — wir wollen das erste Kapitel intim.</p>
+                        <p class="timeline-location">
+                            <svg class="w-4 h-4 inline-block mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/>
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/>
+                            </svg>
+                            Kulturscheune
+                        </p>
+                    </div>
+                </article>
                 
-                <!-- Event 2: Reception -->
-                <div class="timeline-item">
-                    <div class="timeline-marker">🥂</div>
-                    <div class="timeline-content">
-                        <h3 class="timeline-time">16:00 Uhr</h3>
-                        <h4 class="timeline-title">Empfang & Dinner</h4>
-                        <p class="timeline-desc">Sektempfang, Gruppenfoto-Chaos und ein Menü, das selbst Lemmy stolz gemacht hätte. Vegetarische Option vorhanden.</p>
-                        <p class="timeline-location">📍 Gleicher Ort, andere Ecke</p>
+                <!-- Akt 2: Freie Trauung -->
+                <article class="timeline-card" data-animate aria-labelledby="akt2-title">
+                    <div class="timeline-card-marker">
+                        <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"/>
+                        </svg>
                     </div>
-                </div>
+                    <div class="timeline-card-content">
+                        <div class="flex flex-wrap items-center gap-3 mb-2">
+                            <time datetime="2026-09-19T16:00" class="timeline-time">16:00 Uhr</time>
+                            <span class="timeline-badge timeline-badge-private">Nur enger Kreis</span>
+                        </div>
+                        <h3 id="akt2-title" class="timeline-title">Freie Trauung — direkt vor Ort</h3>
+                        <p class="timeline-desc">Wir sagen „Ja" in freier Form. Tränen erlaubt, Headbanging empfohlen. Nur geladene Gäste.</p>
+                        <p class="timeline-location">
+                            <svg class="w-4 h-4 inline-block mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/>
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/>
+                            </svg>
+                            Kulturscheune
+                        </p>
+                    </div>
+                </article>
                 
-                <!-- Event 3: After-Party -->
-                <div class="timeline-item">
-                    <div class="timeline-marker">🔥</div>
-                    <div class="timeline-content">
-                        <h3 class="timeline-time">21:00 Uhr</h3>
-                        <h4 class="timeline-title">After-Party</h4>
-                        <p class="timeline-desc">DJ, Liveband, offene Bar. Tanzen bis die Boots qualmen. Endet wenn der Letzte geht (oder umfällt).</p>
-                        <p class="timeline-location">📍 Der Keller – folgt den Bässen</p>
+                <!-- Akt 3: Party -->
+                <article class="timeline-card" data-animate aria-labelledby="akt3-title">
+                    <div class="timeline-card-marker timeline-card-marker-highlight">
+                        <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19V6l12-3v13M9 19c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zm12-3c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zM9 10l12-3"/>
+                        </svg>
                     </div>
-                </div>
+                    <div class="timeline-card-content">
+                        <div class="flex flex-wrap items-center gap-3 mb-2">
+                            <time datetime="2026-09-19T21:00" class="timeline-time">21:00 Uhr</time>
+                            <span class="timeline-badge timeline-badge-open">Open for friends</span>
+                        </div>
+                        <h3 id="akt3-title" class="timeline-title">Party — alle dazu</h3>
+                        <p class="timeline-desc">DJ, Live-Band, offene Bar. Freunde stoßen dazu — feiern bis die Stiefel qualmen.</p>
+                        <p class="timeline-location">
+                            <svg class="w-4 h-4 inline-block mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/>
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/>
+                            </svg>
+                            Kulturscheune (Der Keller — follow the bass)
+                        </p>
+                    </div>
+                </article>
+            </div>
+            
+            <!-- Hinweistext -->
+            <p class="max-w-3xl mx-auto mt-10 text-center text-sm text-metal-light/60 italic">
+                <strong>Hinweis:</strong> Für Akt 1 und 2 laden wir nur den engsten Kreis ein. 
+                Für Akt 3 freuen wir uns, wenn weitere Freunde dazustoßen. 
+                Alle Programmpunkte finden in der Kulturscheune statt.
+            </p>
+            
+            <!-- CTA zur Anfahrt -->
+            <div class="text-center mt-8">
+                <a href="#location" class="inline-flex items-center text-metal-red hover:text-white transition-colors font-semibold">
+                    <span>Mehr Infos / Anfahrt</span>
+                    <svg class="w-5 h-5 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3"/>
+                    </svg>
+                </a>
             </div>
         </div>
     </section>
