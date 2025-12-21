@@ -87,6 +87,25 @@ body {
         radial-gradient(circle at 80% 50%, var(--metal-red) 0%, transparent 50%);
 }
 
+.hero-banner {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.hero-banner-img {
+    filter: drop-shadow(0 20px 40px rgba(0, 0, 0, 0.6))
+            drop-shadow(0 0 30px rgba(198, 40, 40, 0.3));
+    transition: transform var(--transition-medium), filter var(--transition-medium);
+}
+
+.hero-banner-img:hover {
+    transform: scale(1.02);
+    filter: drop-shadow(0 25px 50px rgba(0, 0, 0, 0.7))
+            drop-shadow(0 0 40px rgba(198, 40, 40, 0.4));
+}
+
 .hero-frame {
     position: relative;
     padding: 2rem;
