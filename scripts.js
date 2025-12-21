@@ -360,16 +360,79 @@ function makeUID() {
 }
 
 /**
+ * Handle iOS calendar import via data:text/calendar URI scheme
+ * Uses encodeURIComponent to avoid special character issues
+ * @param {string} summary - Event title
+ * @param {string} description - Event description
+ * @param {string} location - Event location
+ * @param {string} dtstart - Start date/time in YYYYMMDDTHHMMSSZ or YYYYMMDD format
+ * @param {string} dtend - End date/time in YYYYMMDDTHHMMSSZ or YYYYMMDD format
+ */
+function handleIOSCalendar(summary, description, location, dtstart, dtend) {
+  const dtstamp = makeTimestampUTC();
+  const uid = makeUID();
+  
+  // Determine if all-day event (no 'T' in dtstart means DATE only)
+  const isAllDay = !dtstart.includes('T');
+  
+  const icsLines = [
+    'BEGIN:VCALENDAR',
+    'VERSION:2.0',
+    'PRODID:-//Save The Date//Kathrin & Tobi//DE',
+    'CALSCALE:GREGORIAN',
+    'METHOD:PUBLISH',
+    'BEGIN:VEVENT',
+    `UID:${uid}`,
+    `DTSTAMP:${dtstamp}`,
+    isAllDay ? `DTSTART;VALUE=DATE:${dtstart}` : `DTSTART:${dtstart}`,
+    isAllDay ? `DTEND;VALUE=DATE:${dtend}` : `DTEND:${dtend}`,
+    `SUMMARY:${summary}`,
+    `DESCRIPTION:${description}`,
+    `LOCATION:${location}`,
+    'STATUS:CONFIRMED',
+    'SEQUENCE:0',
+    'END:VEVENT',
+    'END:VCALENDAR'
+  ];
+
+  // CRLF per RFC 5545
+  const icsContent = icsLines.join('\r\n');
+  
+  // Create data URI with proper encoding
+  const dataUri = 'data:text/calendar;charset=utf-8,' + encodeURIComponent(icsContent);
+  
+  // Open the data URI - iOS Safari should offer to add to Calendar
+  window.location.href = dataUri;
+  
+  console.log('📅 iOS Calendar: data URI triggered');
+}
+
+/**
  * Generate and download ICS file for the wedding date
- * iOS: Opens without download attribute (triggers calendar app)
+ * iOS: Uses data:text/calendar URI scheme via handleIOSCalendar
  * Desktop: Downloads ICS file normally
  */
 function downloadICS() {
-  const eventTitle = 'Hochzeit von Kathrin & Tobi';
-  const eventDate = '20260919'; // YYYYMMDD (ganztägig)
-  const eventEndDate = '20260920';
-  const eventLocation = 'to be announced';
-  const eventDescription = 'Save the Date!';
+  // Event data (Platzhalter für spätere Anpassung)
+  const eventTitle = 'Hochzeit von Kathrin & Tobi';       // SUMMARY
+  const eventDescription = 'Save the Date!';              // DESCRIPTION
+  const eventLocation = 'to be announced';                // LOCATION
+  const eventDate = '20260919';                           // DTSTART (ganztägig)
+  const eventEndDate = '20260920';                        // DTEND (ganztägig)
+
+  // iOS: Nutze data:text/calendar URI Schema
+  if (isIOS()) {
+    handleIOSCalendar(
+      eventTitle,
+      eventDescription,
+      eventLocation,
+      eventDate,
+      eventEndDate
+    );
+    return;
+  }
+
+  // Desktop: Normaler ICS Download
   const dtstamp = makeTimestampUTC();
   const uid = makeUID();
 
@@ -399,35 +462,17 @@ function downloadICS() {
   const blob = new Blob([icsContent], { type: 'text/calendar;charset=utf-8' });
   const url = URL.createObjectURL(blob);
 
-  // Helper to revoke after delay (give browser time to start download/open)
-  const revokeLater = (u) => {
-    setTimeout(() => URL.revokeObjectURL(u), 10000);
-  };
-
-  if (isIOS()) {
-    // iOS: create an <a> without download attribute and click it.
-    // This is more reliable than window.location.href for triggering the "open in Calendar" flow.
-    const a = document.createElement('a');
-    a.href = url;
-    a.style.display = 'none';
-    // no a.download on iOS — we want the browser to treat it as inline/open
-    document.body.appendChild(a);
-    a.click();
-    document.body.removeChild(a);
-    revokeLater(url);
-    console.log('📅 ICS opened (iOS attempt).');
-  } else {
-    // Desktop: use download attribute to suggest filename
-    const link = document.createElement('a');
-    link.href = url;
-    link.download = 'Hochzeit-Kathrin-Tobi-2026.ics';
-    link.style.display = 'none';
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
-    revokeLater(url);
-    console.log('📅 ICS file download triggered (desktop).');
-  }
+  const link = document.createElement('a');
+  link.href = url;
+  link.download = 'Hochzeit-Kathrin-Tobi-2026.ics';
+  link.style.display = 'none';
+  document.body.appendChild(link);
+  link.click();
+  document.body.removeChild(link);
+  
+  // Revoke after delay
+  setTimeout(() => URL.revokeObjectURL(url), 10000);
+  console.log('📅 ICS file download triggered (desktop).');
 }
 
 // Make downloadICS globally available
