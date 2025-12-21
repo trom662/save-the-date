@@ -335,45 +335,41 @@ function isIOS() {
 
 /**
  * Generate and download ICS file for the wedding date
- * Handles iOS differently to open directly in Calendar app
+ * iOS: Opens static ICS file (triggers native calendar import)
+ * Desktop: Downloads generated ICS file
  */
 function downloadICS() {
-    const eventTitle = 'Hochzeit von Kathrin & Tobi';
-    const eventDate = '20260919'; // YYYYMMDD format
-    const eventLocation = 'to be announced';
-    const eventDescription = 'Save the Date!';
-    
-    // ICS file content (all-day event)
-    const icsContent = [
-        'BEGIN:VCALENDAR',
-        'VERSION:2.0',
-        'PRODID:-//Save The Date//Kathrin & Tobi//DE',
-        'CALSCALE:GREGORIAN',
-        'METHOD:PUBLISH',
-        'BEGIN:VEVENT',
-        `DTSTART;VALUE=DATE:${eventDate}`,
-        `DTEND;VALUE=DATE:${eventDate}`,
-        `SUMMARY:${eventTitle}`,
-        `DESCRIPTION:${eventDescription}`,
-        `LOCATION:${eventLocation}`,
-        `UID:hochzeit-kathrin-tobi-2026@savethedate`,
-        'STATUS:CONFIRMED',
-        'END:VEVENT',
-        'END:VCALENDAR'
-    ].join('\r\n');
-    
     if (isIOS()) {
-        // iOS: Use base64 data URI - this is the most reliable method for iOS Safari
-        // to trigger the native "Add to Calendar" dialog
-        const base64 = btoa(unescape(encodeURIComponent(icsContent)));
-        const dataUri = 'data:text/calendar;base64,' + base64;
-        
-        // Redirect to data URI - iOS will recognize it as a calendar file
-        window.location.href = dataUri;
-        
+        // iOS: Link to static ICS file - this is the ONLY reliable method
+        // GitHub Pages serves .ics files with correct MIME type (text/calendar)
+        // which triggers iOS Safari to open the native "Add to Calendar" dialog
+        window.location.href = 'assets/hochzeit-kathrin-tobi.ics';
         console.log('📅 ICS opened for iOS Calendar!');
     } else {
-        // Desktop: Normal download with attachment
+        // Desktop: Generate and download ICS file
+        const eventTitle = 'Hochzeit von Kathrin & Tobi';
+        const eventDate = '20260919';
+        const eventLocation = 'to be announced';
+        const eventDescription = 'Save the Date!';
+        
+        const icsContent = [
+            'BEGIN:VCALENDAR',
+            'VERSION:2.0',
+            'PRODID:-//Save The Date//Kathrin & Tobi//DE',
+            'CALSCALE:GREGORIAN',
+            'METHOD:PUBLISH',
+            'BEGIN:VEVENT',
+            `DTSTART;VALUE=DATE:${eventDate}`,
+            `DTEND;VALUE=DATE:20260920`,
+            `SUMMARY:${eventTitle}`,
+            `DESCRIPTION:${eventDescription}`,
+            `LOCATION:${eventLocation}`,
+            `UID:hochzeit-kathrin-tobi-2026@savethedate`,
+            'STATUS:CONFIRMED',
+            'END:VEVENT',
+            'END:VCALENDAR'
+        ].join('\r\n');
+        
         const blob = new Blob([icsContent], { type: 'text/calendar;charset=utf-8' });
         const url = URL.createObjectURL(blob);
         
