@@ -1,5 +1,6 @@
 // Event date: December 21, 2025
 const eventDate = new Date('2025-12-21T18:00:00').getTime();
+let countdownInterval;
 
 // Update countdown
 function updateCountdown() {
@@ -8,6 +9,9 @@ function updateCountdown() {
     
     if (distance < 0) {
         document.getElementById('countdown').innerHTML = '<p class="countdown-label">Die Veranstaltung hat bereits stattgefunden!</p>';
+        if (countdownInterval) {
+            clearInterval(countdownInterval);
+        }
         return;
     }
     
@@ -24,7 +28,7 @@ function updateCountdown() {
 
 // Initialize countdown
 updateCountdown();
-setInterval(updateCountdown, 1000);
+countdownInterval = setInterval(updateCountdown, 1000);
 
 // RSVP functionality
 document.getElementById('rsvp-button').addEventListener('click', function() {
