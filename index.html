@@ -84,13 +84,38 @@
         <div class="container mx-auto px-4 py-12 relative z-10">
             <div class="flex flex-col items-center text-center">
                 
-                <!-- Hero Banner Logo -->
-                <div class="hero-banner mb-8">
-                    <img 
-                        src="assets/banner-logo.jpg" 
-                        alt="Kathrin & Tobi - 19.09.2026 - Hochzeits-Emblem mit Greifen, Gitarren und Rosen" 
-                        class="w-full max-w-lg md:max-w-xl lg:max-w-2xl h-auto hero-banner-img"
-                    >
+                <!-- Decorative Frame + Photo -->
+                <div class="hero-frame relative mb-8">
+                    <!-- Decorative SVG Overlay -->
+                    <div class="absolute -inset-8 md:-inset-12 pointer-events-none">
+                        <svg viewBox="0 0 400 500" class="w-full h-full" preserveAspectRatio="xMidYMid meet">
+                            <!-- Skull Top Left -->
+                            <text x="30" y="50" class="fill-metal-red text-4xl">💀</text>
+                            <!-- Guitar Top Right -->
+                            <text x="340" y="50" class="fill-metal-red text-4xl">🎸</text>
+                            <!-- Chain Left -->
+                            <text x="10" y="250" class="fill-metal-red text-3xl">⛓️</text>
+                            <!-- Chain Right -->
+                            <text x="370" y="250" class="fill-metal-red text-3xl">⛓️</text>
+                            <!-- Skull Bottom Left -->
+                            <text x="30" y="470" class="fill-metal-red text-4xl">🎸</text>
+                            <!-- Guitar Bottom Right -->
+                            <text x="340" y="470" class="fill-metal-red text-4xl">💀</text>
+                            <!-- Decorative Lines -->
+                            <line x1="80" y1="20" x2="320" y2="20" stroke="#c62828" stroke-width="2" stroke-dasharray="10,5"/>
+                            <line x1="80" y1="480" x2="320" y2="480" stroke="#c62828" stroke-width="2" stroke-dasharray="10,5"/>
+                        </svg>
+                    </div>
+                    
+                    <!-- Hero Photo -->
+                    <div class="relative">
+                        <img 
+                            src="assets/design-hero.jpg" 
+                            alt="Unser Verlobungsfoto - Zwei Metal-Fans auf dem Weg zur Hochzeit" 
+                            class="w-64 h-80 md:w-80 md:h-96 object-cover rounded-lg shadow-2xl border-4 border-metal-red hero-photo"
+                        >
+                        <div class="absolute inset-0 bg-gradient-to-t from-metal-black/50 to-transparent rounded-lg"></div>
+                    </div>
                 </div>
                 
                 <!-- Headline -->
@@ -174,100 +199,44 @@
     <div id="protected-content" class="protected-content">
 
     <!-- Timeline Section -->
-    <section id="timeline" class="py-20 bg-metal-gray" aria-labelledby="timeline-title">
+    <section id="timeline" class="py-20 bg-metal-gray">
         <div class="container mx-auto px-4">
-            <h2 id="timeline-title" class="section-title">Der Zeitplan</h2>
+            <h2 class="section-title">Der Zeitplan</h2>
             <p class="section-subtitle">Drei Akte. Ein epischer Tag. Kein Zugabe-Verbot.</p>
             
-            <div class="max-w-4xl mx-auto mt-12">
-                <!-- Akt 1: Get-together -->
-                <article class="timeline-card" data-animate aria-labelledby="akt1-title">
-                    <div class="timeline-card-marker">
-                        <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"/>
-                        </svg>
+            <div class="max-w-3xl mx-auto mt-12">
+                <!-- Event 1: Ceremony -->
+                <div class="timeline-item">
+                    <div class="timeline-marker">💍</div>
+                    <div class="timeline-content">
+                        <h3 class="timeline-time">14:00 Uhr</h3>
+                        <h4 class="timeline-title">Die Zeremonie</h4>
+                        <p class="timeline-desc">Der offizielle Teil. Wir sagen „Ja" – ihr sagt „Endlich!". Tränen erlaubt, Headbanging erwünscht.</p>
+                        <p class="timeline-location">📍 Alte Scheune, Musterstraße 42</p>
                     </div>
-                    <div class="timeline-card-content">
-                        <div class="flex flex-wrap items-center gap-3 mb-2">
-                            <time datetime="2026-09-19T14:00" class="timeline-time">14:00 Uhr</time>
-                            <span class="timeline-badge timeline-badge-private">Nur enger Kreis</span>
-                        </div>
-                        <h3 id="akt1-title" class="timeline-title">Get-together — Zeit genießen</h3>
-                        <p class="timeline-desc">Ankommen, anstoßen, quatschen. Nur der engste Kreis — wir wollen das erste Kapitel intim.</p>
-                        <p class="timeline-location">
-                            <svg class="w-4 h-4 inline-block mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/>
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/>
-                            </svg>
-                            Kulturscheune
-                        </p>
-                    </div>
-                </article>
+                </div>
                 
-                <!-- Akt 2: Freie Trauung -->
-                <article class="timeline-card" data-animate aria-labelledby="akt2-title">
-                    <div class="timeline-card-marker">
-                        <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"/>
-                        </svg>
+                <!-- Event 2: Reception -->
+                <div class="timeline-item">
+                    <div class="timeline-marker">🥂</div>
+                    <div class="timeline-content">
+                        <h3 class="timeline-time">16:00 Uhr</h3>
+                        <h4 class="timeline-title">Empfang & Dinner</h4>
+                        <p class="timeline-desc">Sektempfang, Gruppenfoto-Chaos und ein Menü, das selbst Lemmy stolz gemacht hätte. Vegetarische Option vorhanden.</p>
+                        <p class="timeline-location">📍 Gleicher Ort, andere Ecke</p>
                     </div>
-                    <div class="timeline-card-content">
-                        <div class="flex flex-wrap items-center gap-3 mb-2">
-                            <time datetime="2026-09-19T16:00" class="timeline-time">16:00 Uhr</time>
-                            <span class="timeline-badge timeline-badge-private">Nur enger Kreis</span>
-                        </div>
-                        <h3 id="akt2-title" class="timeline-title">Freie Trauung — direkt vor Ort</h3>
-                        <p class="timeline-desc">Wir sagen „Ja" in freier Form. Tränen erlaubt, Headbanging empfohlen. Nur geladene Gäste.</p>
-                        <p class="timeline-location">
-                            <svg class="w-4 h-4 inline-block mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/>
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/>
-                            </svg>
-                            Kulturscheune
-                        </p>
-                    </div>
-                </article>
+                </div>
                 
-                <!-- Akt 3: Party -->
-                <article class="timeline-card" data-animate aria-labelledby="akt3-title">
-                    <div class="timeline-card-marker timeline-card-marker-highlight">
-                        <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19V6l12-3v13M9 19c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zm12-3c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zM9 10l12-3"/>
-                        </svg>
+                <!-- Event 3: After-Party -->
+                <div class="timeline-item">
+                    <div class="timeline-marker">🔥</div>
+                    <div class="timeline-content">
+                        <h3 class="timeline-time">21:00 Uhr</h3>
+                        <h4 class="timeline-title">After-Party</h4>
+                        <p class="timeline-desc">DJ, Liveband, offene Bar. Tanzen bis die Boots qualmen. Endet wenn der Letzte geht (oder umfällt).</p>
+                        <p class="timeline-location">📍 Der Keller – folgt den Bässen</p>
                     </div>
-                    <div class="timeline-card-content">
-                        <div class="flex flex-wrap items-center gap-3 mb-2">
-                            <time datetime="2026-09-19T21:00" class="timeline-time">21:00 Uhr</time>
-                            <span class="timeline-badge timeline-badge-open">Open for friends</span>
-                        </div>
-                        <h3 id="akt3-title" class="timeline-title">Party — alle dazu</h3>
-                        <p class="timeline-desc">DJ, Live-Band, offene Bar. Freunde stoßen dazu — feiern bis die Stiefel qualmen.</p>
-                        <p class="timeline-location">
-                            <svg class="w-4 h-4 inline-block mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/>
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/>
-                            </svg>
-                            Kulturscheune (Der Keller — follow the bass)
-                        </p>
-                    </div>
-                </article>
-            </div>
-            
-            <!-- Hinweistext -->
-            <p class="max-w-3xl mx-auto mt-10 text-center text-sm text-metal-light/60 italic">
-                <strong>Hinweis:</strong> Für Akt 1 und 2 laden wir nur den engsten Kreis ein. 
-                Für Akt 3 freuen wir uns, wenn weitere Freunde dazustoßen. 
-                Alle Programmpunkte finden in der Kulturscheune statt.
-            </p>
-            
-            <!-- CTA zur Anfahrt -->
-            <div class="text-center mt-8">
-                <a href="#location" class="inline-flex items-center text-metal-red hover:text-white transition-colors font-semibold">
-                    <span>Mehr Infos / Anfahrt</span>
-                    <svg class="w-5 h-5 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3"/>
-                    </svg>
-                </a>
+                </div>
             </div>
         </div>
     </section>
@@ -283,11 +252,10 @@
                 <div class="map-container">
                     <iframe 
                         title="Anfahrtskarte zur Location"
-                        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2548.8!2d10.7873!3d49.8625!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x47a2231c8d5c6b7d%3A0x4c7d9c3e2b1a0f9e!2sMarktpl.%204%2C%2096172%20M%C3%BChlhausen!5e0!3m2!1sde!2sde!4v1703158800000!5m2!1sde!2sde"
+                        src="https://www.openstreetmap.org/export/embed.html?bbox=11.5%2C48.1%2C11.6%2C48.2&layer=mapnik&marker=48.15%2C11.55"
                         class="w-full h-80 md:h-96 rounded-lg border-2 border-metal-gray"
                         loading="lazy"
                         allowfullscreen
-                        referrerpolicy="no-referrer-when-downgrade"
                     ></iframe>
                 </div>
                 
@@ -296,22 +264,16 @@
                     <div class="bg-metal-gray p-6 rounded-lg">
                         <h3 class="text-xl font-bold text-white mb-3">📍 Adresse</h3>
                         <address class="not-italic text-metal-light/80">
-                            Kulturscheune<br>
-                            Marktpl. 4<br>
-                            96172 Mühlhausen
+                            Alte Scheune am Waldrand<br>
+                            Musterstraße 42<br>
+                            12345 Beispielstadt
                         </address>
-                        <a href="https://www.google.com/maps/search/?api=1&query=Kulturscheune+Marktpl.+4+96172+Mühlhausen" 
-                           target="_blank" 
-                           rel="noopener noreferrer"
-                           class="inline-block mt-3 text-metal-red hover:underline text-sm">
-                            🗺️ In Google Maps öffnen
-                        </a>
                     </div>
                     
                     <div class="bg-metal-gray p-6 rounded-lg">
                         <h3 class="text-xl font-bold text-white mb-3">🚗 Parken</h3>
                         <p class="text-metal-light/80">
-                            Parkmöglichkeit gegenüber des Tors am Marktplatz. Wer betrunken ist, nimmt ein Taxi – oder fragt nach einer Mitfahrgelegenheit.
+                            Großer Parkplatz direkt vor Ort. Wer betrunken ist, nimmt ein Taxi – oder schläft im Zelt (Wiese vorhanden).
                         </p>
                     </div>
                     
@@ -334,48 +296,48 @@
             
             <div class="gallery-grid mt-12">
                 <!-- Gallery Item 1 -->
-                <button class="gallery-item" onclick="openLightbox('assets/gallery-1.jpg', 'Bild 1')" aria-label="Bild vergrößern">
-                    <img src="assets/gallery-1.jpg" alt="Galerie Bild 1" class="gallery-img" loading="lazy">
+                <button class="gallery-item" onclick="openLightbox('assets/design-hero.jpg', 'Wir zwei beim ersten Date')" aria-label="Bild vergrößern: Wir zwei beim ersten Date">
+                    <img src="assets/design-hero.jpg" alt="Wir zwei beim ersten Date" class="gallery-img" loading="lazy">
                     <div class="gallery-overlay">
                         <span class="text-white text-lg">🔍 Vergrößern</span>
                     </div>
                 </button>
                 
                 <!-- Gallery Item 2 -->
-                <button class="gallery-item" onclick="openLightbox('assets/gallery-2.JPG', 'Bild 2')" aria-label="Bild vergrößern">
-                    <img src="assets/gallery-2.JPG" alt="Galerie Bild 2" class="gallery-img" loading="lazy">
+                <button class="gallery-item" onclick="openLightbox('assets/design-hero.jpg', 'Der Antrag - ja, wirklich so')" aria-label="Bild vergrößern: Der Antrag">
+                    <img src="assets/design-hero.jpg" alt="Der Antrag - ja, wirklich so" class="gallery-img" loading="lazy">
                     <div class="gallery-overlay">
                         <span class="text-white text-lg">🔍 Vergrößern</span>
                     </div>
                 </button>
                 
                 <!-- Gallery Item 3 -->
-                <button class="gallery-item" onclick="openLightbox('assets/gallery-3.JPG', 'Bild 3')" aria-label="Bild vergrößern">
-                    <img src="assets/gallery-3.JPG" alt="Galerie Bild 3" class="gallery-img" loading="lazy">
+                <button class="gallery-item" onclick="openLightbox('assets/design-hero.jpg', 'Unser erstes Konzert zusammen')" aria-label="Bild vergrößern: Erstes Konzert zusammen">
+                    <img src="assets/design-hero.jpg" alt="Unser erstes Konzert zusammen" class="gallery-img" loading="lazy">
                     <div class="gallery-overlay">
                         <span class="text-white text-lg">🔍 Vergrößern</span>
                     </div>
                 </button>
                 
                 <!-- Gallery Item 4 -->
-                <button class="gallery-item" onclick="openLightbox('assets/gallery-4.JPG', 'Bild 4')" aria-label="Bild vergrößern">
-                    <img src="assets/gallery-4.JPG" alt="Galerie Bild 4" class="gallery-img" loading="lazy">
+                <button class="gallery-item" onclick="openLightbox('assets/design-hero.jpg', 'Die Location')" aria-label="Bild vergrößern: Die Location">
+                    <img src="assets/design-hero.jpg" alt="Die Location - hier wird gefeiert" class="gallery-img" loading="lazy">
                     <div class="gallery-overlay">
                         <span class="text-white text-lg">🔍 Vergrößern</span>
                     </div>
                 </button>
                 
                 <!-- Gallery Item 5 -->
-                <button class="gallery-item" onclick="openLightbox('assets/gallery-5.JPG', 'Bild 5')" aria-label="Bild vergrößern">
-                    <img src="assets/gallery-5.JPG" alt="Galerie Bild 5" class="gallery-img" loading="lazy">
+                <button class="gallery-item" onclick="openLightbox('assets/design-hero.jpg', 'Unsere Ringe')" aria-label="Bild vergrößern: Unsere Ringe">
+                    <img src="assets/design-hero.jpg" alt="Unsere Ringe - ja, sie sind schwarz" class="gallery-img" loading="lazy">
                     <div class="gallery-overlay">
                         <span class="text-white text-lg">🔍 Vergrößern</span>
                     </div>
                 </button>
                 
                 <!-- Gallery Item 6 -->
-                <button class="gallery-item" onclick="openLightbox('assets/gallery-6.JPG', 'Bild 6')" aria-label="Bild vergrößern">
-                    <img src="assets/gallery-6.JPG" alt="Galerie Bild 6" class="gallery-img" loading="lazy">
+                <button class="gallery-item" onclick="openLightbox('assets/design-hero.jpg', 'Coming Soon')" aria-label="Bild vergrößern: Coming Soon">
+                    <img src="assets/design-hero.jpg" alt="Mehr Bilder folgen nach der Hochzeit" class="gallery-img" loading="lazy">
                     <div class="gallery-overlay">
                         <span class="text-white text-lg">🔍 Vergrößern</span>
                     </div>
@@ -399,7 +361,7 @@
     <section id="zusagen" class="py-20 bg-metal-black">
         <div class="container mx-auto px-4">
             <h2 class="section-title">Zusagen</h2>
-            <p class="section-subtitle">Sag uns Bescheid, ob du dabei bist! Plätze sind limitiert. Wer zuerst kommt, sitzt in der ersten Reihe.</p>
+            <p class="section-subtitle">Sag uns Bescheid! Plätze sind limitiert. Wer zuerst kommt, sitzt in der ersten Reihe.</p>
             
             <div class="max-w-3xl mx-auto mt-12">
                 <div class="bg-metal-gray p-6 md:p-8 rounded-lg border border-metal-red/30">
@@ -408,32 +370,16 @@
                         Keine Sorge, wir fragen nur das Nötigste.
                     </p>
                     
-                    <!-- Google Form iframe (responsive) -->
-                    <div class="google-form-container relative w-full overflow-hidden rounded-lg" style="padding-bottom: 145%; min-height: 600px;">
+                    <!-- Google Form iframe -->
+                    <div class="google-form-container">
                         <iframe 
                             src="https://docs.google.com/forms/d/e/1FAIpQLSdQ5CA3ld5WAm4fHwpYuWyQvVO-48WlIc-3ev3WVf7RkhFAVg/viewform?embedded=true"
-                            title="Zusagen Formular"
-                            class="absolute inset-0 w-full h-full border-0"
+                            title="RSVP Formular"
+                            class="w-full h-[929px] border-0 rounded"
                             loading="lazy"
                         >
                             Wird geladen…
                         </iframe>
-                    </div>
-                    
-                    <!-- Fallback Link -->
-                    <div class="mt-6 text-center">
-                        <a href="https://docs.google.com/forms/d/e/1FAIpQLSdQ5CA3ld5WAm4fHwpYuWyQvVO-48WlIc-3ev3WVf7RkhFAVg/viewform" 
-                           target="_blank" 
-                           rel="noopener noreferrer"
-                           class="inline-flex items-center justify-center bg-metal-red hover:bg-red-700 text-white font-bold py-3 px-6 rounded-lg transition-colors">
-                            <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/>
-                            </svg>
-                            Formular in neuem Tab öffnen
-                        </a>
-                        <p class="text-metal-light/50 text-xs mt-2">
-                            Falls das Formular oben nicht lädt, nutze diesen Link.
-                        </p>
                     </div>
                     
                     <p class="text-metal-light/60 text-sm mt-6 text-center">
@@ -544,7 +490,7 @@
         </div>
     </div>
 
-    <!-- JavaScript -->
+    <!-- Scripts -->
     <script src="scripts.js"></script>
 </body>
 </html>

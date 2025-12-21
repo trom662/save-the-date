@@ -87,25 +87,6 @@ body {
         radial-gradient(circle at 80% 50%, var(--metal-red) 0%, transparent 50%);
 }
 
-.hero-banner {
-    position: relative;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-
-.hero-banner-img {
-    filter: drop-shadow(0 20px 40px rgba(0, 0, 0, 0.6))
-            drop-shadow(0 0 30px rgba(198, 40, 40, 0.3));
-    transition: transform var(--transition-medium), filter var(--transition-medium);
-}
-
-.hero-banner-img:hover {
-    transform: scale(1.02);
-    filter: drop-shadow(0 25px 50px rgba(0, 0, 0, 0.7))
-            drop-shadow(0 0 40px rgba(198, 40, 40, 0.4));
-}
-
 .hero-frame {
     position: relative;
     padding: 2rem;
@@ -209,124 +190,7 @@ body {
     }
 }
 
-/* ---- Timeline Card Styles (3-Akt Design) ---- */
-.timeline-card {
-    display: flex;
-    gap: 1.5rem;
-    position: relative;
-    padding-bottom: 2rem;
-    opacity: 0;
-    transform: translateY(20px);
-    transition: opacity 0.6s ease, transform 0.6s ease;
-}
-
-.timeline-card.is-visible {
-    opacity: 1;
-    transform: translateY(0);
-}
-
-/* Verbindungslinie zwischen Cards */
-.timeline-card:not(:last-child)::before {
-    content: '';
-    position: absolute;
-    left: 1.75rem;
-    top: 4rem;
-    bottom: 0;
-    width: 2px;
-    background: linear-gradient(to bottom, var(--metal-red), var(--metal-gray));
-}
-
-.timeline-card-marker {
-    flex-shrink: 0;
-    width: 3.5rem;
-    height: 3.5rem;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background-color: var(--metal-black);
-    border: 2px solid var(--metal-red);
-    border-radius: 50%;
-    color: var(--metal-red);
-    z-index: 1;
-    transition: transform var(--transition-medium), background-color var(--transition-medium), color var(--transition-medium);
-}
-
-.timeline-card:hover .timeline-card-marker {
-    transform: scale(1.1);
-    background-color: var(--metal-red);
-    color: white;
-}
-
-.timeline-card-marker-highlight {
-    background-color: var(--metal-red);
-    color: white;
-    box-shadow: 0 0 20px rgba(198, 40, 40, 0.5);
-}
-
-.timeline-card-content {
-    flex: 1;
-    background-color: var(--metal-black);
-    padding: 1.5rem;
-    border-radius: 0.75rem;
-    border: 1px solid var(--metal-gray);
-    transition: border-color var(--transition-medium), transform var(--transition-medium), box-shadow var(--transition-medium);
-}
-
-.timeline-card:hover .timeline-card-content {
-    border-color: var(--metal-red);
-    transform: translateX(5px);
-    box-shadow: -5px 5px 20px rgba(0, 0, 0, 0.3);
-}
-
-.timeline-time {
-    font-family: 'Metal Mania', cursive;
-    font-size: 1.25rem;
-    color: var(--metal-red);
-}
-
-.timeline-badge {
-    display: inline-block;
-    padding: 0.25rem 0.75rem;
-    border-radius: 9999px;
-    font-size: 0.75rem;
-    font-weight: 600;
-    text-transform: uppercase;
-    letter-spacing: 0.05em;
-}
-
-.timeline-badge-private {
-    background-color: rgba(198, 40, 40, 0.2);
-    color: var(--metal-red);
-    border: 1px solid var(--metal-red);
-}
-
-.timeline-badge-open {
-    background-color: rgba(76, 175, 80, 0.2);
-    color: #4caf50;
-    border: 1px solid #4caf50;
-}
-
-.timeline-title {
-    font-size: 1.35rem;
-    font-weight: 700;
-    color: white;
-    margin-bottom: 0.5rem;
-}
-
-.timeline-desc {
-    color: rgba(224, 224, 224, 0.8);
-    margin-bottom: 0.75rem;
-    line-height: 1.6;
-}
-
-.timeline-location {
-    font-size: 0.875rem;
-    color: rgba(224, 224, 224, 0.6);
-    display: flex;
-    align-items: center;
-}
-
-/* Legacy Timeline Styles (für Kompatibilität) */
+/* ---- Timeline Styles ---- */
 .timeline-item {
     display: flex;
     gap: 1.5rem;
@@ -368,6 +232,30 @@ body {
 
 .timeline-content:hover {
     border-color: var(--metal-red);
+}
+
+.timeline-time {
+    font-family: 'Metal Mania', cursive;
+    font-size: 1.5rem;
+    color: var(--metal-red);
+    margin-bottom: 0.25rem;
+}
+
+.timeline-title {
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: white;
+    margin-bottom: 0.5rem;
+}
+
+.timeline-desc {
+    color: rgba(224, 224, 224, 0.8);
+    margin-bottom: 0.5rem;
+}
+
+.timeline-location {
+    font-size: 0.875rem;
+    color: rgba(224, 224, 224, 0.6);
 }
 
 /* ---- Download Button ---- */
@@ -495,32 +383,11 @@ body {
     text-align: center;
 }
 
-/* ---- Google Form Container (Responsive) ---- */
+/* ---- Google Form Container ---- */
 .google-form-container {
     background-color: white;
     border-radius: 0.5rem;
     overflow: hidden;
-}
-
-/* Responsive height adjustments for different screen sizes */
-@media (min-width: 640px) {
-    .google-form-container {
-        padding-bottom: 120% !important;
-    }
-}
-
-@media (min-width: 768px) {
-    .google-form-container {
-        padding-bottom: 100% !important;
-        min-height: 700px !important;
-    }
-}
-
-@media (min-width: 1024px) {
-    .google-form-container {
-        padding-bottom: 80% !important;
-        min-height: 800px !important;
-    }
 }
 
 /* ---- Footer Links ---- */
@@ -620,12 +487,12 @@ body.is-admin .guest-hidden {
     display: none !important;
 }
 
-/* Also show CTA button only when logged in */
-.cta-button.protected-cta {
+/* CTA button only when logged in */
+.protected-cta {
     display: none;
 }
 
-body.is-admin .cta-button.protected-cta {
+body.is-admin .protected-cta {
     display: inline-flex;
 }
 
