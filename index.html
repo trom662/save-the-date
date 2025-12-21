@@ -1,0 +1,426 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Save the Date - Eine Hochzeit im Metal-Style. 19.09.2026">
+    <title>Save Our Date 🤘 19.09.2026</title>
+    
+    <!-- Tailwind CSS via CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'metal-black': '#0b0b0b',
+                        'metal-red': '#c62828',
+                        'metal-gray': '#1a1a1a',
+                        'metal-light': '#e0e0e0',
+                    },
+                    fontFamily: {
+                        'metal': ['Metal Mania', 'cursive'],
+                        'sans': ['Inter', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Metal+Mania&display=swap" rel="stylesheet">
+    
+    <!-- Custom Styles -->
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body class="bg-metal-black text-metal-light font-sans">
+    
+    <!-- Navigation -->
+    <nav id="navbar" class="fixed top-0 left-0 right-0 z-50 bg-metal-black/95 backdrop-blur-sm border-b border-metal-gray transition-all duration-300">
+        <div class="max-w-6xl mx-auto px-4 py-4">
+            <div class="flex justify-between items-center">
+                <!-- Logo -->
+                <a href="#hero" class="font-metal text-2xl text-metal-red hover:text-white transition-colors">
+                    🤘 S&M
+                </a>
+                
+                <!-- Desktop Navigation -->
+                <ul class="hidden md:flex space-x-8">
+                    <li><a href="#hero" class="nav-link">Home</a></li>
+                    <li><a href="#timeline" class="nav-link">Zeitplan</a></li>
+                    <li><a href="#location" class="nav-link">Anfahrt</a></li>
+                    <li><a href="#gallery" class="nav-link">Galerie</a></li>
+                    <li><a href="#rsvp" class="nav-link-cta">RSVP</a></li>
+                </ul>
+                
+                <!-- Mobile Hamburger -->
+                <button id="mobile-menu-btn" class="md:hidden text-metal-light hover:text-metal-red transition-colors" aria-label="Menü öffnen" aria-expanded="false">
+                    <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
+                    </svg>
+                </button>
+            </div>
+            
+            <!-- Mobile Menu -->
+            <div id="mobile-menu" class="hidden md:hidden mt-4 pb-4">
+                <ul class="flex flex-col space-y-4">
+                    <li><a href="#hero" class="mobile-nav-link">Home</a></li>
+                    <li><a href="#timeline" class="mobile-nav-link">Zeitplan</a></li>
+                    <li><a href="#location" class="mobile-nav-link">Anfahrt</a></li>
+                    <li><a href="#gallery" class="mobile-nav-link">Galerie</a></li>
+                    <li><a href="#rsvp" class="mobile-nav-link text-metal-red font-bold">RSVP</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section id="hero" class="min-h-screen flex items-center justify-center relative overflow-hidden pt-20">
+        <!-- Background Decorative Elements -->
+        <div class="absolute inset-0 hero-bg-pattern opacity-10"></div>
+        
+        <div class="container mx-auto px-4 py-12 relative z-10">
+            <div class="flex flex-col items-center text-center">
+                
+                <!-- Decorative Frame + Photo -->
+                <div class="hero-frame relative mb-8">
+                    <!-- Decorative SVG Overlay -->
+                    <div class="absolute -inset-8 md:-inset-12 pointer-events-none">
+                        <svg viewBox="0 0 400 500" class="w-full h-full" preserveAspectRatio="xMidYMid meet">
+                            <!-- Skull Top Left -->
+                            <text x="30" y="50" class="fill-metal-red text-4xl">💀</text>
+                            <!-- Guitar Top Right -->
+                            <text x="340" y="50" class="fill-metal-red text-4xl">🎸</text>
+                            <!-- Chain Left -->
+                            <text x="10" y="250" class="fill-metal-red text-3xl">⛓️</text>
+                            <!-- Chain Right -->
+                            <text x="370" y="250" class="fill-metal-red text-3xl">⛓️</text>
+                            <!-- Skull Bottom Left -->
+                            <text x="30" y="470" class="fill-metal-red text-4xl">🎸</text>
+                            <!-- Guitar Bottom Right -->
+                            <text x="340" y="470" class="fill-metal-red text-4xl">💀</text>
+                            <!-- Decorative Lines -->
+                            <line x1="80" y1="20" x2="320" y2="20" stroke="#c62828" stroke-width="2" stroke-dasharray="10,5"/>
+                            <line x1="80" y1="480" x2="320" y2="480" stroke="#c62828" stroke-width="2" stroke-dasharray="10,5"/>
+                        </svg>
+                    </div>
+                    
+                    <!-- Hero Photo -->
+                    <div class="relative">
+                        <img 
+                            src="assets/design-hero.jpg" 
+                            alt="Unser Verlobungsfoto - Zwei Metal-Fans auf dem Weg zur Hochzeit" 
+                            class="w-64 h-80 md:w-80 md:h-96 object-cover rounded-lg shadow-2xl border-4 border-metal-red hero-photo"
+                        >
+                        <div class="absolute inset-0 bg-gradient-to-t from-metal-black/50 to-transparent rounded-lg"></div>
+                    </div>
+                </div>
+                
+                <!-- Headline -->
+                <h1 class="font-metal text-5xl md:text-7xl lg:text-8xl text-white mb-4 tracking-wide">
+                    Save Our Date
+                </h1>
+                
+                <!-- Date -->
+                <p class="text-3xl md:text-4xl font-bold text-metal-red mb-6">
+                    19. September 2026
+                </p>
+                
+                <!-- Tagline -->
+                <p class="text-xl md:text-2xl text-metal-light/80 mb-8 max-w-xl italic">
+                    „Wir haben Ja gesagt. Jetzt müsst ihr nur noch erscheinen."<br>
+                    <span class="text-sm">— und bitte pünktlich, Moshpits warten nicht.</span>
+                </p>
+                
+                <!-- Countdown -->
+                <div id="countdown" class="flex flex-wrap justify-center gap-4 md:gap-6 mb-10">
+                    <div class="countdown-item">
+                        <span id="days" class="countdown-number">000</span>
+                        <span class="countdown-label">Tage</span>
+                    </div>
+                    <div class="countdown-item">
+                        <span id="hours" class="countdown-number">00</span>
+                        <span class="countdown-label">Stunden</span>
+                    </div>
+                    <div class="countdown-item">
+                        <span id="minutes" class="countdown-number">00</span>
+                        <span class="countdown-label">Minuten</span>
+                    </div>
+                    <div class="countdown-item">
+                        <span id="seconds" class="countdown-number">00</span>
+                        <span class="countdown-label">Sekunden</span>
+                    </div>
+                </div>
+                
+                <!-- CTA Button -->
+                <a href="#rsvp" class="cta-button group">
+                    <span>🤘 RSVP - Ich bin dabei!</span>
+                    <svg class="w-5 h-5 ml-2 transform group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3"/>
+                    </svg>
+                </a>
+            </div>
+        </div>
+        
+        <!-- Scroll Indicator -->
+        <div class="absolute bottom-8 left-1/2 transform -translate-x-1/2 animate-bounce">
+            <svg class="w-8 h-8 text-metal-red" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3"/>
+            </svg>
+        </div>
+    </section>
+
+    <!-- Timeline Section -->
+    <section id="timeline" class="py-20 bg-metal-gray">
+        <div class="container mx-auto px-4">
+            <h2 class="section-title">Der Zeitplan</h2>
+            <p class="section-subtitle">Drei Akte. Ein epischer Tag. Kein Zugabe-Verbot.</p>
+            
+            <div class="max-w-3xl mx-auto mt-12">
+                <!-- Event 1: Ceremony -->
+                <div class="timeline-item">
+                    <div class="timeline-marker">💍</div>
+                    <div class="timeline-content">
+                        <h3 class="timeline-time">14:00 Uhr</h3>
+                        <h4 class="timeline-title">Die Zeremonie</h4>
+                        <p class="timeline-desc">Der offizielle Teil. Wir sagen „Ja" – ihr sagt „Endlich!". Tränen erlaubt, Headbanging erwünscht.</p>
+                        <p class="timeline-location">📍 Alte Scheune, Musterstraße 42</p>
+                    </div>
+                </div>
+                
+                <!-- Event 2: Reception -->
+                <div class="timeline-item">
+                    <div class="timeline-marker">🥂</div>
+                    <div class="timeline-content">
+                        <h3 class="timeline-time">16:00 Uhr</h3>
+                        <h4 class="timeline-title">Empfang & Dinner</h4>
+                        <p class="timeline-desc">Sektempfang, Gruppenfoto-Chaos und ein Menü, das selbst Lemmy stolz gemacht hätte. Vegetarische Option vorhanden.</p>
+                        <p class="timeline-location">📍 Gleicher Ort, andere Ecke</p>
+                    </div>
+                </div>
+                
+                <!-- Event 3: After-Party -->
+                <div class="timeline-item">
+                    <div class="timeline-marker">🔥</div>
+                    <div class="timeline-content">
+                        <h3 class="timeline-time">21:00 Uhr</h3>
+                        <h4 class="timeline-title">After-Party</h4>
+                        <p class="timeline-desc">DJ, Liveband, offene Bar. Tanzen bis die Boots qualmen. Endet wenn der Letzte geht (oder umfällt).</p>
+                        <p class="timeline-location">📍 Der Keller – folgt den Bässen</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Location / Anfahrt Section -->
+    <section id="location" class="py-20 bg-metal-black">
+        <div class="container mx-auto px-4">
+            <h2 class="section-title">Anfahrt</h2>
+            <p class="section-subtitle">Findet ihr hin? GPS kennt den Weg. Zur Not fragt die Locals nach „der Metal-Hochzeit".</p>
+            
+            <div class="grid md:grid-cols-2 gap-8 mt-12 max-w-5xl mx-auto">
+                <!-- Map -->
+                <div class="map-container">
+                    <iframe 
+                        title="Anfahrtskarte zur Location"
+                        src="https://www.openstreetmap.org/export/embed.html?bbox=11.5%2C48.1%2C11.6%2C48.2&layer=mapnik&marker=48.15%2C11.55"
+                        class="w-full h-80 md:h-96 rounded-lg border-2 border-metal-gray"
+                        loading="lazy"
+                        allowfullscreen
+                    ></iframe>
+                </div>
+                
+                <!-- Address & Downloads -->
+                <div class="flex flex-col justify-center space-y-6">
+                    <div class="bg-metal-gray p-6 rounded-lg">
+                        <h3 class="text-xl font-bold text-white mb-3">📍 Adresse</h3>
+                        <address class="not-italic text-metal-light/80">
+                            Alte Scheune am Waldrand<br>
+                            Musterstraße 42<br>
+                            12345 Beispielstadt
+                        </address>
+                    </div>
+                    
+                    <div class="bg-metal-gray p-6 rounded-lg">
+                        <h3 class="text-xl font-bold text-white mb-3">🚗 Parken</h3>
+                        <p class="text-metal-light/80">
+                            Großer Parkplatz direkt vor Ort. Wer betrunken ist, nimmt ein Taxi – oder schläft im Zelt (Wiese vorhanden).
+                        </p>
+                    </div>
+                    
+                    <a href="#" class="download-button" aria-label="Anfahrtsskizze als PDF herunterladen">
+                        <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+                        </svg>
+                        Anfahrtsskizze (PDF) herunterladen
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Gallery Section -->
+    <section id="gallery" class="py-20 bg-metal-gray">
+        <div class="container mx-auto px-4">
+            <h2 class="section-title">Galerie</h2>
+            <p class="section-subtitle">Ein paar Impressionen. Mehr gibt's nach der Hochzeit. 📸</p>
+            
+            <div class="gallery-grid mt-12">
+                <!-- Gallery Item 1 -->
+                <button class="gallery-item" onclick="openLightbox('assets/design-hero.jpg', 'Wir zwei beim ersten Date')" aria-label="Bild vergrößern: Wir zwei beim ersten Date">
+                    <img src="assets/design-hero.jpg" alt="Wir zwei beim ersten Date" class="gallery-img" loading="lazy">
+                    <div class="gallery-overlay">
+                        <span class="text-white text-lg">🔍 Vergrößern</span>
+                    </div>
+                </button>
+                
+                <!-- Gallery Item 2 -->
+                <button class="gallery-item" onclick="openLightbox('assets/design-hero.jpg', 'Der Antrag - ja, wirklich so')" aria-label="Bild vergrößern: Der Antrag">
+                    <img src="assets/design-hero.jpg" alt="Der Antrag - ja, wirklich so" class="gallery-img" loading="lazy">
+                    <div class="gallery-overlay">
+                        <span class="text-white text-lg">🔍 Vergrößern</span>
+                    </div>
+                </button>
+                
+                <!-- Gallery Item 3 -->
+                <button class="gallery-item" onclick="openLightbox('assets/design-hero.jpg', 'Unser erstes Konzert zusammen')" aria-label="Bild vergrößern: Erstes Konzert zusammen">
+                    <img src="assets/design-hero.jpg" alt="Unser erstes Konzert zusammen" class="gallery-img" loading="lazy">
+                    <div class="gallery-overlay">
+                        <span class="text-white text-lg">🔍 Vergrößern</span>
+                    </div>
+                </button>
+                
+                <!-- Gallery Item 4 -->
+                <button class="gallery-item" onclick="openLightbox('assets/design-hero.jpg', 'Die Location')" aria-label="Bild vergrößern: Die Location">
+                    <img src="assets/design-hero.jpg" alt="Die Location - hier wird gefeiert" class="gallery-img" loading="lazy">
+                    <div class="gallery-overlay">
+                        <span class="text-white text-lg">🔍 Vergrößern</span>
+                    </div>
+                </button>
+                
+                <!-- Gallery Item 5 -->
+                <button class="gallery-item" onclick="openLightbox('assets/design-hero.jpg', 'Unsere Ringe')" aria-label="Bild vergrößern: Unsere Ringe">
+                    <img src="assets/design-hero.jpg" alt="Unsere Ringe - ja, sie sind schwarz" class="gallery-img" loading="lazy">
+                    <div class="gallery-overlay">
+                        <span class="text-white text-lg">🔍 Vergrößern</span>
+                    </div>
+                </button>
+                
+                <!-- Gallery Item 6 -->
+                <button class="gallery-item" onclick="openLightbox('assets/design-hero.jpg', 'Coming Soon')" aria-label="Bild vergrößern: Coming Soon">
+                    <img src="assets/design-hero.jpg" alt="Mehr Bilder folgen nach der Hochzeit" class="gallery-img" loading="lazy">
+                    <div class="gallery-overlay">
+                        <span class="text-white text-lg">🔍 Vergrößern</span>
+                    </div>
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Lightbox Modal -->
+    <div id="lightbox" class="lightbox hidden" role="dialog" aria-modal="true" aria-label="Bildvorschau">
+        <button class="lightbox-close" onclick="closeLightbox()" aria-label="Lightbox schließen">
+            <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+            </svg>
+        </button>
+        <img id="lightbox-img" src="" alt="" class="lightbox-img">
+        <p id="lightbox-caption" class="lightbox-caption"></p>
+    </div>
+
+    <!-- RSVP Section -->
+    <section id="rsvp" class="py-20 bg-metal-black">
+        <div class="container mx-auto px-4">
+            <h2 class="section-title">RSVP</h2>
+            <p class="section-subtitle">Sag uns Bescheid! Plätze sind limitiert. Wer zuerst kommt, sitzt in der ersten Reihe.</p>
+            
+            <div class="max-w-3xl mx-auto mt-12">
+                <div class="bg-metal-gray p-6 md:p-8 rounded-lg border border-metal-red/30">
+                    <p class="text-metal-light/80 mb-6 text-center">
+                        Bitte fülle das Formular bis zum <strong class="text-metal-red">01.08.2026</strong> aus. 
+                        Keine Sorge, wir fragen nur das Nötigste.
+                    </p>
+                    
+                    <!-- Google Form iframe -->
+                    <div class="google-form-container">
+                        <iframe 
+                            src="https://docs.google.com/forms/d/e/{{GOOGLE_FORM_ID}}/viewform?embedded=true"
+                            title="RSVP Formular"
+                            class="w-full h-[600px] md:h-[700px] border-0 rounded"
+                            loading="lazy"
+                        >
+                            Lädt...
+                        </iframe>
+                    </div>
+                    
+                    <p class="text-metal-light/60 text-sm mt-6 text-center">
+                        <em>Probleme mit dem Formular? Schreib uns direkt: 
+                        <a href="mailto:wedding@example.com" class="text-metal-red hover:underline">wedding@example.com</a></em>
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer id="contact" class="py-12 bg-metal-gray border-t border-metal-black">
+        <div class="container mx-auto px-4">
+            <div class="grid md:grid-cols-3 gap-8 mb-8">
+                <!-- Contact -->
+                <div>
+                    <h3 class="font-metal text-xl text-metal-red mb-4">Kontakt</h3>
+                    <p class="text-metal-light/80 mb-2">
+                        <strong>Trauzeugin:</strong> Lisa Beispiel<br>
+                        <a href="tel:+491234567890" class="hover:text-metal-red transition-colors">+49 123 456 7890</a>
+                    </p>
+                    <p class="text-metal-light/80">
+                        <strong>Trauzeuge:</strong> Max Muster<br>
+                        <a href="tel:+490987654321" class="hover:text-metal-red transition-colors">+49 098 765 4321</a>
+                    </p>
+                </div>
+                
+                <!-- Quick Links -->
+                <div>
+                    <h3 class="font-metal text-xl text-metal-red mb-4">Quick Links</h3>
+                    <ul class="space-y-2">
+                        <li><a href="#hero" class="footer-link">Nach oben</a></li>
+                        <li><a href="#timeline" class="footer-link">Zeitplan</a></li>
+                        <li><a href="#rsvp" class="footer-link">RSVP</a></li>
+                        <li><a href="#" class="footer-link">Geschenke-Ideen</a></li>
+                    </ul>
+                </div>
+                
+                <!-- Legal -->
+                <div>
+                    <h3 class="font-metal text-xl text-metal-red mb-4">Rechtliches</h3>
+                    <ul class="space-y-2">
+                        <li><a href="#" class="footer-link">Impressum</a></li>
+                        <li><a href="#" class="footer-link">Datenschutz</a></li>
+                    </ul>
+                    <p class="text-metal-light/60 text-sm mt-4">
+                        Diese Seite verwendet keine Cookies.<br>
+                        Außer die vom Catering. 🍪
+                    </p>
+                </div>
+            </div>
+            
+            <!-- Bottom Bar -->
+            <div class="border-t border-metal-black pt-8 text-center">
+                <p class="font-metal text-2xl text-white mb-2">S & M</p>
+                <p class="text-metal-light/60">
+                    Made with 🖤 and 🤘 | © 2026
+                </p>
+                <p class="text-metal-light/40 text-sm mt-2">
+                    „Bis dass der Tod uns scheide – oder der letzte Song gespielt ist."
+                </p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="scripts.js"></script>
+</body>
+</html>

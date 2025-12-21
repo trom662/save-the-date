@@ -1,0 +1,457 @@
+/* ================================================
+   SAVE THE DATE - Custom Styles
+   Metal-Ästhetik mit ironischem Twist
+   ================================================ */
+
+/* ---- CSS Custom Properties ---- */
+:root {
+    --metal-black: #0b0b0b;
+    --metal-red: #c62828;
+    --metal-gray: #1a1a1a;
+    --metal-light: #e0e0e0;
+    --transition-fast: 0.2s ease;
+    --transition-medium: 0.3s ease;
+}
+
+/* ---- Base Styles ---- */
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    background-color: var(--metal-black);
+    color: var(--metal-light);
+    line-height: 1.6;
+}
+
+/* ---- Selection Style ---- */
+::selection {
+    background-color: var(--metal-red);
+    color: white;
+}
+
+/* ---- Focus States for Accessibility ---- */
+:focus-visible {
+    outline: 2px solid var(--metal-red);
+    outline-offset: 2px;
+}
+
+/* ---- Navigation Links ---- */
+.nav-link {
+    color: var(--metal-light);
+    font-weight: 500;
+    padding: 0.5rem 1rem;
+    border-radius: 0.25rem;
+    transition: color var(--transition-fast), background-color var(--transition-fast);
+}
+
+.nav-link:hover,
+.nav-link:focus {
+    color: var(--metal-red);
+}
+
+.nav-link-cta {
+    background-color: var(--metal-red);
+    color: white;
+    font-weight: 700;
+    padding: 0.5rem 1.5rem;
+    border-radius: 0.25rem;
+    transition: background-color var(--transition-fast), transform var(--transition-fast);
+}
+
+.nav-link-cta:hover,
+.nav-link-cta:focus {
+    background-color: #d32f2f;
+    transform: scale(1.05);
+}
+
+.mobile-nav-link {
+    display: block;
+    color: var(--metal-light);
+    font-weight: 500;
+    padding: 0.75rem 1rem;
+    border-radius: 0.25rem;
+    transition: color var(--transition-fast), background-color var(--transition-fast);
+}
+
+.mobile-nav-link:hover,
+.mobile-nav-link:focus {
+    color: var(--metal-red);
+    background-color: var(--metal-gray);
+}
+
+/* ---- Hero Section ---- */
+.hero-bg-pattern {
+    background-image: 
+        radial-gradient(circle at 20% 50%, var(--metal-red) 0%, transparent 50%),
+        radial-gradient(circle at 80% 50%, var(--metal-red) 0%, transparent 50%);
+}
+
+.hero-frame {
+    position: relative;
+    padding: 2rem;
+}
+
+.hero-photo {
+    transition: transform var(--transition-medium), box-shadow var(--transition-medium);
+}
+
+.hero-photo:hover {
+    transform: scale(1.02);
+    box-shadow: 0 25px 50px -12px rgba(198, 40, 40, 0.4);
+}
+
+/* ---- Countdown Styles ---- */
+.countdown-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background-color: var(--metal-gray);
+    padding: 1rem 1.5rem;
+    border-radius: 0.5rem;
+    border: 1px solid rgba(198, 40, 40, 0.3);
+    min-width: 80px;
+}
+
+.countdown-number {
+    font-family: 'Metal Mania', cursive;
+    font-size: 2.5rem;
+    color: var(--metal-red);
+    line-height: 1;
+}
+
+.countdown-label {
+    font-size: 0.875rem;
+    color: var(--metal-light);
+    opacity: 0.8;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin-top: 0.25rem;
+}
+
+@media (min-width: 768px) {
+    .countdown-number {
+        font-size: 3.5rem;
+    }
+    
+    .countdown-item {
+        padding: 1.5rem 2rem;
+        min-width: 100px;
+    }
+}
+
+/* ---- CTA Button ---- */
+.cta-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background-color: var(--metal-red);
+    color: white;
+    font-weight: 700;
+    font-size: 1.125rem;
+    padding: 1rem 2rem;
+    border-radius: 0.5rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    transition: background-color var(--transition-fast), transform var(--transition-fast), box-shadow var(--transition-fast);
+}
+
+.cta-button:hover,
+.cta-button:focus {
+    background-color: #d32f2f;
+    transform: translateY(-2px);
+    box-shadow: 0 10px 20px rgba(198, 40, 40, 0.3);
+}
+
+.cta-button:active {
+    transform: translateY(0);
+}
+
+/* ---- Section Titles ---- */
+.section-title {
+    font-family: 'Metal Mania', cursive;
+    font-size: 3rem;
+    color: white;
+    text-align: center;
+    margin-bottom: 0.5rem;
+}
+
+.section-subtitle {
+    font-size: 1.125rem;
+    color: rgba(224, 224, 224, 0.7);
+    text-align: center;
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+@media (min-width: 768px) {
+    .section-title {
+        font-size: 4rem;
+    }
+}
+
+/* ---- Timeline Styles ---- */
+.timeline-item {
+    display: flex;
+    gap: 1.5rem;
+    position: relative;
+    padding-bottom: 2rem;
+}
+
+.timeline-item:not(:last-child)::before {
+    content: '';
+    position: absolute;
+    left: 1.5rem;
+    top: 3.5rem;
+    bottom: 0;
+    width: 2px;
+    background: linear-gradient(to bottom, var(--metal-red), transparent);
+}
+
+.timeline-marker {
+    flex-shrink: 0;
+    width: 3rem;
+    height: 3rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5rem;
+    background-color: var(--metal-gray);
+    border: 2px solid var(--metal-red);
+    border-radius: 50%;
+}
+
+.timeline-content {
+    flex: 1;
+    background-color: var(--metal-black);
+    padding: 1.5rem;
+    border-radius: 0.5rem;
+    border: 1px solid var(--metal-gray);
+    transition: border-color var(--transition-fast);
+}
+
+.timeline-content:hover {
+    border-color: var(--metal-red);
+}
+
+.timeline-time {
+    font-family: 'Metal Mania', cursive;
+    font-size: 1.5rem;
+    color: var(--metal-red);
+    margin-bottom: 0.25rem;
+}
+
+.timeline-title {
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: white;
+    margin-bottom: 0.5rem;
+}
+
+.timeline-desc {
+    color: rgba(224, 224, 224, 0.8);
+    margin-bottom: 0.5rem;
+}
+
+.timeline-location {
+    font-size: 0.875rem;
+    color: rgba(224, 224, 224, 0.6);
+}
+
+/* ---- Download Button ---- */
+.download-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background-color: var(--metal-gray);
+    color: var(--metal-light);
+    font-weight: 600;
+    padding: 1rem 1.5rem;
+    border-radius: 0.5rem;
+    border: 1px solid var(--metal-red);
+    transition: background-color var(--transition-fast), color var(--transition-fast);
+}
+
+.download-button:hover,
+.download-button:focus {
+    background-color: var(--metal-red);
+    color: white;
+}
+
+/* ---- Gallery Grid ---- */
+.gallery-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1rem;
+}
+
+@media (min-width: 768px) {
+    .gallery-grid {
+        grid-template-columns: repeat(3, 1fr);
+        gap: 1.5rem;
+    }
+}
+
+.gallery-item {
+    position: relative;
+    overflow: hidden;
+    border-radius: 0.5rem;
+    aspect-ratio: 1;
+    cursor: pointer;
+    border: 2px solid transparent;
+    transition: border-color var(--transition-fast);
+}
+
+.gallery-item:hover,
+.gallery-item:focus {
+    border-color: var(--metal-red);
+}
+
+.gallery-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform var(--transition-medium);
+}
+
+.gallery-item:hover .gallery-img,
+.gallery-item:focus .gallery-img {
+    transform: scale(1.1);
+}
+
+.gallery-overlay {
+    position: absolute;
+    inset: 0;
+    background-color: rgba(11, 11, 11, 0.7);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    transition: opacity var(--transition-fast);
+}
+
+.gallery-item:hover .gallery-overlay,
+.gallery-item:focus .gallery-overlay {
+    opacity: 1;
+}
+
+/* ---- Lightbox ---- */
+.lightbox {
+    position: fixed;
+    inset: 0;
+    z-index: 100;
+    background-color: rgba(11, 11, 11, 0.95);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 2rem;
+}
+
+.lightbox.hidden {
+    display: none;
+}
+
+.lightbox-close {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    color: white;
+    padding: 0.5rem;
+    border-radius: 0.25rem;
+    transition: color var(--transition-fast), background-color var(--transition-fast);
+}
+
+.lightbox-close:hover,
+.lightbox-close:focus {
+    color: var(--metal-red);
+    background-color: var(--metal-gray);
+}
+
+.lightbox-img {
+    max-width: 90%;
+    max-height: 80vh;
+    object-fit: contain;
+    border-radius: 0.5rem;
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+}
+
+.lightbox-caption {
+    color: var(--metal-light);
+    font-size: 1.125rem;
+    margin-top: 1rem;
+    text-align: center;
+}
+
+/* ---- Google Form Container ---- */
+.google-form-container {
+    background-color: white;
+    border-radius: 0.5rem;
+    overflow: hidden;
+}
+
+/* ---- Footer Links ---- */
+.footer-link {
+    color: rgba(224, 224, 224, 0.7);
+    transition: color var(--transition-fast);
+}
+
+.footer-link:hover,
+.footer-link:focus {
+    color: var(--metal-red);
+}
+
+/* ---- Animations ---- */
+@keyframes pulse-red {
+    0%, 100% {
+        box-shadow: 0 0 0 0 rgba(198, 40, 40, 0.4);
+    }
+    50% {
+        box-shadow: 0 0 0 10px rgba(198, 40, 40, 0);
+    }
+}
+
+.pulse-animation {
+    animation: pulse-red 2s infinite;
+}
+
+/* ---- Scroll Indicator Animation ---- */
+@keyframes bounce {
+    0%, 100% {
+        transform: translateY(0) translateX(-50%);
+    }
+    50% {
+        transform: translateY(-10px) translateX(-50%);
+    }
+}
+
+/* ---- Print Styles ---- */
+@media print {
+    nav, .cta-button, .gallery-overlay, #countdown {
+        display: none !important;
+    }
+    
+    body {
+        background: white;
+        color: black;
+    }
+    
+    .section-title {
+        color: black;
+    }
+}
+
+/* ---- Reduced Motion ---- */
+@media (prefers-reduced-motion: reduce) {
+    html {
+        scroll-behavior: auto;
+    }
+    
+    *,
+    *::before,
+    *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+    }
+}
