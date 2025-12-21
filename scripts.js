@@ -334,6 +334,13 @@ function isIOS() {
 }
 
 /**
+ * Detect if user is on Chrome on iOS (CriOS)
+ */
+function isChromeIOS() {
+  return /CriOS/i.test(navigator.userAgent);
+}
+
+/**
  * Generate UTC timestamp for ICS (YYYYMMDDTHHMMSSZ)
  */
 function makeTimestampUTC(date = new Date()) {
@@ -360,13 +367,13 @@ function makeUID() {
 }
 
 /**
- * Handle iOS calendar import via Blob + <a download>
- * Uses URL.createObjectURL for better iOS Chrome compatibility
- * @param {string} summary - Event title
- * @param {string} description - Event description
- * @param {string} location - Event location
- * @param {string} dtstart - Start date/time in YYYYMMDDTHHMMSSZ or YYYYMMDD format
- * @param {string} dtend - End date/time in YYYYMMDDTHHMMSSZ or YYYYMMDD format
+ * Handle iOS Safari calendar import via data:text/calendar URI scheme
+ * Uses encodeURIComponent to avoid special character issues
+ * @param {string} summary - Event title (SUMMARY)
+ * @param {string} description - Event description (DESCRIPTION)
+ * @param {string} location - Event location (LOCATION)
+ * @param {string} dtstart - Start date/time (DTSTART) in YYYYMMDDTHHMMSSZ or YYYYMMDD format
+ * @param {string} dtend - End date/time (DTEND) in YYYYMMDDTHHMMSSZ or YYYYMMDD format
  */
 function handleIOSCalendar(summary, description, location, dtstart, dtend) {
   const dtstamp = makeTimestampUTC();
@@ -398,30 +405,32 @@ function handleIOSCalendar(summary, description, location, dtstart, dtend) {
   // CRLF per RFC 5545
   const icsContent = icsLines.join('\r\n');
   
-  // Create Blob and Object URL for iOS Chrome compatibility
-  const blob = new Blob([icsContent], { type: 'text/calendar;charset=utf-8' });
-  const url = URL.createObjectURL(blob);
+  // Create data URI with proper encoding for Safari iOS
+  const dataUri = 'data:text/calendar;charset=utf-8,' + encodeURIComponent(icsContent);
   
-  // Create temporary <a> element with download attribute
-  const link = document.createElement('a');
-  link.href = url;
-  link.download = 'Hochzeit-Kathrin-Tobi-2026.ics';
-  link.style.display = 'none';
+  // Open the data URI - Safari iOS should offer to add to Calendar
+  window.location.href = dataUri;
   
-  // Append, click, remove
-  document.body.appendChild(link);
-  link.click();
-  document.body.removeChild(link);
+  console.log('📅 iOS Safari: data URI triggered');
+}
+
+/**
+ * Handle Chrome on iOS via webcal:// protocol
+ * Redirects to hosted .ics file
+ */
+function handleChromeIOSCalendar() {
+  // webcal:// URL to hosted ICS file on GitHub Pages
+  const webcalUrl = 'webcal://trom662.github.io/save-the-date/assets/hochzeit-kathrin-tobi.ics';
   
-  // Revoke URL after delay
-  setTimeout(() => URL.revokeObjectURL(url), 10000);
+  window.location.href = webcalUrl;
   
-  console.log('📅 iOS Calendar: Blob + download attribute triggered');
+  console.log('📅 Chrome iOS: webcal:// redirect triggered');
 }
 
 /**
  * Generate and download ICS file for the wedding date
- * iOS: Uses data:text/calendar URI scheme via handleIOSCalendar
+ * Chrome iOS: Uses webcal:// protocol redirect
+ * Safari iOS: Uses data:text/calendar URI scheme via handleIOSCalendar
  * Desktop: Downloads ICS file normally
  */
 function downloadICS() {
@@ -432,7 +441,13 @@ function downloadICS() {
   const eventDate = '20260919';                           // DTSTART (ganztägig)
   const eventEndDate = '20260920';                        // DTEND (ganztägig)
 
-  // iOS: Nutze data:text/calendar URI Schema
+  // Chrome on iOS: Use webcal:// protocol
+  if (isIOS() && isChromeIOS()) {
+    handleChromeIOSCalendar();
+    return;
+  }
+
+  // Safari on iOS: Use data:text/calendar URI scheme
   if (isIOS()) {
     handleIOSCalendar(
       eventTitle,
@@ -444,7 +459,7 @@ function downloadICS() {
     return;
   }
 
-  // Desktop: Normaler ICS Download
+  // Desktop: Normal ICS Download
   const dtstamp = makeTimestampUTC();
   const uid = makeUID();
 
