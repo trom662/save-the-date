@@ -269,8 +269,51 @@ document.addEventListener('DOMContentLoaded', () => {
     initLoginSystem();
     initBackgroundMusic();
     
+    // Check if user already entered (skip overlay)
+    if (sessionStorage.getItem('site_entered') === 'true') {
+        const overlay = document.getElementById('welcome-overlay');
+        if (overlay) overlay.style.display = 'none';
+    }
+    
     console.log('🤘 Save The Date loaded successfully!');
 });
+
+
+// ================================================
+// WELCOME OVERLAY & MUSIC START
+// ================================================
+
+function enterSite() {
+    const overlay = document.getElementById('welcome-overlay');
+    const audio = document.getElementById('bg-music');
+    const musicIcon = document.getElementById('music-icon');
+    
+    // Hide overlay with fade
+    if (overlay) {
+        overlay.style.transition = 'opacity 0.5s ease';
+        overlay.style.opacity = '0';
+        setTimeout(() => {
+            overlay.style.display = 'none';
+        }, 500);
+    }
+    
+    // Start music immediately
+    if (audio) {
+        audio.play().then(() => {
+            localStorage.setItem(MUSIC_STORAGE_KEY, 'true');
+            if (musicIcon) musicIcon.textContent = '🔊';
+            console.log('🎵 Music started!');
+        }).catch(err => {
+            console.log('Audio play failed:', err);
+        });
+    }
+    
+    // Remember that user entered
+    sessionStorage.setItem('site_entered', 'true');
+}
+
+// Make enterSite globally available
+window.enterSite = enterSite;
 
 
 // Make lightbox functions globally available
