@@ -254,6 +254,54 @@ function initActiveSection() {
 
 
 // ================================================
+// TIMELINE SCROLL ANIMATIONS
+// ================================================
+
+/**
+ * Initialize scroll-based animations for timeline cards
+ * Uses IntersectionObserver for performant reveal-on-scroll
+ */
+function initTimelineAnimations() {
+    const timelineCards = document.querySelectorAll('[data-animate]');
+    
+    if (timelineCards.length === 0) return;
+    
+    // Check for reduced motion preference
+    const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    
+    if (prefersReducedMotion) {
+        // If user prefers reduced motion, show all cards immediately
+        timelineCards.forEach(card => card.classList.add('is-visible'));
+        return;
+    }
+    
+    const observerOptions = {
+        root: null, // viewport
+        rootMargin: '0px 0px -50px 0px', // trigger slightly before element is fully visible
+        threshold: 0.1
+    };
+    
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach((entry, index) => {
+            if (entry.isIntersecting) {
+                // Stagger the animation for multiple cards
+                setTimeout(() => {
+                    entry.target.classList.add('is-visible');
+                }, index * 150);
+                
+                // Stop observing once animated
+                observer.unobserve(entry.target);
+            }
+        });
+    }, observerOptions);
+    
+    timelineCards.forEach(card => {
+        observer.observe(card);
+    });
+}
+
+
+// ================================================
 // INITIALIZE EVERYTHING
 // ================================================
 
@@ -266,6 +314,7 @@ document.addEventListener('DOMContentLoaded', () => {
     initLightbox();
     initNavbarScroll();
     initActiveSection();
+    initTimelineAnimations();
     
     console.log('🤘 Save The Date loaded successfully!');
 });
