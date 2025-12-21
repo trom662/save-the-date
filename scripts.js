@@ -471,9 +471,25 @@ function initBackgroundMusic() {
     // Check if user previously enabled music
     const musicWasEnabled = localStorage.getItem(MUSIC_STORAGE_KEY) === 'true';
     
+    // Pre-load audio for faster playback
+    audio.load();
+    
     function updateIcon() {
         musicIcon.textContent = isPlaying ? '🔊' : '🔇';
         toggleBtn.setAttribute('aria-label', isPlaying ? 'Musik ausschalten' : 'Musik einschalten');
+    }
+    
+    function playMusic() {
+        const playPromise = audio.play();
+        if (playPromise !== undefined) {
+            playPromise.then(() => {
+                isPlaying = true;
+                localStorage.setItem(MUSIC_STORAGE_KEY, 'true');
+                updateIcon();
+            }).catch(err => {
+                console.log('Audio playback failed:', err);
+            });
+        }
     }
     
     function toggleMusic() {
@@ -481,36 +497,45 @@ function initBackgroundMusic() {
             audio.pause();
             isPlaying = false;
             localStorage.setItem(MUSIC_STORAGE_KEY, 'false');
+            updateIcon();
         } else {
-            audio.play().then(() => {
-                isPlaying = true;
-                localStorage.setItem(MUSIC_STORAGE_KEY, 'true');
-            }).catch(err => {
-                console.log('Audio playback failed:', err);
-            });
+            playMusic();
         }
-        updateIcon();
     }
     
     // Toggle button click
     toggleBtn.addEventListener('click', toggleMusic);
     
-    // Try to autoplay if user previously enabled music
+    // Try to autoplay if user previously enabled music - on ANY interaction
     if (musicWasEnabled) {
-        // Attempt to play on first user interaction
         const tryAutoplay = () => {
+            playMusic();
+            document.removeEventListener('click', tryAutoplay);
+            document.removeEventListener('touchstart', tryAutoplay);
+            document.removeEventListener('keydown', tryAutoplay);
+            document.removeEventListener('scroll', tryAutoplay);
+        };
+        
+        // Listen for any user interaction
+        document.addEventListener('click', tryAutoplay, { once: true });
+        document.addEventListener('touchstart', tryAutoplay, { once: true });
+        document.addEventListener('keydown', tryAutoplay, { once: true });
+        document.addEventListener('scroll', tryAutoplay, { once: true });
+        
+        // Also try immediately in case page already has focus
+        setTimeout(() => {
             audio.play().then(() => {
                 isPlaying = true;
                 updateIcon();
+                // Remove listeners if autoplay worked
+                document.removeEventListener('click', tryAutoplay);
+                document.removeEventListener('touchstart', tryAutoplay);
+                document.removeEventListener('keydown', tryAutoplay);
+                document.removeEventListener('scroll', tryAutoplay);
             }).catch(() => {
-                // Autoplay blocked, wait for user interaction
+                // Autoplay blocked, waiting for interaction
             });
-            document.removeEventListener('click', tryAutoplay);
-            document.removeEventListener('touchstart', tryAutoplay);
-        };
-        
-        document.addEventListener('click', tryAutoplay, { once: true });
-        document.addEventListener('touchstart', tryAutoplay, { once: true });
+        }, 100);
     }
     
     updateIcon();
