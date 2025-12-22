@@ -1026,8 +1026,8 @@ function initBackgroundMusic() {
     let wasPlayingBeforeHidden = false; // Track if music was playing before tab switch
     let loopTimeout = null; // For managing the pause between loops
     
-    // Set volume to 70% (reduced by 30%)
-    audio.volume = 0.7;
+    // Set volume to 40% (reduced by 60%)
+    audio.volume = 0.4;
     
     // Manual loop with 15 second pause
     audio.addEventListener('ended', () => {

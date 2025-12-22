@@ -1,71 +1,669 @@
-<!-- BACKUP: Static Gallery Section (Stand: 2024-12-22) -->
-<!-- Diese Datei enthält die ursprüngliche statische Galerie vor der Umstellung auf die dynamische Version -->
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Save the Date - Eine Hochzeit im Metal-Style. 19.09.2026">
+    <title>Save Our Date 🤘 19.09.2026</title>
+    
+    <!-- Tailwind CSS via CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'metal-black': '#0b0b0b',
+                        'metal-red': '#c62828',
+                        'metal-gray': '#1a1a1a',
+                        'metal-light': '#e0e0e0',
+                    },
+                    fontFamily: {
+                        'metal': ['Metal Mania', 'cursive'],
+                        'sans': ['Inter', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Metal+Mania&display=swap" rel="stylesheet">
+    
+    <!-- Custom Styles -->
+    <link rel="stylesheet" href="styles.css">
+    
+    <!-- PhotoSwipe v5 Lightbox -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/photoswipe@5.4.4/dist/photoswipe.css">
+</head>
+<body class="bg-metal-black text-metal-light font-sans">
+    
+    <!-- Welcome Overlay (click to enter & start music) -->
+    <div id="welcome-overlay" class="fixed inset-0 z-[999] bg-metal-black flex items-center justify-center cursor-pointer" onclick="enterSite()">
+        <div class="text-center p-8">
+            <div class="flex items-center justify-center gap-4 mb-6">
+                <img src="assets/maxi2.png" alt="Maxi" class="w-14 h-14 md:w-20 md:h-20 object-contain">
+                <p class="font-metal text-4xl md:text-6xl text-metal-red">Kathrin & Tobi</p>
+                <img src="assets/laika1.png" alt="Laika" class="w-14 h-14 md:w-20 md:h-20 object-contain">
+            </div>
+            <button class="cta-button pulse-animation text-lg">
+                Eintreten 🎸
+            </button>
+            <p class="text-metal-light/50 text-sm mt-4">Ein Klick und schon geht's weiter!</p>
+        </div>
+    </div>
+    
+    <!-- Background Music -->
+    <audio id="bg-music" preload="auto">
+        <source src="assets/IWasAlive.mp3" type="audio/mpeg">
+    </audio>
+    
+    <!-- Music Toggle Button (fixed position) -->
+    <button id="music-toggle" class="fixed bottom-4 right-4 z-50 bg-metal-gray hover:bg-metal-red text-white p-3 rounded-full shadow-lg transition-all duration-300 border border-metal-red/50" aria-label="Musik an/aus">
+        <span id="music-icon">🔇</span>
+    </button>
 
-    <!-- Gallery Section (für alle sichtbar) -->
-    <section id="gallery" class="py-20 bg-metal-gray">
-        <div class="container mx-auto px-4">
-            <h2 class="section-title">Galerie</h2>
-            <p class="section-subtitle">Ein paar Impressionen. Mehr gibt's nach der Hochzeit. 📸</p>
+    <!-- Navigation -->
+    <nav id="navbar" class="fixed top-0 left-0 right-0 z-50 bg-metal-black/95 backdrop-blur-sm border-b border-metal-gray transition-all duration-300">
+        <div class="max-w-6xl mx-auto px-4 py-4">
+            <div class="flex justify-between items-center">
+                <!-- Logo -->
+                <a href="#hero" class="font-metal text-2xl text-metal-red hover:text-white transition-colors flex items-center gap-2">
+                    <img src="assets/maxi2.png" alt="Maxi" class="w-6 h-6 object-contain">
+                    <span>Kathrin & Tobi</span>
+                    <img src="assets/laika1.png" alt="Laika" class="w-6 h-6 object-contain">
+                </a>
+                
+                <!-- Desktop Navigation -->
+                <ul class="hidden md:flex space-x-8">
+                    <li><a href="#hero" class="nav-link">Home</a></li>
+                    <li class="protected-nav"><a href="#timeline" class="nav-link">Zeitplan</a></li>
+                    <li class="protected-nav"><a href="#location" class="nav-link">Anfahrt</a></li>
+                    <li class="protected-nav"><a href="#gallery" class="nav-link">Galerie</a></li>
+                    <li class="protected-nav"><a href="#zusagen" class="nav-link-cta">Zusagen</a></li>
+                </ul>
+                
+                <!-- Mobile Hamburger -->
+                <button id="mobile-menu-btn" class="md:hidden text-metal-light hover:text-metal-red transition-colors protected-nav" aria-label="Menü öffnen" aria-expanded="false">
+                    <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
+                    </svg>
+                </button>
+            </div>
             
-            <div class="gallery-grid mt-12">
-                <!-- Gallery Item 1 -->
-                <button class="gallery-item" onclick="openLightbox('assets/gallery-1.jpg', 'Reload Festival')" aria-label="Bild vergrößern: Reload Festival">
-                    <img src="assets/gallery-1.jpg" alt="Reload Festival" class="gallery-img" loading="lazy">
-                    <div class="gallery-overlay">
-                        <span class="text-white text-lg">🔍 Vergrößern</span>
-                    </div>
-                </button>
+            <!-- Mobile Menu -->
+            <div id="mobile-menu" class="hidden md:hidden mt-4 pb-4">
+                <ul class="flex flex-col space-y-4">
+                    <li><a href="#hero" class="mobile-nav-link">Home</a></li>
+                    <li class="protected-nav"><a href="#timeline" class="mobile-nav-link">Zeitplan</a></li>
+                    <li class="protected-nav"><a href="#location" class="mobile-nav-link">Anfahrt</a></li>
+                    <li class="protected-nav"><a href="#gallery" class="mobile-nav-link">Galerie</a></li>
+                    <li class="protected-nav"><a href="#zusagen" class="mobile-nav-link text-metal-red font-bold">Zusagen</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section id="hero" class="min-h-screen flex items-center justify-center relative overflow-hidden pt-20">
+        <!-- Background Decorative Elements -->
+        <div class="absolute inset-0 hero-bg-pattern opacity-10"></div>
+        
+        <div class="container mx-auto px-4 py-12 relative z-10">
+            <div class="flex flex-col items-center text-center">
                 
-                <!-- Gallery Item 2 -->
-                <button class="gallery-item" onclick="openLightbox('assets/gallery-2.JPG', 'Kathrin&#39;s 30er &lt;3')" aria-label="Bild vergrößern: Kathrin's 30er &lt;3">
-                    <img src="assets/gallery-2.JPG" alt="Kathrin's 30er &lt;3" class="gallery-img" loading="lazy">
-                    <div class="gallery-overlay">
-                        <span class="text-white text-lg">🔍 Vergrößern</span>
-                    </div>
-                </button>
+                <!-- Banner Logo (transparent) -->
+                <div class="mb-6 md:mb-8">
+                    <img 
+                        src="assets/banner-logo2.png" 
+                        alt="Kathrin & Tobi - 19.09.2026 - Hochzeits-Emblem" 
+                        class="w-full max-w-sm md:max-w-md lg:max-w-lg h-auto"
+                    >
+                </div>
                 
-                <!-- Gallery Item 3 -->
-                <button class="gallery-item" onclick="openLightbox('assets/gallery-3.JPG', 'Urlaub mit überraschendem Antrag')" aria-label="Bild vergrößern: Urlaub mit überraschendem Antrag">
-                    <img src="assets/gallery-3.JPG" alt="Urlaub mit überraschendem Antrag" class="gallery-img" loading="lazy">
-                    <div class="gallery-overlay">
-                        <span class="text-white text-lg">🔍 Vergrößern</span>
+                <!-- Decorative Frame + Photo -->
+                <div class="hero-frame relative mb-12 md:mb-16">
+                    <!-- Decorative Images Around Photo -->
+                    <div class="absolute -inset-4 md:-inset-6 pointer-events-none">
+                        <!-- Maxi Top Left -->
+                        <img src="assets/maxi2.png" alt="" class="absolute top-0 left-0 w-10 h-10 md:w-14 md:h-14 object-contain hero-dog-swing">
+                        <!-- Laika Top Right -->
+                        <img src="assets/laika1.png" alt="" class="absolute top-0 right-0 w-10 h-10 md:w-14 md:h-14 object-contain hero-dog-swing">
+                        <!-- Laika Bottom Left -->
+                        <img src="assets/laika1.png" alt="" class="absolute bottom-0 left-0 w-10 h-10 md:w-14 md:h-14 object-contain hero-dog-swing">
+                        <!-- Maxi Bottom Right -->
+                        <img src="assets/maxi2.png" alt="" class="absolute bottom-0 right-0 w-10 h-10 md:w-14 md:h-14 object-contain hero-dog-swing">
                     </div>
-                </button>
+                    
+                    <!-- Hero Photo -->
+                    <div class="relative">
+                        <img 
+                            src="assets/design-hero.jpg" 
+                            alt="Unser Verlobungsfoto - Zwei Metal-Fans auf dem Weg zur Hochzeit" 
+                            class="w-64 h-80 md:w-80 md:h-96 object-cover rounded-lg shadow-2xl border-4 border-metal-red hero-photo"
+                        >
+                        <div class="absolute inset-0 bg-gradient-to-t from-metal-black/50 to-transparent rounded-lg"></div>
+                    </div>
+                </div>
                 
-                <!-- Gallery Item 4 -->
-                <button class="gallery-item" onclick="openLightbox('assets/gallery-4.JPG', 'Silvester leider noch räumlich getrennt unterwegs')" aria-label="Bild vergrößern: Silvester leider noch räumlich getrennt unterwegs">
-                    <img src="assets/gallery-4.JPG" alt="Silvester leider noch räumlich getrennt unterwegs" class="gallery-img" loading="lazy">
-                    <div class="gallery-overlay">
-                        <span class="text-white text-lg">🔍 Vergrößern</span>
-                    </div>
-                </button>
+                <!-- Headline -->
+                <h1 class="font-metal text-5xl md:text-7xl lg:text-8xl text-white mb-4 tracking-wide">
+                    Save Our Date
+                </h1>
                 
-                <!-- Gallery Item 5 -->
-                <button class="gallery-item" onclick="openLightbox('assets/gallery-5.JPG', 'Die 3 tollsten Mädels ... Wenn Papa mal wieder keine Zeit für HuSchu hat')" aria-label="Bild vergrößern: Die 3 tollsten Mädels ... Wenn Papa mal wieder keine Zeit für HuSchu hat">
-                    <img src="assets/gallery-5.JPG" alt="Die 3 tollsten Mädels ... Wenn Papa mal wieder keine Zeit für HuSchu hat" class="gallery-img" loading="lazy">
-                    <div class="gallery-overlay">
-                        <span class="text-white text-lg">🔍 Vergrößern</span>
-                    </div>
-                </button>
+                <!-- Date -->
+                <p class="text-3xl md:text-4xl font-bold text-metal-red mb-6">
+                    19. September 2026
+                </p>
                 
-                <!-- Gallery Item 6 -->
-                <button class="gallery-item" onclick="openLightbox('assets/gallery-6.JPG', 'Impericon Festival &lt;3')" aria-label="Bild vergrößern: Impericon Festival &lt;3">
-                    <img src="assets/gallery-6.JPG" alt="Impericon Festival &lt;3" class="gallery-img" loading="lazy">
-                    <div class="gallery-overlay">
-                        <span class="text-white text-lg">🔍 Vergrößern</span>
+                <!-- Tagline -->
+                <p class="text-xl md:text-2xl text-metal-light/80 mb-8 max-w-xl italic">
+                    „Wir haben Ja gesagt. Jetzt müsst ihr nur noch erscheinen."
+                </p>
+                
+                <!-- Countdown -->
+                <div id="countdown" class="flex flex-wrap justify-center gap-4 md:gap-6 mb-8">
+                    <div class="countdown-item">
+                        <span id="days" class="countdown-number">000</span>
+                        <span class="countdown-label">Tage</span>
                     </div>
-                </button>
+                    <div class="countdown-item protected-content">
+                        <span id="hours" class="countdown-number">00</span>
+                        <span class="countdown-label">Stunden</span>
+                    </div>
+                    <div class="countdown-item protected-content">
+                        <span id="minutes" class="countdown-number">00</span>
+                        <span class="countdown-label">Minuten</span>
+                    </div>
+                    <div class="countdown-item protected-content">
+                        <span id="seconds" class="countdown-number">00</span>
+                        <span class="countdown-label">Sekunden</span>
+                    </div>
+                </div>
+                
+                <!-- ADD_TO_CALENDAR_BUTTONS -->
+                <div class="calendar-section bg-metal-gray/50 rounded-xl p-6 mb-10 border border-metal-red/30 max-w-lg mx-auto">
+                    <div class="flex items-center justify-center gap-3 mb-4">
+                        <svg class="w-8 h-8 text-metal-red" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>
+                        </svg>
+                        <h3 class="font-metal text-xl text-metal-red">Termin merken</h3>
+                        <svg class="w-8 h-8 text-metal-red" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>
+                        </svg>
+                    </div>
+                    <p class="text-metal-light/70 text-sm text-center mb-5">Speichere dir den Termin direkt in deinem Kalender!</p>
+                    
+                    <div class="flex flex-col gap-3">
+                        <!-- Apple/Outlook Calendar (ICS) -->
+                        <button 
+                            onclick="downloadICS()"
+                            class="inline-flex items-center justify-center gap-3 px-5 py-3 bg-metal-black hover:bg-metal-red text-metal-light font-semibold rounded-lg border border-metal-red/50 hover:border-metal-red transition-all duration-300 shadow-lg group"
+                            aria-label="Termin als ICS-Datei für Apple oder Outlook Kalender"
+                        >
+                            <span class="text-2xl">🍎</span>
+                            <span>Apple / Outlook Kalender</span>
+                        </button>
+                        
+                        <!-- Google Calendar -->
+                        <a 
+                            href="https://calendar.google.com/calendar/render?action=TEMPLATE&text=Hochzeit%20von%20Kathrin%20%26%20Tobi&dates=20260919/20260920&details=Save%20the%20Date!&location=to%20be%20announced"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            class="inline-flex items-center justify-center gap-3 px-5 py-3 bg-metal-black hover:bg-metal-red text-metal-light font-semibold rounded-lg border border-metal-red/50 hover:border-metal-red transition-all duration-300 shadow-lg group"
+                            aria-label="Termin zu Google Calendar hinzufügen"
+                        >
+                            <svg class="w-6 h-6" viewBox="0 0 24 24" aria-hidden="true">
+                                <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
+                                <path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/>
+                                <path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/>
+                                <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/>
+                            </svg>
+                            <span>Google Kalender</span>
+                        </a>
+                    </div>
+                </div>
+                
+                <!-- CTA Button -->
+                <a href="#zusagen" class="cta-button group protected-cta">
+                    <span>🤘 Ich bin dabei!</span>
+                    <svg class="w-5 h-5 ml-2 transform group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3"/>
+                    </svg>
+                </a>
+            </div>
+        </div>
+        
+        <!-- Scroll Indicator (nur für Admins) -->
+        <div class="absolute bottom-8 left-1/2 transform -translate-x-1/2 animate-bounce protected-content">
+            <svg class="w-8 h-8 text-metal-red" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3"/>
+            </svg>
+        </div>
+    </section>
+
+    <!-- Coming Soon Banner (nur sichtbar wenn nicht eingeloggt) -->
+    <section id="coming-soon" class="py-16 bg-metal-black guest-hidden">
+        <div class="container mx-auto px-4">
+            <div class="coming-soon-banner">
+                <div class="banner-wimpel">
+                    <div class="wimpel-content">
+                        <div class="flex justify-center gap-2 mb-2">
+                            <img src="assets/maxi2.png" alt="" class="w-8 h-8 object-contain">
+                            <img src="assets/laika1.png" alt="" class="w-8 h-8 object-contain">
+                            <img src="assets/maxi2.png" alt="" class="w-8 h-8 object-contain">
+                        </div>
+                        <h2 class="wimpel-title">Coming Soon</h2>
+                        <p class="wimpel-text">Mehr Infos folgen...</p>
+                        <div class="flex justify-center gap-2 mt-2">
+                            <img src="assets/laika1.png" alt="" class="w-8 h-8 object-contain">
+                            <img src="assets/maxi2.png" alt="" class="w-8 h-8 object-contain">
+                            <img src="assets/laika1.png" alt="" class="w-8 h-8 object-contain">
+                        </div>
+                    </div>
+                    <div class="wimpel-bottom"></div>
+                </div>
+                <p class="text-center text-metal-light/60 mt-8 max-w-md mx-auto">
+                    Merkt euch den Termin schon mal vor! <br>
+                    Wir freuen uns auf euch alle! Details folgen in Kürze.
+                </p>
             </div>
         </div>
     </section>
 
-    <!-- Lightbox Modal -->
-    <div id="lightbox" class="lightbox hidden" role="dialog" aria-modal="true" aria-label="Bildvorschau">
-        <button class="lightbox-close" onclick="closeLightbox()" aria-label="Lightbox schließen">
-            <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
-            </svg>
-        </button>
-        <img id="lightbox-img" src="" alt="" class="lightbox-img">
-        <p id="lightbox-caption" class="lightbox-caption"></p>
+    <!-- ============================================ -->
+    <!-- PROTECTED CONTENT (nur für eingeloggte User) -->
+    <!-- ============================================ -->
+    <div id="protected-content" class="protected-content">
+
+    <!-- Timeline Section -->
+    <section id="timeline" class="py-20 bg-metal-gray">
+        <div class="container mx-auto px-4">
+            <h2 class="section-title">Der Zeitplan</h2>
+            <p class="section-subtitle">Drei Akte. Ein epischer Tag. Kein Zugabe-Verbot.</p>
+            
+            <div class="max-w-3xl mx-auto mt-12">
+                <!-- Event 1: Ceremony -->
+                <div class="timeline-item">
+                    <div class="timeline-marker">💍</div>
+                    <div class="timeline-content">
+                        <h3 class="timeline-time">14:00 Uhr</h3>
+                        <h4 class="timeline-title">Die Zeremonie</h4>
+                        <p class="timeline-desc">Der offizielle Teil. Wir sagen „Ja" – ihr sagt „Endlich!". Tränen erlaubt, Headbanging erwünscht.</p>
+                        <p class="timeline-location">📍 Kulturscheune, Marktpl. 4, 96172 Mühlhausen</p>
+                    </div>
+                </div>
+                
+                <!-- Event 2: Reception -->
+                <div class="timeline-item">
+                    <div class="timeline-marker">🥂</div>
+                    <div class="timeline-content">
+                        <h3 class="timeline-time">16:00 Uhr</h3>
+                        <h4 class="timeline-title">Empfang & Dinner</h4>
+                        <p class="timeline-desc">Sektempfang, Gruppenfoto-Chaos und ein Menü, das selbst Lemmy stolz gemacht hätte. Vegetarische Option vorhanden.</p>
+                        <p class="timeline-location">📍 Gleicher Ort, andere Ecke</p>
+                    </div>
+                </div>
+                
+                <!-- Event 3: After-Party -->
+                <div class="timeline-item">
+                    <div class="timeline-marker">🔥</div>
+                    <div class="timeline-content">
+                        <h3 class="timeline-time">21:00 Uhr</h3>
+                        <h4 class="timeline-title">After-Party</h4>
+                        <p class="timeline-desc">DJ, Liveband, offene Bar. Tanzen bis die Boots qualmen. Endet wenn der Letzte geht (oder umfällt).</p>
+                        <p class="timeline-location">📍 Der Keller – folgt den Bässen</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Location / Anfahrt Section -->
+    <section id="location" class="py-20 bg-metal-black">
+        <div class="container mx-auto px-4">
+            <h2 class="section-title">Anfahrt</h2>
+            <p class="section-subtitle">Findet ihr hin? GPS kennt den Weg. Zur Not fragt die Locals nach „der Metal-Hochzeit".</p>
+            
+            <div class="grid md:grid-cols-2 gap-8 mt-12 max-w-5xl mx-auto">
+                <!-- Map -->
+                <div class="map-container">
+                    <iframe 
+                        title="Anfahrtskarte zur Location"
+                        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2548.8!2d10.7873!3d49.8625!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x47a2231c8d5c6b7d%3A0x4c7d9c3e2b1a0f9e!2sMarktpl.%204%2C%2096172%20M%C3%BChlhausen!5e0!3m2!1sde!2sde!4v1703158800000!5m2!1sde!2sde"
+                        class="w-full h-80 md:h-96 rounded-lg border-2 border-metal-gray"
+                        loading="lazy"
+                        allowfullscreen
+                        referrerpolicy="no-referrer-when-downgrade"
+                    ></iframe>
+                </div>
+                
+                <!-- Address & Downloads -->
+                <div class="flex flex-col justify-center space-y-6">
+                    <div class="bg-metal-gray p-6 rounded-lg">
+                        <h3 class="text-xl font-bold text-white mb-3">📍 Adresse</h3>
+                        <address class="not-italic text-metal-light/80">
+                            Kulturscheune<br>
+                            Marktpl. 4<br>
+                            96172 Mühlhausen
+                        </address>
+                        <a href="https://www.google.com/maps/search/?api=1&query=Kulturscheune+Marktpl.+4+96172+Mühlhausen" 
+                           target="_blank" 
+                           rel="noopener noreferrer"
+                           class="inline-block mt-3 text-metal-red hover:underline text-sm">
+                            🗺️ In Google Maps öffnen
+                        </a>
+                    </div>
+                    
+                    <div class="bg-metal-gray p-6 rounded-lg">
+                        <h3 class="text-xl font-bold text-white mb-3">🚗 Parken</h3>
+                        <p class="text-metal-light/80">
+                            Parkmöglichkeit gegenüber des Tors am Marktplatz. Wer betrunken ist, nimmt ein Taxi – oder fragt nach einer Mitfahrgelegenheit.
+                        </p>
+                    </div>
+                    
+                    <a href="#" class="download-button" aria-label="Anfahrtsskizze als PDF herunterladen">
+                        <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+                        </svg>
+                        Anfahrtsskizze (PDF) herunterladen
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    </div><!-- Ende protected-content -->
+
+    <!-- Gallery Section (für alle sichtbar) - Dynamisch geladen -->
+    <section id="gallery" class="py-20 bg-metal-gray" aria-labelledby="gallery-title">
+        <div class="container mx-auto px-4">
+            <h2 id="gallery-title" class="section-title">Galerie</h2>
+            <p class="section-subtitle">Ein paar Impressionen. Mehr gibt's nach der Hochzeit. 📸</p>
+            
+            <!-- Dynamic Gallery Carousel - populated by JavaScript -->
+            <div id="gallery-carousel-wrapper" class="gallery-carousel-container mt-12">
+                <!-- Loading state -->
+                <div id="gallery-loading" class="text-center py-12">
+                    <div class="inline-block animate-spin text-4xl mb-4">🎸</div>
+                    <p class="text-metal-light/60">Lade Galerie...</p>
+                </div>
+                
+                <!-- Carousel (hidden until loaded) -->
+                <div class="gallery-carousel" style="display: none;">
+                    <!-- Navigation Prev -->
+                    <button class="gallery-nav gallery-nav--prev" aria-label="Vorheriges Bild" onclick="galleryCarousel.prev()">
+                        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/>
+                        </svg>
+                    </button>
+                    
+                    <!-- Slides Container -->
+                    <div id="gallery-slides" class="gallery-slides"></div>
+                    
+                    <!-- Navigation Next -->
+                    <button class="gallery-nav gallery-nav--next" aria-label="Nächstes Bild" onclick="galleryCarousel.next()">
+                        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+                        </svg>
+                    </button>
+                </div>
+                
+                <!-- Caption & Counter -->
+                <div class="gallery-caption-container" style="display: none;">
+                    <div class="gallery-caption">
+                        <p id="gallery-caption-text" class="gallery-caption-text"></p>
+                        <p id="gallery-counter" class="gallery-counter"></p>
+                    </div>
+                </div>
+                
+                <p class="gallery-click-hint" style="display: none;">Klicke auf das mittlere Bild zum Vergrößern • Pfeiltasten zum Navigieren</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- PROTECTED CONTENT Teil 2 (nur für eingeloggte User) -->
+    <div class="protected-content">
+
+    <!-- Zusagen Section -->
+    <section id="zusagen" class="py-20 bg-metal-black">
+        <div class="container mx-auto px-4">
+            <h2 class="section-title">Zusagen</h2>
+            <p class="section-subtitle">Sag uns Bescheid! Plätze sind limitiert. Wer zuerst kommt, sitzt in der ersten Reihe.</p>
+            
+            <div class="max-w-3xl mx-auto mt-12">
+                <div class="bg-metal-gray p-6 md:p-8 rounded-lg border border-metal-red/30">
+                    <p class="text-metal-light/80 mb-6 text-center">
+                        Bitte fülle das Formular bis zum <strong class="text-metal-red">01.05.2026</strong> aus. 
+                        Keine Sorge, wir fragen nur das Nötigste.
+                    </p>
+                    
+                    <!-- Google Form iframe -->
+                    <div class="google-form-container">
+                        <iframe 
+                            src="https://docs.google.com/forms/d/e/1FAIpQLSdQ5CA3ld5WAm4fHwpYuWyQvVO-48WlIc-3ev3WVf7RkhFAVg/viewform?embedded=true"
+                            title="RSVP Formular"
+                            class="w-full h-[929px] border-0 rounded"
+                            loading="lazy"
+                        >
+                            Wird geladen…
+                        </iframe>
+                    </div>
+                    
+                    <p class="text-metal-light/60 text-sm mt-6 text-center">
+                        <em>Probleme mit dem Formular? Schreib uns direkt: 
+                        <a href="mailto:bromags@outlook.de" class="text-metal-red hover:underline">wedding@example.com</a></em>
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    </div><!-- Ende protected-content -->
+
+    <!-- Footer -->
+    <footer id="contact" class="py-12 bg-metal-gray border-t border-metal-black">
+        <div class="container mx-auto px-4">
+            <div class="grid md:grid-cols-3 gap-8 mb-8">
+                <!-- Trauzeugen -->
+                <div>
+                    <h3 class="font-metal text-xl text-metal-red mb-4">Trauzeugen</h3>
+                    
+                    <!-- Kathrin's Trauzeuginnen -->
+                    <div class="mb-4">
+                        <p class="text-metal-light font-semibold mb-2">Kathrin's Trauzeuginnen:</p>
+                        <ul class="text-metal-light/80 space-y-1 pl-2">
+                            <li>🥇 Trauzeugin: <span class="italic">to be announced</span></li>
+                            <li>🥇 Trauzeugin: <span class="italic">to be announced</span></li>
+                        </ul>
+                        <p class="text-metal-light/50 text-xs mt-1 italic">(geteilter 1. Platz)</p>
+                    </div>
+                    
+                    <!-- Tobi's Trauzeugen -->
+                    <div>
+                        <p class="text-metal-light font-semibold mb-2">Tobi's Trauzeugen:</p>
+                        <ul class="text-metal-light/80 space-y-1 pl-2">
+                            <li>🥇 Trauzeuge: <span class="italic">to be announced</span></li>
+                            <li>🥇 Trauzeuge: <span class="italic">to be announced</span></li>
+                        </ul>
+                        <p class="text-metal-light/50 text-xs mt-1 italic">(geteilter 1. Platz)</p>
+                    </div>
+                </div>
+                
+                <!-- Quick Links -->
+                <div>
+                    <h3 class="font-metal text-xl text-metal-red mb-4">Quick Links</h3>
+                    <ul class="space-y-2">
+                        <li><a href="#hero" class="footer-link">Nach oben</a></li>
+                    </ul>
+                </div>
+                
+                <!-- Legal -->
+                <div>
+                    <h3 class="font-metal text-xl text-metal-red mb-4">Rechtliches</h3>
+                    <ul class="space-y-2">
+                        <li><a href="#" class="footer-link">Impressum</a></li>
+                        <li><a href="#" class="footer-link">Datenschutz</a></li>
+                        <li>
+                            <button id="admin-login-btn" class="footer-link text-metal-light/40 hover:text-metal-red text-xs mt-2">
+                                🔐 Admin
+                            </button>
+                        </li>
+                    </ul>
+                    <p class="text-metal-light/60 text-sm mt-4">
+                        Diese Seite verwendet keine Cookies.<br>
+                        Außer die vom Catering. 🍪
+                    </p>
+                </div>
+            </div>
+            
+            <!-- Bottom Bar -->
+            <div class="border-t border-metal-black pt-8 text-center">
+                <p class="font-metal text-2xl text-white mb-2">Kathrin & Tobi</p>
+                <p class="text-metal-light/60">
+                    Made with 🖤 and 🤘 | © 2026
+                </p>
+                <p class="text-metal-light/40 text-sm mt-2">
+                    „Bis dass der Tod uns scheide – oder der letzte Song gespielt ist."
+                </p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Login Modal -->
+    <div id="login-modal" class="login-modal hidden" role="dialog" aria-modal="true" aria-labelledby="login-title">
+        <div class="login-modal-backdrop" onclick="closeLoginModal()"></div>
+        <div class="login-modal-content">
+            <button class="login-modal-close" onclick="closeLoginModal()" aria-label="Schließen">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+                </svg>
+            </button>
+            <h2 id="login-title" class="font-metal text-2xl text-metal-red mb-6 text-center">🔐 Admin Login</h2>
+            <form id="login-form" onsubmit="handleLogin(event)">
+                <div class="mb-4">
+                    <label for="login-user" class="block text-metal-light text-sm mb-2">Benutzername</label>
+                    <input type="text" id="login-user" name="user" required 
+                           class="w-full px-4 py-2 bg-metal-black border border-metal-gray rounded-lg text-metal-light focus:border-metal-red focus:outline-none"
+                           autocomplete="username">
+                </div>
+                <div class="mb-6">
+                    <label for="login-pass" class="block text-metal-light text-sm mb-2">Passwort</label>
+                    <input type="password" id="login-pass" name="pass" required 
+                           class="w-full px-4 py-2 bg-metal-black border border-metal-gray rounded-lg text-metal-light focus:border-metal-red focus:outline-none"
+                           autocomplete="current-password">
+                </div>
+                <p id="login-error" class="text-red-500 text-sm mb-4 hidden">Falscher Benutzername oder Passwort.</p>
+                <button type="submit" class="w-full cta-button">
+                    Einloggen
+                </button>
+            </form>
+            <p id="logged-in-message" class="hidden text-center">
+                <span class="text-green-500">✓ Eingeloggt als Admin</span>
+                <button onclick="handleLogout()" class="block mx-auto mt-4 text-metal-red hover:underline">
+                    Ausloggen
+                </button>
+            </p>
+        </div>
     </div>
+
+    <!-- Scripts -->
+    <script src="scripts.js"></script>
+    
+    <!-- PhotoSwipe v5 -->
+    <script type="module">
+        import PhotoSwipeLightbox from 'https://cdn.jsdelivr.net/npm/photoswipe@5.4.4/dist/photoswipe-lightbox.esm.min.js';
+        import PhotoSwipe from 'https://cdn.jsdelivr.net/npm/photoswipe@5.4.4/dist/photoswipe.esm.min.js';
+        
+        // Initialize PhotoSwipe after gallery is loaded
+        window.initPhotoSwipe = function() {
+            const lightbox = new PhotoSwipeLightbox({
+                pswpModule: PhotoSwipe,
+                
+                // UI options
+                bgOpacity: 0.95,
+                showHideAnimationType: 'fade',
+                
+                // Zoom options
+                initialZoomLevel: 'fit',
+                secondaryZoomLevel: 2,
+                maxZoomLevel: 4,
+                
+                // Padding
+                paddingFn: () => ({ top: 30, bottom: 30, left: 20, right: 20 }),
+            });
+            
+            // Custom data source to include all images with proper dimensions
+            lightbox.addFilter('numItems', () => {
+                return window.galleryCarousel ? window.galleryCarousel.images.length : 0;
+            });
+            
+            lightbox.addFilter('itemData', (itemData, index) => {
+                if (!window.galleryCarousel) return itemData;
+                const img = window.galleryCarousel.images[index];
+                const src = 'assets/' + img.file;
+                
+                // Try to get actual dimensions from the slide element
+                const slideEl = document.querySelector(`.gallery-slide[data-index="${index}"] img`);
+                let width = slideEl?.naturalWidth || 1200;
+                let height = slideEl?.naturalHeight || 900;
+                
+                return {
+                    src: src,
+                    width: width,
+                    height: height,
+                    caption: img.caption || `Bild ${index + 1}`
+                };
+            });
+            
+            // Keep carousel in sync when navigating in lightbox
+            lightbox.on('change', () => {
+                if (lightbox.pswp && window.galleryCarousel) {
+                    // Update carousel position without triggering re-render
+                    window.galleryCarousel.currentIndex = lightbox.pswp.currIndex;
+                    window.galleryCarousel.updatePositions();
+                }
+            });
+            
+            // Add caption support
+            lightbox.on('uiRegister', function() {
+                lightbox.pswp.ui.registerElement({
+                    name: 'caption',
+                    order: 9,
+                    isButton: false,
+                    appendTo: 'root',
+                    html: '',
+                    onInit: (el, pswp) => {
+                        el.style.cssText = `
+                            position: absolute;
+                            bottom: 20px;
+                            left: 50%;
+                            transform: translateX(-50%);
+                            color: #e0e0e0;
+                            background: rgba(11,11,11,0.8);
+                            padding: 8px 16px;
+                            border-radius: 8px;
+                            font-size: 14px;
+                            max-width: 80%;
+                            text-align: center;
+                            border: 1px solid rgba(198,40,40,0.5);
+                        `;
+                        
+                        pswp.on('change', () => {
+                            const currSlide = pswp.currSlide;
+                            el.innerHTML = currSlide.data.caption || '';
+                        });
+                    }
+                });
+            });
+            
+            lightbox.init();
+            
+            // Store reference for manual opening
+            window.photoSwipeLightbox = lightbox;
+        };
+    </script>
+</body>
+</html>
