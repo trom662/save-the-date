@@ -300,6 +300,8 @@ body {
     cursor: pointer;
     border: 2px solid transparent;
     transition: border-color var(--transition-fast);
+    display: block; /* For anchor tags */
+    text-decoration: none;
 }
 
 .gallery-item:hover,

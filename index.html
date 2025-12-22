@@ -34,6 +34,9 @@
     
     <!-- Custom Styles -->
     <link rel="stylesheet" href="styles.css">
+    
+    <!-- PhotoSwipe v5 Lightbox -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/photoswipe@5.4.4/dist/photoswipe.css">
 </head>
 <body class="bg-metal-black text-metal-light font-sans">
     
@@ -375,74 +378,22 @@
 
     </div><!-- Ende protected-content -->
 
-    <!-- Gallery Section (für alle sichtbar) -->
-    <section id="gallery" class="py-20 bg-metal-gray">
+    <!-- Gallery Section (für alle sichtbar) - Dynamisch geladen -->
+    <section id="gallery" class="py-20 bg-metal-gray" aria-labelledby="gallery-title">
         <div class="container mx-auto px-4">
-            <h2 class="section-title">Galerie</h2>
+            <h2 id="gallery-title" class="section-title">Galerie</h2>
             <p class="section-subtitle">Ein paar Impressionen. Mehr gibt's nach der Hochzeit. 📸</p>
             
-            <div class="gallery-grid mt-12">
-                <!-- Gallery Item 1 -->
-                <button class="gallery-item" onclick="openLightbox('assets/gallery-1.jpg', 'Reload Festival')" aria-label="Bild vergrößern: Reload Festival">
-                    <img src="assets/gallery-1.jpg" alt="Reload Festival" class="gallery-img" loading="lazy">
-                    <div class="gallery-overlay">
-                        <span class="text-white text-lg">🔍 Vergrößern</span>
-                    </div>
-                </button>
-                
-                <!-- Gallery Item 2 -->
-                <button class="gallery-item" onclick="openLightbox('assets/gallery-2.JPG', 'Kathrin&#39;s 30er &lt;3')" aria-label="Bild vergrößern: Kathrin's 30er &lt;3">
-                    <img src="assets/gallery-2.JPG" alt="Kathrin's 30er &lt;3" class="gallery-img" loading="lazy">
-                    <div class="gallery-overlay">
-                        <span class="text-white text-lg">🔍 Vergrößern</span>
-                    </div>
-                </button>
-                
-                <!-- Gallery Item 3 -->
-                <button class="gallery-item" onclick="openLightbox('assets/gallery-3.JPG', 'Urlaub mit überraschendem Antrag')" aria-label="Bild vergrößern: Urlaub mit überraschendem Antrag">
-                    <img src="assets/gallery-3.JPG" alt="Urlaub mit überraschendem Antrag" class="gallery-img" loading="lazy">
-                    <div class="gallery-overlay">
-                        <span class="text-white text-lg">🔍 Vergrößern</span>
-                    </div>
-                </button>
-                
-                <!-- Gallery Item 4 -->
-                <button class="gallery-item" onclick="openLightbox('assets/gallery-4.JPG', 'Silvester leider noch räumlich getrennt unterwegs')" aria-label="Bild vergrößern: Silvester leider noch räumlich getrennt unterwegs">
-                    <img src="assets/gallery-4.JPG" alt="Silvester leider noch räumlich getrennt unterwegs" class="gallery-img" loading="lazy">
-                    <div class="gallery-overlay">
-                        <span class="text-white text-lg">🔍 Vergrößern</span>
-                    </div>
-                </button>
-                
-                <!-- Gallery Item 5 -->
-                <button class="gallery-item" onclick="openLightbox('assets/gallery-5.JPG', 'Die 3 tollsten Mädels ... Wenn Papa mal wieder keine Zeit für HuSchu hat')" aria-label="Bild vergrößern: Die 3 tollsten Mädels ... Wenn Papa mal wieder keine Zeit für HuSchu hat">
-                    <img src="assets/gallery-5.JPG" alt="Die 3 tollsten Mädels ... Wenn Papa mal wieder keine Zeit für HuSchu hat" class="gallery-img" loading="lazy">
-                    <div class="gallery-overlay">
-                        <span class="text-white text-lg">🔍 Vergrößern</span>
-                    </div>
-                </button>
-                
-                <!-- Gallery Item 6 -->
-                <button class="gallery-item" onclick="openLightbox('assets/gallery-6.JPG', 'Impericon Festival &lt;3')" aria-label="Bild vergrößern: Impericon Festival &lt;3">
-                    <img src="assets/gallery-6.JPG" alt="Impericon Festival &lt;3" class="gallery-img" loading="lazy">
-                    <div class="gallery-overlay">
-                        <span class="text-white text-lg">🔍 Vergrößern</span>
-                    </div>
-                </button>
+            <!-- Dynamic Gallery Grid - populated by JavaScript -->
+            <div id="gallery-grid" class="gallery-grid mt-12">
+                <!-- Loading state -->
+                <div id="gallery-loading" class="col-span-full text-center py-12">
+                    <div class="inline-block animate-spin text-4xl mb-4">🎸</div>
+                    <p class="text-metal-light/60">Lade Galerie...</p>
+                </div>
             </div>
         </div>
     </section>
-
-    <!-- Lightbox Modal -->
-    <div id="lightbox" class="lightbox hidden" role="dialog" aria-modal="true" aria-label="Bildvorschau">
-        <button class="lightbox-close" onclick="closeLightbox()" aria-label="Lightbox schließen">
-            <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
-            </svg>
-        </button>
-        <img id="lightbox-img" src="" alt="" class="lightbox-img">
-        <p id="lightbox-caption" class="lightbox-caption"></p>
-    </div>
 
     <!-- PROTECTED CONTENT Teil 2 (nur für eingeloggte User) -->
     <div class="protected-content">
@@ -591,5 +542,66 @@
 
     <!-- Scripts -->
     <script src="scripts.js"></script>
+    
+    <!-- PhotoSwipe v5 -->
+    <script type="module">
+        import PhotoSwipeLightbox from 'https://cdn.jsdelivr.net/npm/photoswipe@5.4.4/dist/photoswipe-lightbox.esm.min.js';
+        import PhotoSwipe from 'https://cdn.jsdelivr.net/npm/photoswipe@5.4.4/dist/photoswipe.esm.min.js';
+        
+        // Initialize PhotoSwipe after gallery is loaded
+        window.initPhotoSwipe = function() {
+            const lightbox = new PhotoSwipeLightbox({
+                gallery: '#gallery-grid',
+                children: 'a',
+                pswpModule: PhotoSwipe,
+                
+                // UI options
+                bgOpacity: 0.95,
+                showHideAnimationType: 'zoom',
+                
+                // Zoom options
+                initialZoomLevel: 'fit',
+                secondaryZoomLevel: 2,
+                maxZoomLevel: 4,
+                
+                // Padding
+                paddingFn: () => ({ top: 30, bottom: 30, left: 20, right: 20 }),
+            });
+            
+            // Add caption support
+            lightbox.on('uiRegister', function() {
+                lightbox.pswp.ui.registerElement({
+                    name: 'caption',
+                    order: 9,
+                    isButton: false,
+                    appendTo: 'root',
+                    html: '',
+                    onInit: (el, pswp) => {
+                        el.style.cssText = `
+                            position: absolute;
+                            bottom: 20px;
+                            left: 50%;
+                            transform: translateX(-50%);
+                            color: #e0e0e0;
+                            background: rgba(11,11,11,0.8);
+                            padding: 8px 16px;
+                            border-radius: 8px;
+                            font-size: 14px;
+                            max-width: 80%;
+                            text-align: center;
+                            border: 1px solid rgba(198,40,40,0.5);
+                        `;
+                        
+                        pswp.on('change', () => {
+                            const currSlide = pswp.currSlide;
+                            el.innerHTML = currSlide.data.caption || '';
+                        });
+                    }
+                });
+            });
+            
+            lightbox.init();
+        };
+    </script>
 </body>
 </html>
