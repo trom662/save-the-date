@@ -144,57 +144,249 @@ function initSmoothScroll() {
 
 
 // ================================================
-// LIGHTBOX
+// LIGHTBOX (Legacy - kept for backward compatibility)
 // ================================================
 
 function openLightbox(imageSrc, caption) {
-    const lightbox = document.getElementById('lightbox');
-    const lightboxImg = document.getElementById('lightbox-img');
-    const lightboxCaption = document.getElementById('lightbox-caption');
-    
-    if (!lightbox || !lightboxImg || !lightboxCaption) {
-        console.warn('Lightbox elements not found');
-        return;
-    }
-    
-    lightboxImg.src = imageSrc;
-    lightboxImg.alt = caption;
-    lightboxCaption.textContent = caption;
-    
-    lightbox.classList.remove('hidden');
-    document.body.style.overflow = 'hidden';
-    
-    // Focus trap
-    lightbox.focus();
+    // Legacy function - now handled by PhotoSwipe
+    console.log('Legacy openLightbox called - PhotoSwipe handles this now');
 }
 
 function closeLightbox() {
-    const lightbox = document.getElementById('lightbox');
-    
-    if (!lightbox) return;
-    
-    lightbox.classList.add('hidden');
-    document.body.style.overflow = '';
+    // Legacy function - now handled by PhotoSwipe
 }
 
 function initLightbox() {
-    const lightbox = document.getElementById('lightbox');
+    // Legacy function - PhotoSwipe initializes itself
+}
+
+
+// ================================================
+// DYNAMIC GALLERY LOADER
+// ================================================
+
+const GALLERY_CONFIG = {
+    manifestPath: 'assets/gallery.json',
+    assetsPath: 'assets/',
+    maxProbeImages: 30,
+    consecutiveFailsToStop: 5,
+    cacheKey: 'gallery_images_cache',
+    cacheDuration: 24 * 60 * 60 * 1000 // 24 hours in ms
+};
+
+/**
+ * Load gallery data from manifest or via probing
+ */
+async function loadGalleryData() {
+    // Try manifest first
+    try {
+        const response = await fetch(GALLERY_CONFIG.manifestPath);
+        if (response.ok) {
+            const data = await response.json();
+            console.log('📸 Gallery loaded from manifest:', data.length, 'images');
+            return data;
+        }
+    } catch (e) {
+        console.log('No manifest found, falling back to probing...');
+    }
     
-    if (!lightbox) return;
+    // Check cache
+    const cached = getCachedGallery();
+    if (cached) {
+        console.log('📸 Gallery loaded from cache:', cached.length, 'images');
+        return cached;
+    }
     
-    // Close on background click
-    lightbox.addEventListener('click', (e) => {
-        if (e.target === lightbox) {
-            closeLightbox();
+    // Probe for images
+    const images = await probeGalleryImages();
+    cacheGallery(images);
+    return images;
+}
+
+/**
+ * Get cached gallery data if not expired
+ */
+function getCachedGallery() {
+    try {
+        const cached = localStorage.getItem(GALLERY_CONFIG.cacheKey);
+        if (!cached) return null;
+        
+        const { data, timestamp } = JSON.parse(cached);
+        const isExpired = Date.now() - timestamp > GALLERY_CONFIG.cacheDuration;
+        
+        return isExpired ? null : data;
+    } catch (e) {
+        return null;
+    }
+}
+
+/**
+ * Cache gallery data with timestamp
+ */
+function cacheGallery(data) {
+    try {
+        localStorage.setItem(GALLERY_CONFIG.cacheKey, JSON.stringify({
+            data,
+            timestamp: Date.now()
+        }));
+    } catch (e) {
+        console.warn('Could not cache gallery data');
+    }
+}
+
+/**
+ * Probe for gallery images sequentially
+ */
+async function probeGalleryImages() {
+    const images = [];
+    let consecutiveFails = 0;
+    
+    for (let i = 1; i <= GALLERY_CONFIG.maxProbeImages; i++) {
+        // Try common extensions
+        const extensions = ['jpg', 'JPG', 'jpeg', 'JPEG', 'png', 'PNG', 'webp'];
+        let found = false;
+        
+        for (const ext of extensions) {
+            const filename = `gallery-${i}.${ext}`;
+            const exists = await checkImageExists(GALLERY_CONFIG.assetsPath + filename);
+            
+            if (exists) {
+                images.push({ file: filename, caption: `Bild ${i}` });
+                consecutiveFails = 0;
+                found = true;
+                break;
+            }
+        }
+        
+        if (!found) {
+            consecutiveFails++;
+            if (consecutiveFails >= GALLERY_CONFIG.consecutiveFailsToStop) {
+                console.log(`Stopping probe after ${consecutiveFails} consecutive fails at image ${i}`);
+                break;
+            }
+        }
+    }
+    
+    console.log('📸 Gallery probed:', images.length, 'images found');
+    return images;
+}
+
+/**
+ * Check if an image URL exists (HEAD request)
+ */
+function checkImageExists(url) {
+    return new Promise(resolve => {
+        const img = new Image();
+        img.onload = () => resolve(true);
+        img.onerror = () => resolve(false);
+        img.src = url;
+    });
+}
+
+/**
+ * Render gallery items to the grid
+ */
+function renderGallery(images) {
+    const grid = document.getElementById('gallery-grid');
+    if (!grid) return;
+    
+    // Remove loading state
+    const loading = document.getElementById('gallery-loading');
+    if (loading) loading.remove();
+    
+    if (images.length === 0) {
+        grid.innerHTML = `
+            <div class="col-span-full text-center py-12">
+                <p class="text-metal-light/60">Keine Bilder gefunden.</p>
+            </div>
+        `;
+        return;
+    }
+    
+    // Build gallery HTML
+    const html = images.map((img, index) => {
+        const src = GALLERY_CONFIG.assetsPath + img.file;
+        const caption = img.caption || `Bild ${index + 1}`;
+        
+        return `
+            <a href="${src}" 
+               class="gallery-item" 
+               data-pswp-width="1200" 
+               data-pswp-height="800"
+               data-caption="${escapeHtml(caption)}"
+               aria-label="Bild vergrößern: ${escapeHtml(caption)}">
+                <img src="${src}" 
+                     alt="${escapeHtml(caption)}" 
+                     class="gallery-img" 
+                     loading="lazy">
+                <div class="gallery-overlay">
+                    <span class="text-white text-lg">🔍 Vergrößern</span>
+                </div>
+            </a>
+        `;
+    }).join('');
+    
+    grid.innerHTML = html;
+    
+    // Get actual image dimensions for PhotoSwipe
+    updateImageDimensions();
+    
+    // Initialize PhotoSwipe
+    if (typeof window.initPhotoSwipe === 'function') {
+        window.initPhotoSwipe();
+    }
+}
+
+/**
+ * Update data-pswp-width/height with actual image dimensions
+ */
+function updateImageDimensions() {
+    const links = document.querySelectorAll('#gallery-grid a');
+    
+    links.forEach(link => {
+        const img = link.querySelector('img');
+        if (img) {
+            // Use naturalWidth/Height once loaded
+            if (img.complete && img.naturalWidth) {
+                link.dataset.pswpWidth = img.naturalWidth;
+                link.dataset.pswpHeight = img.naturalHeight;
+            } else {
+                img.addEventListener('load', () => {
+                    link.dataset.pswpWidth = img.naturalWidth;
+                    link.dataset.pswpHeight = img.naturalHeight;
+                });
+            }
         }
     });
-    
-    // Close on Escape key
-    document.addEventListener('keydown', (e) => {
-        if (e.key === 'Escape' && !lightbox.classList.contains('hidden')) {
-            closeLightbox();
+}
+
+/**
+ * Escape HTML for safe attribute insertion
+ */
+function escapeHtml(str) {
+    const div = document.createElement('div');
+    div.textContent = str;
+    return div.innerHTML;
+}
+
+/**
+ * Initialize dynamic gallery
+ */
+async function initDynamicGallery() {
+    try {
+        const images = await loadGalleryData();
+        renderGallery(images);
+    } catch (error) {
+        console.error('Failed to load gallery:', error);
+        const grid = document.getElementById('gallery-grid');
+        if (grid) {
+            grid.innerHTML = `
+                <div class="col-span-full text-center py-12">
+                    <p class="text-metal-red">Fehler beim Laden der Galerie.</p>
+                </div>
+            `;
         }
-    });
+    }
 }
 
 
@@ -268,7 +460,7 @@ document.addEventListener('DOMContentLoaded', () => {
     
     initMobileNav();
     initSmoothScroll();
-    initLightbox();
+    initDynamicGallery(); // Load dynamic gallery with PhotoSwipe
     initNavbarScroll();
     initActiveSection();
     initLoginSystem();
