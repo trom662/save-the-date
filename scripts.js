@@ -1024,6 +1024,23 @@ function initBackgroundMusic() {
     
     let isPlaying = false;
     let wasPlayingBeforeHidden = false; // Track if music was playing before tab switch
+    let loopTimeout = null; // For managing the pause between loops
+    
+    // Set volume to 70% (reduced by 30%)
+    audio.volume = 0.7;
+    
+    // Manual loop with 15 second pause
+    audio.addEventListener('ended', () => {
+        if (isPlaying) {
+            console.log('🎵 Song ended, waiting 15s before replay...');
+            loopTimeout = setTimeout(() => {
+                if (isPlaying) {
+                    audio.currentTime = 0;
+                    audio.play().catch(err => console.log('Replay failed:', err));
+                }
+            }, 15000); // 15 seconds pause
+        }
+    });
     
     // Check if user previously enabled music
     const musicWasEnabled = localStorage.getItem(MUSIC_STORAGE_KEY) === 'true';
@@ -1053,6 +1070,11 @@ function initBackgroundMusic() {
         if (isPlaying) {
             audio.pause();
             isPlaying = false;
+            // Clear any pending loop timeout
+            if (loopTimeout) {
+                clearTimeout(loopTimeout);
+                loopTimeout = null;
+            }
             localStorage.setItem(MUSIC_STORAGE_KEY, 'false');
             updateIcon();
         } else {
