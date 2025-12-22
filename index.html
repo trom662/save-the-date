@@ -384,13 +384,43 @@
             <h2 id="gallery-title" class="section-title">Galerie</h2>
             <p class="section-subtitle">Ein paar Impressionen. Mehr gibt's nach der Hochzeit. 📸</p>
             
-            <!-- Dynamic Gallery Grid - populated by JavaScript -->
-            <div id="gallery-grid" class="gallery-grid mt-12">
+            <!-- Dynamic Gallery Carousel - populated by JavaScript -->
+            <div id="gallery-carousel-wrapper" class="gallery-carousel-container mt-12">
                 <!-- Loading state -->
-                <div id="gallery-loading" class="col-span-full text-center py-12">
+                <div id="gallery-loading" class="text-center py-12">
                     <div class="inline-block animate-spin text-4xl mb-4">🎸</div>
                     <p class="text-metal-light/60">Lade Galerie...</p>
                 </div>
+                
+                <!-- Carousel (hidden until loaded) -->
+                <div class="gallery-carousel" style="display: none;">
+                    <!-- Navigation Prev -->
+                    <button class="gallery-nav gallery-nav--prev" aria-label="Vorheriges Bild" onclick="galleryCarousel.prev()">
+                        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/>
+                        </svg>
+                    </button>
+                    
+                    <!-- Slides Container -->
+                    <div id="gallery-slides" class="gallery-slides"></div>
+                    
+                    <!-- Navigation Next -->
+                    <button class="gallery-nav gallery-nav--next" aria-label="Nächstes Bild" onclick="galleryCarousel.next()">
+                        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+                        </svg>
+                    </button>
+                </div>
+                
+                <!-- Caption & Counter -->
+                <div class="gallery-caption-container" style="display: none;">
+                    <div class="gallery-caption">
+                        <p id="gallery-caption-text" class="gallery-caption-text"></p>
+                        <p id="gallery-counter" class="gallery-counter"></p>
+                    </div>
+                </div>
+                
+                <p class="gallery-click-hint" style="display: none;">Klicke auf das mittlere Bild zum Vergrößern • Pfeiltasten zum Navigieren</p>
             </div>
         </div>
     </section>
@@ -551,13 +581,11 @@
         // Initialize PhotoSwipe after gallery is loaded
         window.initPhotoSwipe = function() {
             const lightbox = new PhotoSwipeLightbox({
-                gallery: '#gallery-grid',
-                children: 'a',
                 pswpModule: PhotoSwipe,
                 
                 // UI options
                 bgOpacity: 0.95,
-                showHideAnimationType: 'zoom',
+                showHideAnimationType: 'fade',
                 
                 // Zoom options
                 initialZoomLevel: 'fit',
@@ -566,6 +594,38 @@
                 
                 // Padding
                 paddingFn: () => ({ top: 30, bottom: 30, left: 20, right: 20 }),
+            });
+            
+            // Custom data source to include all images with proper dimensions
+            lightbox.addFilter('numItems', () => {
+                return window.galleryCarousel ? window.galleryCarousel.images.length : 0;
+            });
+            
+            lightbox.addFilter('itemData', (itemData, index) => {
+                if (!window.galleryCarousel) return itemData;
+                const img = window.galleryCarousel.images[index];
+                const src = 'assets/' + img.file;
+                
+                // Try to get actual dimensions from the slide element
+                const slideEl = document.querySelector(`.gallery-slide[data-index="${index}"] img`);
+                let width = slideEl?.naturalWidth || 1200;
+                let height = slideEl?.naturalHeight || 900;
+                
+                return {
+                    src: src,
+                    width: width,
+                    height: height,
+                    caption: img.caption || `Bild ${index + 1}`
+                };
+            });
+            
+            // Keep carousel in sync when navigating in lightbox
+            lightbox.on('change', () => {
+                if (lightbox.pswp && window.galleryCarousel) {
+                    // Update carousel position without triggering re-render
+                    window.galleryCarousel.currentIndex = lightbox.pswp.currIndex;
+                    window.galleryCarousel.updatePositions();
+                }
             });
             
             // Add caption support
@@ -601,6 +661,9 @@
             });
             
             lightbox.init();
+            
+            // Store reference for manual opening
+            window.photoSwipeLightbox = lightbox;
         };
     </script>
 </body>

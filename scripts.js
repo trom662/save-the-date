@@ -284,80 +284,212 @@ function checkImageExists(url) {
 }
 
 /**
- * Render gallery items to the grid
+ * Gallery Carousel Controller
+ */
+const galleryCarousel = {
+    images: [],
+    currentIndex: 0,
+    
+    init(images) {
+        this.images = images;
+        this.currentIndex = 0;
+        this.render();
+        this.updatePositions();
+        this.setupKeyboardNav();
+    },
+    
+    render() {
+        const container = document.getElementById('gallery-slides');
+        if (!container) return;
+        
+        const html = this.images.map((img, index) => {
+            const src = GALLERY_CONFIG.assetsPath + img.file;
+            const caption = img.caption || `Bild ${index + 1}`;
+            
+            return `
+                <a href="${src}" 
+                   class="gallery-slide"
+                   data-index="${index}"
+                   data-pswp-width="1200" 
+                   data-pswp-height="800"
+                   data-caption="${escapeHtml(caption)}"
+                   aria-label="Bild vergrößern: ${escapeHtml(caption)}"
+                   onclick="galleryCarousel.handleClick(event, ${index})">
+                    <img src="${src}" 
+                         alt="${escapeHtml(caption)}" 
+                         loading="lazy">
+                </a>
+            `;
+        }).join('');
+        
+        container.innerHTML = html;
+        
+        // Get actual dimensions for PhotoSwipe
+        this.updateImageDimensions();
+    },
+    
+    updateImageDimensions() {
+        const slides = document.querySelectorAll('.gallery-slide');
+        slides.forEach(slide => {
+            const img = slide.querySelector('img');
+            if (img) {
+                if (img.complete && img.naturalWidth) {
+                    slide.dataset.pswpWidth = img.naturalWidth;
+                    slide.dataset.pswpHeight = img.naturalHeight;
+                } else {
+                    img.addEventListener('load', () => {
+                        slide.dataset.pswpWidth = img.naturalWidth;
+                        slide.dataset.pswpHeight = img.naturalHeight;
+                    });
+                }
+            }
+        });
+    },
+    
+    updatePositions() {
+        const slides = document.querySelectorAll('.gallery-slide');
+        const total = this.images.length;
+        
+        slides.forEach((slide, index) => {
+            // Calculate position relative to current
+            let position = index - this.currentIndex;
+            
+            // Handle wrapping for infinite carousel feel
+            if (position > total / 2) position -= total;
+            if (position < -total / 2) position += total;
+            
+            // Clamp to visible range (-2 to 2)
+            if (position < -2 || position > 2) {
+                slide.classList.add('hidden-slide');
+                slide.dataset.position = position > 0 ? '3' : '-3';
+            } else {
+                slide.classList.remove('hidden-slide');
+                slide.dataset.position = position.toString();
+            }
+        });
+        
+        // Update caption and counter
+        this.updateCaption();
+    },
+    
+    updateCaption() {
+        const captionEl = document.getElementById('gallery-caption-text');
+        const counterEl = document.getElementById('gallery-counter');
+        
+        if (captionEl && this.images[this.currentIndex]) {
+            captionEl.textContent = this.images[this.currentIndex].caption || `Bild ${this.currentIndex + 1}`;
+        }
+        
+        if (counterEl) {
+            counterEl.textContent = `${this.currentIndex + 1} / ${this.images.length}`;
+        }
+    },
+    
+    next() {
+        this.currentIndex = (this.currentIndex + 1) % this.images.length;
+        this.updatePositions();
+    },
+    
+    prev() {
+        this.currentIndex = (this.currentIndex - 1 + this.images.length) % this.images.length;
+        this.updatePositions();
+    },
+    
+    goTo(index) {
+        this.currentIndex = index;
+        this.updatePositions();
+    },
+    
+    handleClick(event, index) {
+        event.preventDefault();
+        
+        // If clicking on center slide, open PhotoSwipe
+        if (index === this.currentIndex) {
+            this.openLightbox();
+            return;
+        }
+        
+        // Otherwise navigate to that slide
+        this.goTo(index);
+    },
+    
+    openLightbox() {
+        const lightbox = window.photoSwipeLightbox;
+        if (!lightbox) {
+            console.error('PhotoSwipe lightbox not initialized');
+            return;
+        }
+        
+        // Use loadAndOpen with the current index
+        lightbox.loadAndOpen(this.currentIndex);
+    },
+    
+    setupKeyboardNav() {
+        document.addEventListener('keydown', (e) => {
+            // Only if gallery is in viewport and lightbox not open
+            const gallery = document.getElementById('gallery');
+            if (!gallery) return;
+            
+            // Don't interfere with PhotoSwipe navigation
+            if (window.photoSwipeLightbox?.pswp) return;
+            
+            const rect = gallery.getBoundingClientRect();
+            const isVisible = rect.top < window.innerHeight && rect.bottom > 0;
+            
+            if (isVisible) {
+                if (e.key === 'ArrowLeft') {
+                    e.preventDefault();
+                    this.prev();
+                } else if (e.key === 'ArrowRight') {
+                    e.preventDefault();
+                    this.next();
+                }
+            }
+        });
+    }
+};
+
+// Make globally available
+window.galleryCarousel = galleryCarousel;
+
+/**
+ * Render gallery carousel
  */
 function renderGallery(images) {
-    const grid = document.getElementById('gallery-grid');
-    if (!grid) return;
+    const wrapper = document.getElementById('gallery-carousel-wrapper');
+    if (!wrapper) return;
     
     // Remove loading state
     const loading = document.getElementById('gallery-loading');
     if (loading) loading.remove();
     
     if (images.length === 0) {
-        grid.innerHTML = `
-            <div class="col-span-full text-center py-12">
+        wrapper.innerHTML = `
+            <div class="text-center py-12">
                 <p class="text-metal-light/60">Keine Bilder gefunden.</p>
             </div>
         `;
         return;
     }
     
-    // Build gallery HTML
-    const html = images.map((img, index) => {
-        const src = GALLERY_CONFIG.assetsPath + img.file;
-        const caption = img.caption || `Bild ${index + 1}`;
-        
-        return `
-            <a href="${src}" 
-               class="gallery-item" 
-               data-pswp-width="1200" 
-               data-pswp-height="800"
-               data-caption="${escapeHtml(caption)}"
-               aria-label="Bild vergrößern: ${escapeHtml(caption)}">
-                <img src="${src}" 
-                     alt="${escapeHtml(caption)}" 
-                     class="gallery-img" 
-                     loading="lazy">
-                <div class="gallery-overlay">
-                    <span class="text-white text-lg">🔍 Vergrößern</span>
-                </div>
-            </a>
-        `;
-    }).join('');
+    // Show carousel elements
+    const carousel = wrapper.querySelector('.gallery-carousel');
+    const captionContainer = wrapper.querySelector('.gallery-caption-container');
+    const hint = wrapper.querySelector('.gallery-click-hint');
     
-    grid.innerHTML = html;
+    if (carousel) carousel.style.display = 'flex';
+    if (captionContainer) captionContainer.style.display = 'flex';
+    if (hint) hint.style.display = 'block';
     
-    // Get actual image dimensions for PhotoSwipe
-    updateImageDimensions();
+    // Initialize carousel
+    galleryCarousel.init(images);
     
-    // Initialize PhotoSwipe
+    // Initialize PhotoSwipe for center image clicks
     if (typeof window.initPhotoSwipe === 'function') {
-        window.initPhotoSwipe();
+        setTimeout(() => {
+            window.initPhotoSwipe();
+        }, 100);
     }
-}
-
-/**
- * Update data-pswp-width/height with actual image dimensions
- */
-function updateImageDimensions() {
-    const links = document.querySelectorAll('#gallery-grid a');
-    
-    links.forEach(link => {
-        const img = link.querySelector('img');
-        if (img) {
-            // Use naturalWidth/Height once loaded
-            if (img.complete && img.naturalWidth) {
-                link.dataset.pswpWidth = img.naturalWidth;
-                link.dataset.pswpHeight = img.naturalHeight;
-            } else {
-                img.addEventListener('load', () => {
-                    link.dataset.pswpWidth = img.naturalWidth;
-                    link.dataset.pswpHeight = img.naturalHeight;
-                });
-            }
-        }
-    });
 }
 
 /**
