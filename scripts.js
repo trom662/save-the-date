@@ -1121,15 +1121,16 @@ function initBackgroundMusic() {
     // Toggle button click
     toggleBtn.addEventListener('click', toggleMusic);
     
-    // Show volume slider on hover
+    // Show volume slider on hover over controls
+    const musicControls = document.getElementById('music-controls');
     const volumeSlider = document.getElementById('volume-slider');
     const volumeControl = document.getElementById('volume-control');
     
-    if (volumeSlider && volumeControl) {
-        toggleBtn.addEventListener('mouseenter', () => {
+    if (musicControls && volumeSlider && volumeControl) {
+        musicControls.addEventListener('mouseenter', () => {
             volumeSlider.classList.remove('hidden');
         });
-        toggleBtn.addEventListener('mouseleave', () => {
+        musicControls.addEventListener('mouseleave', () => {
             volumeSlider.classList.add('hidden');
         });
         
