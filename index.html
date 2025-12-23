@@ -61,15 +61,15 @@
     </audio>
     
     <!-- Music Controls (fixed position) -->
-    <div id="music-controls" class="fixed bottom-4 right-4 z-50">
+    <div id="music-controls" class="fixed bottom-4 right-4 z-50 flex flex-col items-end">
+        <!-- Volume Slider (appears on hover) -->
+        <div id="volume-slider" class="mb-2 bg-metal-gray p-2 rounded-lg shadow-lg border border-metal-red/50 hidden">
+            <input type="range" id="volume-control" min="0" max="1" step="0.1" value="0.4" class="w-20 h-2 bg-metal-black rounded-lg appearance-none cursor-pointer slider-thumb">
+        </div>
+
         <button id="music-toggle" class="bg-metal-gray hover:bg-metal-red text-white p-3 rounded-full shadow-lg transition-all duration-300 border border-metal-red/50" aria-label="Musik an/aus">
             <span id="music-icon">🔇</span>
         </button>
-
-        <!-- Volume Slider (appears on hover) -->
-        <div id="volume-slider" class="absolute bottom-full right-0 mb-2 hidden bg-metal-gray p-2 rounded-lg shadow-lg border border-metal-red/50">
-            <input type="range" id="volume-control" min="0" max="1" step="0.1" value="0.4" class="w-20 h-2 bg-metal-black rounded-lg appearance-none cursor-pointer slider-thumb">
-        </div>
     </div>
 
     <!-- Navigation -->
