@@ -601,6 +601,8 @@ document.addEventListener('DOMContentLoaded', () => {
     initLoginSystem();
     
     initBackgroundMusic();
+    // Preload a few important assets (images + audio) to improve first paint and playback
+    try { preloadImportantAssets(); } catch (e) { /* fail silently */ }
     
     // Check if user already entered (skip overlay)
     if (sessionStorage.getItem('site_entered') === 'true') {
@@ -610,6 +612,44 @@ document.addEventListener('DOMContentLoaded', () => {
     
     console.log('🤘 Save The Date loaded successfully!');
 });
+
+
+/**
+ * Preload important images and audio via JS as a fallback to <link rel="preload">.
+ * This helps on browsers that may ignore link-based preloads or when cache-busting is used.
+ */
+function preloadImportantAssets() {
+    const imageList = [
+        'assets/design-hero.jpg',
+        'assets/banner-logo2.png',
+        'assets/maxi2.png',
+        'assets/laika1.png',
+        'assets/gallery-1.jpg'
+    ];
+
+    imageList.forEach(src => {
+        const img = new Image();
+        img.src = src;
+    });
+
+    // Pre-create audio elements and call load()
+    const audioList = [
+        'assets/IWasAlive.mp3',
+        'assets/tth_05-23_06-03.mp3'
+    ];
+
+    audioList.forEach(src => {
+        try {
+            const a = document.createElement('audio');
+            a.preload = 'auto';
+            a.src = src;
+            // call load to hint the browser
+            a.load();
+        } catch (e) {
+            // ignore
+        }
+    });
+}
 
 
 // ================================================
