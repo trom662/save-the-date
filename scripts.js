@@ -1048,10 +1048,10 @@ function initBackgroundMusic() {
     
     // Manual loop with 15 second pause
     audio.addEventListener('ended', () => {
-        if (isPlaying) {
+        if (!audio.paused) {
             console.log('🎵 Song ended, waiting 15s before replay...');
             loopTimeout = setTimeout(() => {
-                if (isPlaying) {
+                if (!audio.paused) {
                     audio.currentTime = 0;
                     audio.play().catch(err => console.log('Replay failed:', err));
                 }
@@ -1066,8 +1066,8 @@ function initBackgroundMusic() {
     audio.load();
     
     function updateIcon() {
-        musicIcon.textContent = isPlaying ? '🔊' : '🔇';
-        toggleBtn.setAttribute('aria-label', isPlaying ? 'Musik ausschalten' : 'Musik einschalten');
+        musicIcon.textContent = audio.paused ? '🔇' : '🔊';
+        toggleBtn.setAttribute('aria-label', audio.paused ? 'Musik einschalten' : 'Musik ausschalten');
     }
     
     function playMusic() {
@@ -1084,18 +1084,17 @@ function initBackgroundMusic() {
     }
     
     function toggleMusic() {
-        if (isPlaying) {
+        if (audio.paused) {
+            audio.play().then(() => {
+                localStorage.setItem(MUSIC_STORAGE_KEY, 'true');
+                updateIcon();
+            }).catch(err => {
+                console.log('Audio playback failed:', err);
+            });
+        } else {
             audio.pause();
-            isPlaying = false;
-            // Clear any pending loop timeout
-            if (loopTimeout) {
-                clearTimeout(loopTimeout);
-                loopTimeout = null;
-            }
             localStorage.setItem(MUSIC_STORAGE_KEY, 'false');
             updateIcon();
-        } else {
-            playMusic();
         }
     }
     
