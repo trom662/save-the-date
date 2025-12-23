@@ -6,81 +6,8 @@
 /* ---- CSS Custom Properties ---- */
 :root {
     --metal-black: #0b0b0b;
-    --metal-red: #c62828;
-    --metal-gray: #1a1a1a;
-    --metal-light: #e0e0e0;
-    --transition-fast: 0.2s ease;
-    --transition-medium: 0.3s ease;
-}
-
-/* ---- Base Styles ---- */
-html {
-    scroll-behavior: smooth;
-}
-
-body {
-    background-color: var(--metal-black);
-    color: var(--metal-light);
-    line-height: 1.6;
-}
-
-/* ---- Selection Style ---- */
-::selection {
-    background-color: var(--metal-red);
-    color: white;
-}
-
-/* ---- Focus States for Accessibility ---- */
-:focus-visible {
-    outline: 2px solid var(--metal-red);
-    outline-offset: 2px;
-}
-
-/* ---- Navigation Links ---- */
-.nav-link {
-    color: var(--metal-light);
-    font-weight: 500;
-    padding: 0.5rem 1rem;
-    border-radius: 0.25rem;
-    transition: color var(--transition-fast), background-color var(--transition-fast);
-}
-
-.nav-link:hover,
-.nav-link:focus {
-    color: var(--metal-red);
-}
-
-.nav-link-cta {
-    background-color: var(--metal-red);
-    color: white;
-    font-weight: 700;
-    padding: 0.5rem 1.5rem;
-    border-radius: 0.25rem;
-    transition: background-color var(--transition-fast), transform var(--transition-fast);
-}
-
-.nav-link-cta:hover,
-.nav-link-cta:focus {
-    background-color: #d32f2f;
-    transform: scale(1.05);
-}
-
-.mobile-nav-link {
-    display: block;
-    color: var(--metal-light);
-    font-weight: 500;
-    padding: 0.75rem 1rem;
-    border-radius: 0.25rem;
-    transition: color var(--transition-fast), background-color var(--transition-fast);
-}
-
-.mobile-nav-link:hover,
-.mobile-nav-link:focus {
-    color: var(--metal-red);
-    background-color: var(--metal-gray);
-}
-
-/* ---- Hero Section ---- */
+    /* Corner volume slider removed */
+    /* Styles for the removed volume slider were deleted to avoid redundancy. */
 .hero-bg-pattern {
     background-image: 
         radial-gradient(circle at 20% 50%, var(--metal-red) 0%, transparent 50%),
@@ -951,20 +878,23 @@ body.is-admin .protected-cta {
 
 /* Vertical slider container */
 .vertical-slider-container {
-    position: absolute;
-    bottom: calc(100% + 8px); /* place above the button */
-    left: 50%;
-    transform: translateX(-50%);
     width: 48px; /* container width to fit vertical slider thumb */
-    height: 140px; /* enough height so it doesn't overlap the button */
-    display: none; /* hidden by default */
+    height: 140px; /* enough height for comfortable touch */
+    display: flex;
     align-items: center;
     justify-content: center;
-    z-index: 60;
 }
 
-.vertical-slider-container.open {
+/* corner volume panel */
+.corner-volume-panel {
     display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+}
+
+.corner-speaker svg {
+    color: var(--metal-light);
 }
 
 /* Vertical slider styling */
