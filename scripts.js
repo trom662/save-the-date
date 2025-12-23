@@ -306,7 +306,7 @@ const galleryCarousel = {
         if (!container) return;
         
         const html = this.images.map((img, index) => {
-            const src = GALLERY_CONFIG.assetsPath + img.file;
+            const src = GALLERY_CONFIG.assetsPath + img.file + '?t=' + Date.now();
             const caption = img.caption || `Bild ${index + 1}`;
             
             return `
