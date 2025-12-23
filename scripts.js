@@ -1120,19 +1120,24 @@ function initBackgroundMusic() {
     // Toggle button click
     toggleBtn.addEventListener('click', toggleMusic);
     
-    // Show volume slider on hover over controls
+    // Volume slider behavior (slider placed below button)
     const musicControls = document.getElementById('music-controls');
-    const volumeSlider = document.getElementById('volume-slider');
     const volumeControl = document.getElementById('volume-control');
-    
-    if (musicControls && volumeSlider && volumeControl) {
-        // Sync slider with current volume
-        volumeControl.value = audio.volume;
-        
-        // Volume control
-        volumeControl.addEventListener('input', (e) => {
-            audio.volume = e.target.value;
-        });
+
+    if (musicControls && volumeControl) {
+        // Ensure slider reflects current audio volume
+        try {
+            volumeControl.value = String(audio.volume);
+        } catch (e) {}
+
+        // Use input and change events for broader device support
+        const setVolume = (val) => {
+            const num = parseFloat(val);
+            if (!isNaN(num)) audio.volume = Math.max(0, Math.min(1, num));
+        };
+
+        volumeControl.addEventListener('input', (e) => setVolume(e.target.value));
+        volumeControl.addEventListener('change', (e) => setVolume(e.target.value));
     }
     
     updateIcon();

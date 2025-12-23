@@ -948,3 +948,48 @@ body.is-admin .protected-cta {
     cursor: pointer;
     border: 2px solid var(--metal-light);
 }
+
+/* Vertical slider container */
+.vertical-slider-container {
+    width: 44px; /* container width to fit vertical slider thumb */
+    height: 120px; /* enough height so it doesn't overlap the button */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Vertical slider styling */
+.vertical-slider {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 100px; /* visual length before rotation */
+    height: 8px;
+    background: var(--metal-black);
+    border-radius: 6px;
+    transform: rotate(-90deg);
+}
+
+.vertical-slider::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    background: var(--metal-red);
+    border: 2px solid var(--metal-light);
+    cursor: pointer;
+}
+
+.vertical-slider::-moz-range-thumb {
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    background: var(--metal-red);
+    border: 2px solid var(--metal-light);
+    cursor: pointer;
+}
+
+/* Ensure the music-controls container has enough padding so the slider won't overlap */
+#music-controls {
+    padding-bottom: 8px;
+}
