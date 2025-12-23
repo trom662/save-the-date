@@ -1117,8 +1117,52 @@ function initBackgroundMusic() {
         }
     });
     
-    // Toggle button click
-    toggleBtn.addEventListener('click', toggleMusic);
+    // Toggle button click now opens/closes the volume panel (not play/pause)
+    const volumePanel = document.getElementById('volume-slider');
+
+    function openVolumePanel() {
+        if (!volumePanel) return;
+        volumePanel.classList.add('open');
+        volumePanel.setAttribute('aria-hidden', 'false');
+        toggleBtn.setAttribute('aria-expanded', 'true');
+        // sync current volume
+        try { const vc = document.getElementById('volume-control'); if (vc) vc.value = String(audio.volume); } catch (e) {}
+        // add outside click handler
+        document.addEventListener('click', closeOnOutsideClick);
+        document.addEventListener('touchstart', closeOnOutsideClick);
+    }
+
+    function closeVolumePanel() {
+        if (!volumePanel) return;
+        volumePanel.classList.remove('open');
+        volumePanel.setAttribute('aria-hidden', 'true');
+        toggleBtn.setAttribute('aria-expanded', 'false');
+        document.removeEventListener('click', closeOnOutsideClick);
+        document.removeEventListener('touchstart', closeOnOutsideClick);
+    }
+
+    function toggleVolumePanel(e) {
+        if (e) e.stopPropagation();
+        if (!volumePanel) return;
+        if (volumePanel.classList.contains('open')) closeVolumePanel(); else openVolumePanel();
+    }
+
+    function closeOnOutsideClick(e) {
+        const target = e.target;
+        if (!volumePanel) return;
+        // if click is inside music-controls, ignore
+        const controls = document.getElementById('music-controls');
+        if (controls && controls.contains(target)) return;
+        closeVolumePanel();
+    }
+
+    // Clicking the toggle opens the volume panel instead of toggling playback
+    toggleBtn.addEventListener('click', toggleVolumePanel);
+    // Prevent clicks inside panel from closing it
+    if (volumePanel) {
+        volumePanel.addEventListener('click', (e) => e.stopPropagation());
+        volumePanel.addEventListener('touchstart', (e) => e.stopPropagation());
+    }
     
     // Volume slider behavior (slider placed below button)
     const musicControls = document.getElementById('music-controls');

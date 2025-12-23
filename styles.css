@@ -951,11 +951,20 @@ body.is-admin .protected-cta {
 
 /* Vertical slider container */
 .vertical-slider-container {
-    width: 44px; /* container width to fit vertical slider thumb */
-    height: 120px; /* enough height so it doesn't overlap the button */
-    display: flex;
+    position: absolute;
+    bottom: calc(100% + 8px); /* place above the button */
+    left: 50%;
+    transform: translateX(-50%);
+    width: 48px; /* container width to fit vertical slider thumb */
+    height: 140px; /* enough height so it doesn't overlap the button */
+    display: none; /* hidden by default */
     align-items: center;
     justify-content: center;
+    z-index: 60;
+}
+
+.vertical-slider-container.open {
+    display: flex;
 }
 
 /* Vertical slider styling */
