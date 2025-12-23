@@ -1121,6 +1121,24 @@ function initBackgroundMusic() {
     // Toggle button click
     toggleBtn.addEventListener('click', toggleMusic);
     
+    // Show volume slider on hover
+    const volumeSlider = document.getElementById('volume-slider');
+    const volumeControl = document.getElementById('volume-control');
+    
+    if (volumeSlider && volumeControl) {
+        toggleBtn.addEventListener('mouseenter', () => {
+            volumeSlider.classList.remove('hidden');
+        });
+        toggleBtn.addEventListener('mouseleave', () => {
+            volumeSlider.classList.add('hidden');
+        });
+        
+        // Volume control
+        volumeControl.addEventListener('input', (e) => {
+            audio.volume = e.target.value;
+        });
+    }
+    
     updateIcon();
     console.log('🎵 Background music initialized');
 }

@@ -928,3 +928,23 @@ body.is-admin .protected-cta {
     color: #22c55e;
     font-weight: 600;
 }
+
+/* ---- Volume Slider ---- */
+.slider-thumb::-webkit-slider-thumb {
+    appearance: none;
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    background: var(--metal-red);
+    cursor: pointer;
+    border: 2px solid var(--metal-light);
+}
+
+.slider-thumb::-moz-range-thumb {
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    background: var(--metal-red);
+    cursor: pointer;
+    border: 2px solid var(--metal-light);
+}
