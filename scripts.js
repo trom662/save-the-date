@@ -170,7 +170,7 @@ function initLightbox() {
 
 const GALLERY_CONFIG = {
     manifestPath: 'assets/gallery.json',
-    assetsPath: 'assets/',
+    assetsPath: './assets/',
     maxProbeImages: 30,
     consecutiveFailsToStop: 5,
     cacheKey: 'gallery_images_cache',
