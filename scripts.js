@@ -1127,12 +1127,8 @@ function initBackgroundMusic() {
     const volumeControl = document.getElementById('volume-control');
     
     if (musicControls && volumeSlider && volumeControl) {
-        musicControls.addEventListener('mouseenter', () => {
-            volumeSlider.classList.remove('hidden');
-        });
-        musicControls.addEventListener('mouseleave', () => {
-            volumeSlider.classList.add('hidden');
-        });
+        // Sync slider with current volume
+        volumeControl.value = audio.volume;
         
         // Volume control
         volumeControl.addEventListener('input', (e) => {
