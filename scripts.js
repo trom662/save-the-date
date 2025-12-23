@@ -8,6 +8,9 @@
 // ================================================
 const MUSIC_STORAGE_KEY = 'savethedate_music_enabled';
 
+// Global variable for login sound
+let currentLoginSound = null;
+
 // ================================================
 // COUNTDOWN TIMER
 // ================================================
@@ -596,6 +599,7 @@ document.addEventListener('DOMContentLoaded', () => {
     initNavbarScroll();
     initActiveSection();
     initLoginSystem();
+    
     initBackgroundMusic();
     
     // Check if user already entered (skip overlay)
@@ -626,12 +630,14 @@ function enterSite() {
         }, 500);
     }
     
-    // Start music immediately
+    // Switch to main music and start
     if (audio) {
+        audio.src = 'assets/IWasAlive.mp3';
+        audio.loop = false; // Disable loop for main music
         audio.play().then(() => {
             localStorage.setItem(MUSIC_STORAGE_KEY, 'true');
             if (musicIcon) musicIcon.textContent = '🔊';
-            console.log('🎵 Music started!');
+            console.log('🎵 Main music started!');
         }).catch(err => {
             console.log('Audio play failed:', err);
         });
@@ -926,6 +932,10 @@ function handleLogin(event) {
             loginError.classList.add('login-error');
         }
         
+        // Play sound on wrong password
+        currentLoginSound = new Audio('assets/tth_05-23_06-03.mp3');
+        currentLoginSound.play();
+        
         // Shake the form
         const modalContent = document.querySelector('.login-modal-content');
         if (modalContent) {
@@ -971,6 +981,13 @@ function closeLoginModal() {
     if (modal) {
         modal.classList.add('hidden');
         document.body.style.overflow = '';
+    }
+    
+    // Stop login sound if playing
+    if (currentLoginSound) {
+        currentLoginSound.pause();
+        currentLoginSound.currentTime = 0;
+        currentLoginSound = null;
     }
 }
 
@@ -1103,38 +1120,6 @@ function initBackgroundMusic() {
     
     // Toggle button click
     toggleBtn.addEventListener('click', toggleMusic);
-    
-    // Try to autoplay if user previously enabled music - on ANY interaction
-    if (musicWasEnabled) {
-        const tryAutoplay = () => {
-            playMusic();
-            document.removeEventListener('click', tryAutoplay);
-            document.removeEventListener('touchstart', tryAutoplay);
-            document.removeEventListener('keydown', tryAutoplay);
-            document.removeEventListener('scroll', tryAutoplay);
-        };
-        
-        // Listen for any user interaction
-        document.addEventListener('click', tryAutoplay, { once: true });
-        document.addEventListener('touchstart', tryAutoplay, { once: true });
-        document.addEventListener('keydown', tryAutoplay, { once: true });
-        document.addEventListener('scroll', tryAutoplay, { once: true });
-        
-        // Also try immediately in case page already has focus
-        setTimeout(() => {
-            audio.play().then(() => {
-                isPlaying = true;
-                updateIcon();
-                // Remove listeners if autoplay worked
-                document.removeEventListener('click', tryAutoplay);
-                document.removeEventListener('touchstart', tryAutoplay);
-                document.removeEventListener('keydown', tryAutoplay);
-                document.removeEventListener('scroll', tryAutoplay);
-            }).catch(() => {
-                // Autoplay blocked, waiting for interaction
-            });
-        }, 100);
-    }
     
     updateIcon();
     console.log('🎵 Background music initialized');

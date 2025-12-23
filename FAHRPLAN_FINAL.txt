@@ -1,0 +1,45 @@
+Fahrplan & ToDo-Liste für finale Version der Hochzeitsseite
+Stand: 22.12.2025
+
+1. Admin-Optionen für finale Version definieren
+------------------------------------------------
+- Welche Bereiche/Funktionen sollen nach Location-Zusage für eingeloggte Admins sichtbar/steuerbar sein?
+  Beispiele:
+  - Zeitplan (Timeline) editierbar machen
+  - Galerie-Upload oder -Freigabe
+  - Zusagen-Management (Gästeliste, Rückmeldungen)
+  - Location-Infos und Anfahrtsbeschreibung
+  - Exklusive Inhalte (z.B. Downloadbereich, Playlist, etc.)
+- Ggf. weitere Admin-Features brainstormen und priorisieren
+
+2. Save-the-Date Branding/Begriffe anpassen
+-------------------------------------------
+- Titel, Meta-Daten, Texte und Grafiken von "Save the Date" auf "Einladung" oder "Hochzeit" umstellen
+- URL, CNAME und ggf. Social Media Links anpassen
+- Evtl. neue Bilder/Banner für finale Einladung einbauen
+- Musik/Audio ggf. anpassen oder deaktivierbar machen
+
+3. README & Dokumentation
+-------------------------
+- README.md mit folgenden Punkten füllen:
+  - Projektbeschreibung (Ziel, Besonderheiten)
+  - ToDo-Liste (diese Datei)
+  - Anleitung für Deployment (z.B. GitHub Pages, Domain, CNAME)
+  - Hinweise zu Admin-Login und geschützten Bereichen
+  - Hinweise zu Anpassungen (z.B. wie neue Bilder/Galerie einfügen)
+
+4. Technische Checks vor Go-Live
+-------------------------------
+- Responsiveness auf allen Geräten testen
+- Musik- und Lightbox-Funktion auf Mobilgeräten prüfen
+- Admin-Login testen (Login/Logout, Sichtbarkeit, LocalStorage)
+- Fallbacks für Browser ohne JS/Musik
+- Datenschutz/Impressum ergänzen (falls nötig)
+
+5. Nach Location-Zusage
+-----------------------
+- Admin-Features freischalten
+- Finale Inhalte einpflegen (Ort, Zeit, Ablauf, etc.)
+- Gäste informieren/Einladungen verschicken
+
+Notiz: Alle Funktionen und Styles sind Stand heute fehlerfrei. Weiterentwicklung kann jederzeit fortgesetzt werden.
