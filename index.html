@@ -49,14 +49,14 @@
 <body class="bg-metal-black text-metal-light font-sans">
     
     <!-- Welcome Overlay (click to enter & start music) -->
-    <div id="welcome-overlay" class="fixed inset-0 z-[999] bg-metal-black flex items-center justify-center cursor-pointer">
+    <div id="welcome-overlay" class="fixed inset-0 z-[999] bg-metal-black flex items-center justify-center cursor-pointer" onclick="enterSite()">
         <div class="text-center p-8">
             <div class="flex items-center justify-center gap-4 mb-6">
                 <img src="assets/maxi2.png" alt="Maxi" class="w-14 h-14 md:w-20 md:h-20 object-contain">
                 <p class="font-metal text-4xl md:text-6xl text-metal-red">Kathrin & Tobi</p>
                 <img src="assets/laika1.png" alt="Laika" class="w-14 h-14 md:w-20 md:h-20 object-contain">
             </div>
-            <button class="cta-button pulse-animation text-lg bg-metal-red">
+            <button class="cta-button pulse-animation text-lg bg-metal-red" onclick="enterSite();">
                 Eintreten 🎸
             </button>
             <p class="text-metal-light/50 text-sm mt-4">Ein Klick und schon geht's weiter!</p>

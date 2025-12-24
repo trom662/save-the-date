@@ -668,44 +668,6 @@ function initActiveSection() {
     highlightActive(); // Initial check
 }
 
-function initWelcomeOverlayInteraction() {
-    const overlay = document.getElementById('welcome-overlay');
-    if (!overlay) return;
-
-    const enterButton = overlay.querySelector('.cta-button');
-
-    const cleanup = () => {
-        overlay.removeEventListener('click', handleEnter);
-        overlay.removeEventListener('touchend', handleEnter);
-        if (enterButton) {
-            enterButton.removeEventListener('click', handleEnter);
-            enterButton.removeEventListener('touchend', handleEnter);
-        }
-    };
-
-    const handleEnter = (event) => {
-        if (event) {
-            if (event.type && event.type.startsWith('touch')) {
-                event.preventDefault();
-            }
-            if (event.stopImmediatePropagation) {
-                event.stopImmediatePropagation();
-            }
-            event.stopPropagation();
-        }
-        cleanup();
-        enterSite();
-    };
-
-    overlay.addEventListener('click', handleEnter);
-    overlay.addEventListener('touchend', handleEnter, { passive: false });
-
-    if (enterButton) {
-        enterButton.addEventListener('click', handleEnter);
-        enterButton.addEventListener('touchend', handleEnter, { passive: false });
-    }
-}
-
 
 // ================================================
 // INITIALIZE EVERYTHING
@@ -720,7 +682,6 @@ document.addEventListener('DOMContentLoaded', () => {
     initDynamicGallery(); // Load dynamic gallery with PhotoSwipe
     initNavbarScroll();
     initActiveSection();
-    initWelcomeOverlayInteraction();
     initLoginSystem();
     
     initBackgroundMusic();
