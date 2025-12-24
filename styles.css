@@ -20,6 +20,11 @@ body {
     overscroll-behavior-x: none;
 }
 
+#welcome-overlay,
+#welcome-overlay .cta-button {
+    touch-action: manipulation;
+}
+
 /* ---- Hero Section ---- */
 .hero-bg-pattern {
     background-image: 
