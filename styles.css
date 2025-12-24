@@ -14,6 +14,12 @@
     --transition-slow: 0.5s ease;
 }
 
+html,
+body {
+    overflow-x: hidden;
+    overscroll-behavior-x: none;
+}
+
 /* ---- Hero Section ---- */
 .hero-bg-pattern {
     background-image: 
@@ -265,6 +271,8 @@
     justify-content: center;
     height: 400px;
     perspective: 1000px;
+    touch-action: pan-y;
+    -ms-touch-action: pan-y;
 }
 
 @media (min-width: 768px) {
@@ -283,6 +291,7 @@
     touch-action: pan-y;
     -ms-touch-action: pan-y;
     user-select: none;
+    -webkit-user-select: none;
 }
 
 .gallery-slide {
@@ -295,6 +304,8 @@
     border: 2px solid rgba(198, 40, 40, 0.4);
     text-decoration: none;
     display: block;
+    touch-action: pan-y;
+    -ms-touch-action: pan-y;
 }
 
 .gallery-slide:hover {

@@ -61,13 +61,17 @@ function initCountdown(targetDate) {
         const slidesWrapper = document.getElementById('gallery-slides');
         if (!slidesWrapper) return;
 
-        const swipeThreshold = 40;
+        const swipeThreshold = 45;
+        const horizontalActivation = 12;
+        const verticalTolerance = 16;
         let startX = 0;
         let startY = 0;
         let isTracking = false;
+        let isSwiping = false;
 
         const cancelTracking = () => {
             isTracking = false;
+            isSwiping = false;
         };
 
         const onTouchStart = (event) => {
@@ -76,6 +80,7 @@ function initCountdown(targetDate) {
             startX = touch.clientX;
             startY = touch.clientY;
             isTracking = true;
+            isSwiping = false;
         };
 
         const onTouchMove = (event) => {
@@ -86,31 +91,43 @@ function initCountdown(targetDate) {
             const deltaX = touch.clientX - startX;
             const deltaY = touch.clientY - startY;
 
-            if (Math.abs(deltaY) > Math.abs(deltaX)) {
-                cancelTracking();
-                return;
+            const horizontalDistance = Math.abs(deltaX);
+            const verticalDistance = Math.abs(deltaY);
+
+            if (!isSwiping) {
+                if (verticalDistance > horizontalDistance && verticalDistance > verticalTolerance) {
+                    cancelTracking();
+                    return;
+                }
+                if (horizontalDistance > horizontalActivation) {
+                    isSwiping = true;
+                }
             }
 
-            if (Math.abs(deltaX) > 10) {
+            if (isSwiping && horizontalDistance > 5) {
                 event.preventDefault();
             }
         };
 
         const onTouchEnd = (event) => {
             if (!isTracking) return;
-            cancelTracking();
 
             const touch = event.changedTouches?.[0];
             if (!touch) return;
 
             const diffX = touch.clientX - startX;
-            if (Math.abs(diffX) < swipeThreshold) return;
+            if (!isSwiping || Math.abs(diffX) < swipeThreshold) {
+                cancelTracking();
+                return;
+            }
 
             if (diffX > 0) {
                 this.prev();
             } else {
                 this.next();
             }
+
+            cancelTracking();
         };
 
         slidesWrapper.addEventListener('touchstart', onTouchStart, { passive: true });
