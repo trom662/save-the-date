@@ -35,6 +35,38 @@
     box-shadow: 0 25px 50px -12px rgba(198, 40, 40, 0.4);
 }
 
+.hero-photo-wrapper {
+    position: relative;
+    border-radius: 1.25rem;
+    isolation: isolate;
+}
+
+.hero-photo-wrapper::before,
+.hero-photo-wrapper::after {
+    content: '';
+    position: absolute;
+    inset: -0.4rem;
+    border-radius: 1.5rem;
+    pointer-events: none;
+}
+
+.hero-photo-wrapper::before {
+    border: 1px solid rgba(255, 255, 255, 0.25);
+    border-top-color: rgba(255, 255, 255, 0.5);
+    border-left-color: rgba(198, 40, 40, 0.45);
+    filter: drop-shadow(0 8px 25px rgba(0, 0, 0, 0.6));
+    opacity: 0.85;
+    z-index: -1;
+}
+
+.hero-photo-wrapper::after {
+    inset: -0.15rem;
+    border-radius: 1.3rem;
+    background: linear-gradient(160deg, rgba(198, 40, 40, 0.35), transparent 60%),
+                linear-gradient(15deg, rgba(255, 255, 255, 0.12), transparent 55%);
+    opacity: 0.7;
+}
+
 /* ---- Countdown Styles ---- */
 .countdown-item {
     display: flex;
@@ -170,21 +202,26 @@
 
 .timeline-time {
     font-family: 'Metal Mania', cursive;
-    font-size: 1.5rem;
+    font-size: 1.35rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
     color: var(--metal-red);
-    margin-bottom: 0.25rem;
+    margin-bottom: 0.35rem;
 }
 
 .timeline-title {
-    font-size: 1.25rem;
+    font-size: 1.15rem;
     font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
     color: white;
     margin-bottom: 0.5rem;
 }
 
 .timeline-desc {
-    color: rgba(224, 224, 224, 0.8);
-    margin-bottom: 0.5rem;
+    color: rgba(224, 224, 224, 0.78);
+    line-height: 1.7;
+    margin-bottom: 0.65rem;
 }
 
 .timeline-location {
@@ -572,13 +609,73 @@
 
 /* ---- Footer Links ---- */
 .footer-link {
-    color: rgba(224, 224, 224, 0.7);
-    transition: color var(--transition-fast);
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    color: rgba(224, 224, 224, 0.65);
+    font-size: 0.85rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    transition: color var(--transition-fast), transform var(--transition-fast);
 }
 
 .footer-link:hover,
 .footer-link:focus {
     color: var(--metal-red);
+    transform: translateX(2px);
+}
+
+.footer-bottom {
+    position: relative;
+    padding-top: 3.5rem;
+}
+
+.footer-bottom::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 10%;
+    right: 10%;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(198, 40, 40, 0.4), transparent);
+    opacity: 0.9;
+}
+
+.footer-brand {
+    letter-spacing: 0.35em;
+}
+
+.footer-meta {
+    font-size: 0.8rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+}
+
+.footer-quote {
+    font-size: 0.7rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+}
+
+.pswp--open .pswp__img {
+    border-radius: 0.75rem;
+    box-shadow: 0 35px 90px rgba(0, 0, 0, 0.85);
+    animation: gallery-lightbox-glow 0.45s ease-out forwards;
+}
+
+@keyframes gallery-lightbox-glow {
+    0% {
+        box-shadow: 0 0 0 rgba(198, 40, 40, 0);
+        filter: saturate(0.85) brightness(0.9);
+    }
+    45% {
+        box-shadow: 0 0 80px rgba(198, 40, 40, 0.65);
+        filter: saturate(1.1) brightness(1.05);
+    }
+    100% {
+        box-shadow: 0 35px 90px rgba(0, 0, 0, 0.85);
+        filter: saturate(1);
+    }
 }
 
 /* ---- Animations ---- */
@@ -679,10 +776,30 @@ body.is-admin .protected-cta {
    ================================================ */
 
 .coming-soon-banner {
+    position: relative;
     display: flex;
     flex-direction: column;
     align-items: center;
-    padding: 2rem 0;
+    padding: 3rem 1.5rem;
+    border-radius: 1.75rem;
+    background: linear-gradient(145deg, rgba(7, 7, 7, 0.95), rgba(32, 32, 32, 0.88));
+    border: 1px solid rgba(198, 40, 40, 0.25);
+    box-shadow: 0 30px 80px rgba(0, 0, 0, 0.75);
+    overflow: hidden;
+    gap: 1.5rem;
+}
+
+.coming-soon-banner::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(circle at 50% 0%, rgba(198, 40, 40, 0.45), transparent 65%);
+    opacity: 0.8;
+    pointer-events: none;
+}
+
+.coming-soon-banner > * {
+    position: relative;
 }
 
 .banner-wimpel {
