@@ -280,6 +280,9 @@
     display: flex;
     align-items: center;
     justify-content: center;
+    touch-action: pan-y;
+    -ms-touch-action: pan-y;
+    user-select: none;
 }
 
 .gallery-slide {
