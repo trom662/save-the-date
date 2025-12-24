@@ -56,87 +56,66 @@ function initCountdown(targetDate) {
         secondsEl.textContent = String(seconds).padStart(2, '0');
     }
     
-    attachTouchEvents() {
-        if (this.touchInitialized) return;
-        const slidesWrapper = document.getElementById('gallery-slides');
-        if (!slidesWrapper) return;
+    // Initial update
+    updateCountdown();
+    
+    // Update every second
+    setInterval(updateCountdown, 1000);
+}
 
-        const swipeThreshold = 45;
-        const horizontalActivation = 12;
-        const verticalTolerance = 16;
-        let startX = 0;
-        let startY = 0;
-        let isTracking = false;
-        let isSwiping = false;
 
-        const cancelTracking = () => {
-            isTracking = false;
-            isSwiping = false;
-        };
+// ================================================
+// MOBILE NAVIGATION
+// ================================================
 
-        const onTouchStart = (event) => {
-            if (event.touches.length !== 1) return;
-            const touch = event.touches[0];
-            startX = touch.clientX;
-            startY = touch.clientY;
-            isTracking = true;
-            isSwiping = false;
-        };
-
-        const onTouchMove = (event) => {
-            if (!isTracking) return;
-            if (event.touches.length !== 1) return;
-
-            const touch = event.touches[0];
-            const deltaX = touch.clientX - startX;
-            const deltaY = touch.clientY - startY;
-
-            const horizontalDistance = Math.abs(deltaX);
-            const verticalDistance = Math.abs(deltaY);
-
-            if (!isSwiping) {
-                if (verticalDistance > horizontalDistance && verticalDistance > verticalTolerance) {
-                    cancelTracking();
-                    return;
-                }
-                if (horizontalDistance > horizontalActivation) {
-                    isSwiping = true;
-                }
-            }
-
-            if (isSwiping && horizontalDistance > 5) {
-                event.preventDefault();
-            }
-        };
-
-        const onTouchEnd = (event) => {
-            if (!isTracking) return;
-
-            const touch = event.changedTouches?.[0];
-            if (!touch) return;
-
-            const diffX = touch.clientX - startX;
-            if (!isSwiping || Math.abs(diffX) < swipeThreshold) {
-                cancelTracking();
-                return;
-            }
-
-            if (diffX > 0) {
-                this.prev();
-            } else {
-                this.next();
-            }
-
-            cancelTracking();
-        };
-
-        slidesWrapper.addEventListener('touchstart', onTouchStart, { passive: true });
-        slidesWrapper.addEventListener('touchmove', onTouchMove, { passive: false });
-        slidesWrapper.addEventListener('touchend', onTouchEnd, { passive: true });
-        slidesWrapper.addEventListener('touchcancel', cancelTracking, { passive: true });
-
-        this.touchInitialized = true;
+function initMobileNav() {
+    const menuBtn = document.getElementById('mobile-menu-btn');
+    const mobileMenu = document.getElementById('mobile-menu');
+    
+    if (!menuBtn || !mobileMenu) {
+        console.warn('Mobile menu elements not found');
+        return;
     }
+    
+    menuBtn.addEventListener('click', () => {
+        const isExpanded = menuBtn.getAttribute('aria-expanded') === 'true';
+        
+        menuBtn.setAttribute('aria-expanded', !isExpanded);
+        mobileMenu.classList.toggle('hidden');
+        
+        // Update icon
+        const icon = menuBtn.querySelector('svg path');
+        if (icon) {
+            if (isExpanded) {
+                // Show hamburger
+                icon.setAttribute('d', 'M4 6h16M4 12h16M4 18h16');
+            } else {
+                // Show X
+                icon.setAttribute('d', 'M6 18L18 6M6 6l12 12');
+            }
+        }
+    });
+    
+    // Close menu when clicking a link
+    const mobileLinks = mobileMenu.querySelectorAll('a');
+    mobileLinks.forEach(link => {
+        link.addEventListener('click', () => {
+            mobileMenu.classList.add('hidden');
+            menuBtn.setAttribute('aria-expanded', 'false');
+            const icon = menuBtn.querySelector('svg path');
+            if (icon) {
+                icon.setAttribute('d', 'M4 6h16M4 12h16M4 18h16');
+            }
+        });
+    });
+}
+
+
+// ================================================
+// SMOOTH SCROLL
+// ================================================
+
+function initSmoothScroll() {
     const links = document.querySelectorAll('a[href^="#"]');
     
     links.forEach(link => {
@@ -479,10 +458,18 @@ const galleryCarousel = {
         const slidesWrapper = document.getElementById('gallery-slides');
         if (!slidesWrapper) return;
 
-        const swipeThreshold = 50;
+        const swipeThreshold = 45;
+        const horizontalActivation = 12;
+        const verticalTolerance = 16;
         let startX = 0;
         let startY = 0;
         let isTracking = false;
+        let isSwiping = false;
+
+        const cancelTracking = () => {
+            isTracking = false;
+            isSwiping = false;
+        };
 
         const onTouchStart = (event) => {
             if (event.touches.length !== 1) return;
@@ -490,6 +477,7 @@ const galleryCarousel = {
             startX = touch.clientX;
             startY = touch.clientY;
             isTracking = true;
+            isSwiping = false;
         };
 
         const onTouchMove = (event) => {
@@ -500,37 +488,49 @@ const galleryCarousel = {
             const deltaX = touch.clientX - startX;
             const deltaY = touch.clientY - startY;
 
-            // Abort swipe if user scrolls vertically more than horizontally
-            if (Math.abs(deltaY) > Math.abs(deltaX)) {
-                isTracking = false;
-                return;
+            const horizontalDistance = Math.abs(deltaX);
+            const verticalDistance = Math.abs(deltaY);
+
+            if (!isSwiping) {
+                if (verticalDistance > horizontalDistance && verticalDistance > verticalTolerance) {
+                    cancelTracking();
+                    return;
+                }
+                if (horizontalDistance > horizontalActivation) {
+                    isSwiping = true;
+                }
             }
 
-            // prevent horizontal scroll bounce
-            event.preventDefault();
+            if (isSwiping && horizontalDistance > 5) {
+                event.preventDefault();
+            }
         };
 
         const onTouchEnd = (event) => {
             if (!isTracking) return;
-            isTracking = false;
 
             const touch = event.changedTouches?.[0];
             if (!touch) return;
 
             const diffX = touch.clientX - startX;
-            if (Math.abs(diffX) < swipeThreshold) return;
+            if (!isSwiping || Math.abs(diffX) < swipeThreshold) {
+                cancelTracking();
+                return;
+            }
 
             if (diffX > 0) {
                 this.prev();
             } else {
                 this.next();
             }
+
+            cancelTracking();
         };
 
         slidesWrapper.addEventListener('touchstart', onTouchStart, { passive: true });
         slidesWrapper.addEventListener('touchmove', onTouchMove, { passive: false });
         slidesWrapper.addEventListener('touchend', onTouchEnd, { passive: true });
-        slidesWrapper.addEventListener('touchcancel', () => { isTracking = false; }, { passive: true });
+        slidesWrapper.addEventListener('touchcancel', cancelTracking, { passive: true });
 
         this.touchInitialized = true;
     }
