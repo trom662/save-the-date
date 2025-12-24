@@ -6,8 +6,15 @@
 /* ---- CSS Custom Properties ---- */
 :root {
     --metal-black: #0b0b0b;
-    /* Corner volume slider removed */
-    /* Styles for the removed volume slider were deleted to avoid redundancy. */
+    --metal-gray: #1a1a1a;
+    --metal-red: #c62828;
+    --metal-light: #e0e0e0;
+    --transition-fast: 0.2s ease;
+    --transition-medium: 0.3s ease;
+    --transition-slow: 0.5s ease;
+}
+
+/* ---- Hero Section ---- */
 .hero-bg-pattern {
     background-image: 
         radial-gradient(circle at 20% 50%, var(--metal-red) 0%, transparent 50%),
@@ -680,44 +687,55 @@ body.is-admin .protected-cta {
 
 .banner-wimpel {
     position: relative;
-    background: linear-gradient(145deg, var(--metal-gray), var(--metal-black));
-    padding: 2.5rem 3rem;
-    padding-bottom: 3.5rem;
+    background: var(--metal-red);
+    padding: 4px;
     text-align: center;
     max-width: 400px;
     width: 100%;
-    clip-path: polygon(0 0, 100% 0, 100% 85%, 50% 100%, 0 85%);
+    clip-path: polygon(0 0, 100% 0, 100% 80%, 50% 100%, 0 80%);
     box-shadow: 
-        0 10px 40px rgba(0, 0, 0, 0.6),
-        0 0 80px rgba(198, 40, 40, 0.7),
-        0 0 120px rgba(198, 40, 40, 0.4);
+        0 15px 50px rgba(0, 0, 0, 0.8),
+        0 0 60px rgba(198, 40, 40, 0.6);
+    -webkit-animation: wimpel-swing 4s ease-in-out infinite;
     animation: wimpel-swing 4s ease-in-out infinite;
     transform-origin: top center;
 }
 
+.banner-wimpel .wimpel-content {
+    background: linear-gradient(145deg, var(--metal-gray), var(--metal-black));
+    padding: 2rem 2.5rem;
+    padding-bottom: 3rem;
+    clip-path: polygon(0 0, 100% 0, 100% 80%, 50% 100%, 0 80%);
+}
+
+@-webkit-keyframes wimpel-swing {
+    0%, 100% { -webkit-transform: rotate(-8deg); transform: rotate(-8deg); }
+    50% { -webkit-transform: rotate(8deg); transform: rotate(8deg); }
+}
+
 @keyframes wimpel-swing {
-    0%, 100% { transform: rotate(-8deg); }
-    50% { transform: rotate(8deg); }
+    0%, 100% { -webkit-transform: rotate(-8deg); transform: rotate(-8deg); }
+    50% { -webkit-transform: rotate(8deg); transform: rotate(8deg); }
 }
 
 /* Hero Dog Images - visible swing animation */
 .hero-dog-swing {
+    -webkit-animation: dog-swing 5s ease-in-out infinite !important;
     animation: dog-swing 5s ease-in-out infinite !important;
     transform-origin: top center;
+    -webkit-transform-origin: top center;
     will-change: transform;
     display: inline-block;
 }
 
-@keyframes dog-swing {
-    0%, 100% { transform: rotate(-24deg); }
-    50% { transform: rotate(24deg); }
+@-webkit-keyframes dog-swing {
+    0%, 100% { -webkit-transform: rotate(-24deg); transform: rotate(-24deg); }
+    50% { -webkit-transform: rotate(24deg); transform: rotate(24deg); }
 }
 
-.wimpel-content {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 0.75rem;
+@keyframes dog-swing {
+    0%, 100% { -webkit-transform: rotate(-24deg); transform: rotate(-24deg); }
+    50% { -webkit-transform: rotate(24deg); transform: rotate(24deg); }
 }
 
 .wimpel-icon {
