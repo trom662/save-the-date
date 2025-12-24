@@ -292,6 +292,7 @@ function checkImageExists(url) {
 const galleryCarousel = {
     images: [],
     currentIndex: 0,
+    touchInitialized: false,
     
     init(images) {
         this.images = images;
@@ -299,6 +300,7 @@ const galleryCarousel = {
         this.render();
         this.updatePositions();
         this.setupKeyboardNav();
+        this.attachTouchEvents();
     },
     
     render() {
@@ -449,6 +451,67 @@ const galleryCarousel = {
                 }
             }
         });
+    },
+
+    attachTouchEvents() {
+        if (this.touchInitialized) return;
+        const slidesWrapper = document.getElementById('gallery-slides');
+        if (!slidesWrapper) return;
+
+        const swipeThreshold = 50;
+        let startX = 0;
+        let startY = 0;
+        let isTracking = false;
+
+        const onTouchStart = (event) => {
+            if (event.touches.length !== 1) return;
+            const touch = event.touches[0];
+            startX = touch.clientX;
+            startY = touch.clientY;
+            isTracking = true;
+        };
+
+        const onTouchMove = (event) => {
+            if (!isTracking) return;
+            if (event.touches.length !== 1) return;
+
+            const touch = event.touches[0];
+            const deltaX = touch.clientX - startX;
+            const deltaY = touch.clientY - startY;
+
+            // Abort swipe if user scrolls vertically more than horizontally
+            if (Math.abs(deltaY) > Math.abs(deltaX)) {
+                isTracking = false;
+                return;
+            }
+
+            // prevent horizontal scroll bounce
+            event.preventDefault();
+        };
+
+        const onTouchEnd = (event) => {
+            if (!isTracking) return;
+            isTracking = false;
+
+            const touch = event.changedTouches?.[0];
+            if (!touch) return;
+
+            const diffX = touch.clientX - startX;
+            if (Math.abs(diffX) < swipeThreshold) return;
+
+            if (diffX > 0) {
+                this.prev();
+            } else {
+                this.next();
+            }
+        };
+
+        slidesWrapper.addEventListener('touchstart', onTouchStart, { passive: true });
+        slidesWrapper.addEventListener('touchmove', onTouchMove, { passive: false });
+        slidesWrapper.addEventListener('touchend', onTouchEnd, { passive: true });
+        slidesWrapper.addEventListener('touchcancel', () => { isTracking = false; }, { passive: true });
+
+        this.touchInitialized = true;
     }
 };
 
