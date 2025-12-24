@@ -620,12 +620,10 @@
         scroll-behavior: auto;
     }
     
-    *,
-    *::before,
-    *::after {
-        animation-duration: 0.01ms !important;
-        animation-iteration-count: 1 !important;
-        transition-duration: 0.01ms !important;
+    /* Keep swing animations working even with reduced motion preference */
+    /* Only disable non-essential animations */
+    .pulse-animation {
+        animation: none !important;
     }
 }
 
@@ -691,20 +689,10 @@ body.is-admin .protected-cta {
     clip-path: polygon(0 0, 100% 0, 100% 85%, 50% 100%, 0 85%);
     box-shadow: 
         0 10px 40px rgba(0, 0, 0, 0.6),
-        0 0 60px rgba(198, 40, 40, 0.5);
+        0 0 80px rgba(198, 40, 40, 0.7),
+        0 0 120px rgba(198, 40, 40, 0.4);
     animation: wimpel-swing 4s ease-in-out infinite;
     transform-origin: top center;
-}
-
-/* Red border effect using pseudo-element (clip-path cuts regular borders) */
-.banner-wimpel::before {
-    content: '';
-    position: absolute;
-    inset: 0;
-    background: var(--metal-red);
-    clip-path: polygon(0 0, 100% 0, 100% 85%, 50% 100%, 0 85%);
-    z-index: -1;
-    margin: -4px;
 }
 
 @keyframes wimpel-swing {
