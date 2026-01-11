@@ -256,7 +256,62 @@
             </svg>
         </div>
     </section>
-
+<!-- Location / Anfahrt Section -->
+    <section id="location" class="py-20 bg-metal-black">
+        <div class="container mx-auto px-4">
+            <h2 class="section-title">Anfahrt</h2>
+            <p class="section-subtitle">Damit ihr auch rechtzeitig zur Party findet.</p>
+            
+            <div class="grid md:grid-cols-2 gap-8 mt-12 max-w-5xl mx-auto">
+                <!-- Map -->
+                <div class="map-container">
+                    <iframe 
+                        title="Anfahrtskarte zur Location"
+                        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2548.8!2d10.7873!3d49.8625!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x47a2231c8d5c6b7d%3A0x4c7d9c3e2b1a0f9e!2sMarktpl.%204%2C%2096172%20M%C3%BChlhausen!5e0!3m2!1sde!2sde!4v1703158800000!5m2!1sde!2sde"
+                        class="w-full h-80 md:h-96 rounded-lg border-2 border-metal-gray"
+                        loading="lazy"
+                        allowfullscreen
+                        referrerpolicy="no-referrer-when-downgrade"
+                    ></iframe>
+                </div>
+                
+                <!-- Address & Downloads -->
+                <div class="flex flex-col justify-center space-y-6">
+                    <div class="bg-metal-gray p-6 rounded-lg">
+                        <h3 class="text-xl font-bold text-white mb-3">📍 Adresse</h3>
+                        <address class="not-italic text-metal-light/80">
+                            Kulturscheune<br>
+                            Marktpl. 4<br>
+                            96172 Mühlhausen
+                        </address>
+                        <a href="https://www.google.com/maps/search/?api=1&query=Kulturscheune+Marktpl.+4+96172+Mühlhausen" 
+                           target="_blank" 
+                           rel="noopener noreferrer"
+                           class="inline-block mt-3 text-metal-red hover:underline text-sm">
+                            🗺️ In Google Maps öffnen
+                        </a>
+                    </div>
+                    
+                    <div class="bg-metal-gray p-6 rounded-lg">
+                        <h3 class="text-xl font-bold text-white mb-3">🚗 Parken</h3>
+                        <p class="text-metal-light/80">
+                            Parkmöglichkeit gegenüber des Tors am Marktplatz. <br><br>
+                            Wir versuchen noch einen Fahrdienst für euch zu organisieren der euch von der Party aus im nahen Umkreis zur Unterkunft bringt. <br><br>
+                            Bitte organisiert euch aber nach Möglichkeit.
+                        </p>
+                    </div>
+                    
+                    <a href="#" class="download-button hidden" aria-label="Anfahrtsskizze als PDF herunterladen">
+                        <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+                        </svg>
+                        Anfahrtsskizze (PDF) herunterladen
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+    
     <!-- Coming Soon Banner (nur sichtbar wenn nicht eingeloggt) -->
     <section id="coming-soon" class="py-16 bg-metal-black guest-hidden">
         <div class="container mx-auto px-4">
@@ -338,61 +393,6 @@
 
     </div><!-- Ende protected-content -->
 
-<!-- Location / Anfahrt Section -->
-    <section id="location" class="py-20 bg-metal-black">
-        <div class="container mx-auto px-4">
-            <h2 class="section-title">Anfahrt</h2>
-            <p class="section-subtitle">Damit ihr auch rechtzeitig zur Party findet.</p>
-            
-            <div class="grid md:grid-cols-2 gap-8 mt-12 max-w-5xl mx-auto">
-                <!-- Map -->
-                <div class="map-container">
-                    <iframe 
-                        title="Anfahrtskarte zur Location"
-                        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2548.8!2d10.7873!3d49.8625!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x47a2231c8d5c6b7d%3A0x4c7d9c3e2b1a0f9e!2sMarktpl.%204%2C%2096172%20M%C3%BChlhausen!5e0!3m2!1sde!2sde!4v1703158800000!5m2!1sde!2sde"
-                        class="w-full h-80 md:h-96 rounded-lg border-2 border-metal-gray"
-                        loading="lazy"
-                        allowfullscreen
-                        referrerpolicy="no-referrer-when-downgrade"
-                    ></iframe>
-                </div>
-                
-                <!-- Address & Downloads -->
-                <div class="flex flex-col justify-center space-y-6">
-                    <div class="bg-metal-gray p-6 rounded-lg">
-                        <h3 class="text-xl font-bold text-white mb-3">📍 Adresse</h3>
-                        <address class="not-italic text-metal-light/80">
-                            Kulturscheune<br>
-                            Marktpl. 4<br>
-                            96172 Mühlhausen
-                        </address>
-                        <a href="https://www.google.com/maps/search/?api=1&query=Kulturscheune+Marktpl.+4+96172+Mühlhausen" 
-                           target="_blank" 
-                           rel="noopener noreferrer"
-                           class="inline-block mt-3 text-metal-red hover:underline text-sm">
-                            🗺️ In Google Maps öffnen
-                        </a>
-                    </div>
-                    
-                    <div class="bg-metal-gray p-6 rounded-lg">
-                        <h3 class="text-xl font-bold text-white mb-3">🚗 Parken</h3>
-                        <p class="text-metal-light/80">
-                            Parkmöglichkeit gegenüber des Tors am Marktplatz. <br><br>
-                            Wir versuchen noch einen Fahrdienst für euch zu organisieren der euch von der Party aus im nahen Umkreis zur Unterkunft bringt. <br><br>
-                            Bitte organisiert euch aber nach Möglichkeit.
-                        </p>
-                    </div>
-                    
-                    <a href="#" class="download-button hidden" aria-label="Anfahrtsskizze als PDF herunterladen">
-                        <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
-                        </svg>
-                        Anfahrtsskizze (PDF) herunterladen
-                    </a>
-                </div>
-            </div>
-        </div>
-    </section>
 
     <!-- Gallery Section (für alle sichtbar) - Dynamisch geladen -->
     <section id="gallery" class="py-20 bg-metal-gray" aria-labelledby="gallery-title">
