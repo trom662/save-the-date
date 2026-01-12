@@ -11,6 +11,30 @@ const MUSIC_STORAGE_KEY = 'savethedate_music_enabled';
 // Global variable for login sound
 let currentLoginSound = null;
 
+// Google Apps Script Deployment URL
+const GOOGLE_APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwY8nuOUIhwjR8nIbsxIJvoQKGRUppGLKQ_AH5pkIYaEtO8m1dtdVh1Nw1o3KXrSwoqLg/exec';
+
+// Gästeliste für Autocomplete
+const guestList = [
+    'Barbara', 'Edmund', 'Tina', 'Lukas', 'Jessi', 'Mayla', 'Nami', 'Birgit Karl', 'Harald Karl',
+    'Sabrina Gora', 'Robert Gora', 'Emily Gora', 'Leonie Gora', 'Collin Gora', 'Anna', 'Luis',
+    'Ellen', 'Matthias', 'Roxy', 'Fabi Prietzel', 'Chris Scherf', 'Regina Scherf',
+    'Christoph Schuessler', 'Camilla Pazzini', 'Christian Boelling', 'Kathrin Schneider',
+    'Martin Reszt', 'Lara Reszt', 'Andre', 'Olga', 'Georg', 'Nicole', 'Philipp Roll',
+    'Robert Maier', 'Kai Häffner', 'Patrick Tschürtz', 'Thorsten Sommer', 'Jakob Huebler',
+    'Luisa', 'Jascha', 'Sidney', 'Jonas', 'Johanna', 'Matze', 'Frieda', 'Dani', 'Hannes',
+    'Nele', 'Verena', 'Rosalie', 'Elena', 'Alex', 'Alisa', 'Lena', 'Michi', 'Julia', 'Max',
+    'Aline', 'Jan', 'Paul', 'Basti', 'Milena', 'Emilia', 'Gabi', 'Reinhold', 'Angela',
+    'Stefan', 'Frank', 'Levi', 'Walter', 'Andrea', 'Julian', 'Annelise', 'Reinhard',
+    'Michaela', 'Michael', 'Magdalena', 'Harald', 'Elvira', 'Kelvin', 'Christian Rößner',
+    'Nadine Rößner', 'Markus Rößner', 'Kerstin Rößner', 'Patsi', 'Nils', 'Annika',
+    'Christine', 'Dominik', 'Bine', 'Tine', 'Tanja', 'Kevin', 'Kim', 'Clayton', 'Coco',
+    'Rafael', 'Pohli', 'Tom', 'Richy'
+];
+
+// Guard gegen mehrfaches Survey-Initialisieren
+let surveyInitialized = false;
+
 // ================================================
 // COUNTDOWN TIMER
 // ================================================
@@ -1139,6 +1163,11 @@ function initLoginSystem() {
     });
     
     console.log(isLoggedIn() ? '🔓 Admin session active' : '🔒 Guest mode');
+    
+    // Survey SOFORT initialisieren wenn Admin eingeloggt (nicht verzögert)
+    if (isLoggedIn()) {
+        initSurveyForm();
+    }
 }
 
 // Make login functions globally available
@@ -1249,3 +1278,172 @@ function initBackgroundMusic() {
     updateIcon();
     console.log('🎵 Background music initialized');
 }
+
+
+// ================================================
+// SURVEY FUNCTIONS
+// ================================================
+
+/**
+ * Initialize survey form (nur für eingeloggte Admins)
+ */
+function initSurveyForm() {
+    if (surveyInitialized) {
+        console.log('⚠️ Survey bereits initialisiert, überspringe...');
+        return;
+    }
+    
+    console.log('🎤 Initialisiere Umfrage-Formular...');
+    
+    const surveyForm = document.getElementById('survey-form');
+    const nameInput = document.getElementById('name');
+    
+    if (!surveyForm || !nameInput) {
+        console.warn('⚠️ Umfrage-Formular nicht gefunden');
+        return;
+    }
+    
+    // Autocomplete Setup
+    setupAutocomplete(nameInput, 'name-suggestions', guestList);
+    
+    // Form Submit Handler
+    surveyForm.addEventListener('submit', handleSurveySubmit);
+    
+    surveyInitialized = true;
+    console.log('✓ Umfrage bereit!');
+}
+
+/**
+ * Autocomplete Setup
+ */
+function setupAutocomplete(inputElement, suggestionsListId, dataList) {
+    const suggestionsList = document.getElementById(suggestionsListId);
+    
+    if (!suggestionsList) {
+        console.error('❌ Suggestions-Liste nicht gefunden:', suggestionsListId);
+        return;
+    }
+    
+    console.log('📝 Autocomplete aktiviert für:', inputElement.id);
+    
+    inputElement.addEventListener('input', function() {
+        const value = this.value.toLowerCase().trim();
+        
+        if (value.length === 0) {
+            suggestionsList.classList.add('hidden');
+            return;
+        }
+        
+        const filtered = dataList.filter(item => 
+            item.toLowerCase().startsWith(value)
+        );
+        
+        if (filtered.length === 0) {
+            suggestionsList.classList.add('hidden');
+            return;
+        }
+        
+        // Render suggestions
+        suggestionsList.innerHTML = filtered.map(item => 
+            `<li onclick="selectSuggestion(this, '${inputElement.id}')">${item}</li>`
+        ).join('');
+        
+        suggestionsList.classList.remove('hidden');
+    });
+    
+    // Close suggestions when clicking outside
+    document.addEventListener('click', function(e) {
+        if (e.target !== inputElement && !e.target.closest('.survey-suggestions')) {
+            suggestionsList.classList.add('hidden');
+        }
+    });
+}
+
+/**
+ * Select Suggestion from Autocomplete
+ */
+function selectSuggestion(element, inputId) {
+    const inputField = document.getElementById(inputId);
+    const suggestionsList = document.getElementById(inputId + '-suggestions');
+    
+    if (inputField) {
+        inputField.value = element.textContent;
+        inputField.focus();
+    }
+    if (suggestionsList) {
+        suggestionsList.classList.add('hidden');
+    }
+}
+
+/**
+ * Handle Survey Submission
+ */
+async function handleSurveySubmit(e) {
+    e.preventDefault();
+    
+    const submitBtn = document.getElementById('survey-submit-btn');
+    const submitText = document.getElementById('survey-submit-text');
+    const submitSpinner = document.getElementById('survey-submit-spinner');
+    const messageEl = document.getElementById('survey-message');
+    
+    if (!submitBtn || !messageEl) {
+        console.error('❌ Submit-Elemente nicht gefunden');
+        return;
+    }
+    
+    // Disable button & show spinner
+    submitBtn.disabled = true;
+    submitBtn.setAttribute('aria-busy', 'true');
+    if (submitText) submitText.classList.add('hidden');
+    if (submitSpinner) submitSpinner.classList.remove('hidden');
+    messageEl.textContent = '⏳ Wird gesendet...';
+    messageEl.className = 'text-metal-light/50 text-xs text-center mt-3';
+    
+    const formData = {
+        name: document.getElementById('name')?.value.trim() || '',
+        personen: document.getElementById('personen')?.value || '',
+        essen: document.getElementById('essen')?.value || '',
+        allergien: document.getElementById('allergien')?.value.trim() || '',
+        anmerkungen: document.getElementById('anmerkungen')?.value.trim() || ''
+    };
+    
+    const isAbsage = formData.personen === 'Absage';
+    
+    console.log('📤 Sende Umfrage-Daten:', formData);
+    
+    try {
+        await fetch(GOOGLE_APPS_SCRIPT_URL, {
+            method: 'POST',
+            mode: 'no-cors',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(formData)
+        });
+        
+        if (isAbsage) {
+            messageEl.textContent = 'Schade, dass ihr nicht könnt – danke fürs Bescheid geben. Wir stoßen auf euch an und freuen uns aufs nächste Wiedersehen!';
+            messageEl.className = 'text-metal-light/80 text-xs text-center mt-3 font-semibold';
+        } else {
+            messageEl.textContent = '✅ Vielen Dank! Wir freuen uns riesig auf euch! 🤘';
+            messageEl.className = 'text-green-500 text-xs text-center mt-3 font-semibold';
+        }
+        
+        // Reset form
+        document.getElementById('survey-form').reset();
+        
+    } catch(error) {
+        console.error('❌ Survey-Fehler:', error);
+        messageEl.textContent = '❌ Fehler beim Senden. Bitte versuche es später erneut.';
+        messageEl.className = 'text-red-500 text-xs text-center mt-3 font-semibold';
+    }
+    
+    // Re-enable button
+    submitBtn.disabled = false;
+    submitBtn.setAttribute('aria-busy', 'false');
+    if (submitText) submitText.classList.remove('hidden');
+    if (submitSpinner) submitSpinner.classList.add('hidden');
+}
+
+// Make survey functions globally available
+window.initSurveyForm = initSurveyForm;
+window.selectSuggestion = selectSuggestion;
+window.handleSurveySubmit = handleSurveySubmit;

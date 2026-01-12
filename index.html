@@ -34,9 +34,13 @@
     
     <!-- Custom Styles -->
     <link rel="stylesheet" href="styles.css">
+    <!-- Favicon -->
+    <link rel="icon" href="assets/banner-logo2.png" type="image/png">
     
     <!-- PhotoSwipe v5 Lightbox -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/photoswipe@5.4.4/dist/photoswipe.css">
+    <!-- Main Script (deferred to ensure globals exist for inline handlers) -->
+    <script src="scripts.js" defer></script>
     <!-- Preload important images and audio for faster first paint/playback -->
     <link rel="preload" href="assets/design-hero.jpg" as="image">
     <link rel="preload" href="assets/banner-logo2.png" as="image">
@@ -90,12 +94,12 @@
                 </a>
                 
                 <!-- Desktop Navigation -->
-                <ul class="hidden md:flex space-x-8">
+                <ul class="hidden md:flex space-x-8 items-center">
                     <li><a href="#hero" class="nav-link">Home</a></li>
-                    <li class="protected-nav"><a href="#timeline" class="nav-link">Zeitplan</a></li>
                     <li class="protected-nav"><a href="#location" class="nav-link">Anfahrt</a></li>
+                    <li class="protected-nav"><a href="#timeline" class="nav-link">Zeitplan</a></li>
                     <li class="protected-nav"><a href="#gallery" class="nav-link">Galerie</a></li>
-                    <li class="protected-nav"><a href="#zusagen" class="nav-link-cta">Zusagen</a></li>
+                    <li class="protected-nav"><a href="#umfrage" class="bg-metal-red text-white font-bold px-4 py-2 rounded-lg border-2 border-metal-red hover:bg-red-700 hover:border-red-700 transition-all duration-300">Zu-/Absagen</a></li>
                 </ul>
                 
                 <!-- Mobile Hamburger -->
@@ -110,10 +114,10 @@
             <div id="mobile-menu" class="hidden md:hidden mt-4 pb-4">
                 <ul class="flex flex-col space-y-4">
                     <li><a href="#hero" class="mobile-nav-link">Home</a></li>
-                    <li class="protected-nav"><a href="#timeline" class="mobile-nav-link">Zeitplan</a></li>
                     <li class="protected-nav"><a href="#location" class="mobile-nav-link">Anfahrt</a></li>
+                    <li class="protected-nav"><a href="#timeline" class="mobile-nav-link">Zeitplan</a></li>
                     <li class="protected-nav"><a href="#gallery" class="mobile-nav-link">Galerie</a></li>
-                    <li class="protected-nav"><a href="#zusagen" class="mobile-nav-link text-metal-red font-bold">Zusagen</a></li>
+                    <li class="protected-nav"><a href="#umfrage" class="inline-block bg-metal-red text-white font-bold px-4 py-2 rounded-lg border-2 border-metal-red hover:bg-red-700 transition-all">Zu-/Absagen</a></li>
                 </ul>
             </div>
         </div>
@@ -240,7 +244,7 @@
                 </div>
                 
                 <!-- CTA Button -->
-                <a href="#zusagen" class="cta-button group protected-cta">
+                <a href="#umfrage" class="cta-button group protected-cta">
                     <span>🤘 Ich bin dabei!</span>
                     <svg class="w-5 h-5 ml-2 transform group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3"/>
@@ -297,7 +301,7 @@
                         <p class="text-metal-light/80">
                             Parkmöglichkeit gegenüber des Tors am Marktplatz. <br><br>
                             Wir versuchen noch einen Fahrdienst für euch zu organisieren der euch von der Party aus im nahen Umkreis zur Unterkunft bringt. <br><br>
-                            Bitte organisiert euch aber nach Möglichkeit.
+                            Da wir allerdings keinen Tourbus besitzen, bitten wir euch, Fahrgemeinschaften zu bilden oder Taxis zu nutzen.
                         </p>
                     </div>
                     
@@ -445,7 +449,7 @@
     <div class="protected-content">
 
     <!-- Zusagen Section -->
-    <section id="zusagen" class="py-20 bg-metal-black">
+    <section id="zusagen" class="py-20 bg-metal-black hidden">
         <div class="container mx-auto px-4">
             <h2 class="section-title">Zusagen</h2>
             <p class="section-subtitle">Sag uns Bescheid! Plätze sind limitiert. Wer zuerst kommt, sitzt in der ersten Reihe.</p>
@@ -473,6 +477,129 @@
                         <em>Probleme mit dem Formular? Schreib uns direkt: 
                         <a href="mailto:bromags@outlook.de" class="text-metal-red hover:underline">wedding@example.com</a></em>
                     </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Gäste-Umfrage Section (PROTECTED - nur eingeloggt sichtbar) -->
+    <section id="umfrage" class="py-20 bg-metal-gray protected-content">
+        <div class="container mx-auto px-4">
+            <h2 class="section-title">Gäste-Umfrage</h2>
+            <p class="section-subtitle">Bitte sagt uns doch bis zum 01.03.2025 Bescheid ob ihr kommt! 🎸</p>
+            
+            <div class="max-w-3xl mx-auto mt-12">
+                <div class="bg-metal-black p-8 rounded-lg border-2 border-metal-red/30 hover:border-metal-red/60 transition-all duration-300">
+                    
+                    <!-- Intro Text -->
+                    <div class="mb-8 p-4 bg-metal-gray/50 rounded-lg border-l-4 border-metal-red">
+                        <p class="text-metal-light/90 font-semibold">
+                            🎤 Kurze Umfrage (ca. 2 Minuten)
+                        </p>
+                        <p class="text-metal-light/70 text-sm mt-2">
+                            Deine Antworten helfen uns, die Hochzeit noch besser zu gestalten!
+                        </p>
+                    </div>
+                    
+                    <!-- Survey Form -->
+                    <form id="survey-form" class="space-y-6">
+                        
+                                               
+                        <!-- Question 1: Name -->
+                        <div class="survey-question">
+                            <label for="name" class="block text-metal-light font-bold mb-3">
+                                👤 Name <span class="text-metal-red">*</span>
+                            </label>
+                            <div class="relative">
+                                <input 
+                                    type="text" 
+                                    id="name" 
+                                    name="name" 
+                                    placeholder="z.B. Max Müller"
+                                    class="w-full px-4 py-3 bg-metal-black border border-metal-gray rounded-lg text-metal-light placeholder-metal-light/40 focus:border-metal-red focus:outline-none transition-colors"
+                                    autocomplete="name"
+                                    required
+                                >
+                                <ul id="name-suggestions" class="survey-suggestions hidden absolute top-full left-0 right-0 bg-metal-black border border-metal-red/50 rounded-lg mt-1 max-h-48 overflow-y-auto z-10"></ul>
+                            </div>
+                        </div>
+                        
+                        <!-- Question 3: Anzahl Personen -->
+                        <div class="survey-question border-t border-metal-gray pt-6">
+                            <label for="personen" class="block text-metal-light font-bold mb-3">
+                                👥 Mit wie vielen Personen kommst du? <span class="text-metal-red">*</span>
+                            </label>
+                            <select 
+                                id="personen" 
+                                name="personen"
+                                class="w-full px-4 py-3 bg-metal-black border border-metal-gray rounded-lg text-metal-light focus:border-metal-red focus:outline-none transition-colors cursor-pointer"
+                                required
+                            >
+                                <option value="">-- Bitte auswählen --</option>
+                                <option value="Absage">Wir können leider nicht kommen.</option>
+                                <option value="1">1 Person</option>
+                                <option value="2">2 Personen</option>
+                                <option value="3">3 Personen</option>
+                                <option value="4">4 Personen</option>
+                                <option value="5">5 Personen</option>
+                                <option value="6">6 Personen</option>
+                            </select>
+                        </div>
+                        
+                        <!-- Question 4: Essen -->
+                        <div class="survey-question border-t border-metal-gray pt-6">
+                            <label for="essen" class="block text-metal-light font-bold mb-3">
+                                🍖 Ernährungspräferenz <span class="text-metal-light/60 text-xs font-normal">(optional)</span>
+                            </label>
+                            <select 
+                                id="essen" 
+                                name="essen"
+                                class="w-full px-4 py-3 bg-metal-black border border-metal-gray rounded-lg text-metal-light focus:border-metal-red focus:outline-none transition-colors cursor-pointer"
+                            >
+                                <option value="">-- Keine Angabe --</option>
+                                <option value="alles">Alles (omnivore)</option>
+                                <option value="veggie">Veggie</option>
+                                <option value="vegan">Vegan</option>
+                            </select>
+                        </div>
+                        
+                        <!-- Question 5: Allergien -->
+                        <div class="survey-question border-t border-metal-gray pt-6">
+                            <label for="allergien" class="block text-metal-light font-bold mb-3">
+                                ⚠️ Allergien oder Unverträglichkeiten?
+                            </label>
+                            <textarea 
+                                id="allergien"
+                                name="allergien" 
+                                placeholder="z.B. Nussallergie, Laktoseintoleranz..."
+                                class="w-full px-4 py-3 bg-metal-black border border-metal-gray rounded-lg text-metal-light placeholder-metal-light/40 focus:border-metal-red focus:outline-none transition-colors"
+                                rows="2"
+                            ></textarea>
+                        </div>
+                        
+                        <!-- Question 6: Anmerkungen -->
+                        <div class="survey-question border-t border-metal-gray pt-6">
+                            <label for="anmerkungen" class="block text-metal-light font-bold mb-3">
+                                💭 Noch etwas auf dem Herzen?
+                            </label>
+                            <textarea 
+                                id="anmerkungen"
+                                name="anmerkungen" 
+                                placeholder="Wünsche, Ideen, Kommentare..."
+                                class="w-full px-4 py-3 bg-metal-black border border-metal-gray rounded-lg text-metal-light placeholder-metal-light/40 focus:border-metal-red focus:outline-none transition-colors"
+                                rows="3"
+                            ></textarea>
+                        </div>
+                        
+                        <!-- Submit Button -->
+                        <div class="border-t border-metal-gray pt-6">
+                            <button type="submit" id="survey-submit-btn" class="cta-button w-full" aria-busy="false">
+                                <span id="survey-submit-text">Senden 🎸</span>
+                                <span id="survey-submit-spinner" class="hidden ml-2 inline-block animate-spin">⌛</span>
+                            </button>
+                            <p id="survey-message" class="text-metal-light/50 text-xs text-center mt-3"></p>
+                        </div>
+                    </form>
                 </div>
             </div>
         </div>
@@ -584,9 +711,6 @@
         </div>
     </div>
 
-    <!-- Scripts -->
-    <script src="scripts.js"></script>
-    
     <!-- PhotoSwipe v5 -->
     <script type="module">
         import PhotoSwipeLightbox from 'https://cdn.jsdelivr.net/npm/photoswipe@5.4.4/dist/photoswipe-lightbox.esm.min.js';

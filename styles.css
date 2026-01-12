@@ -1140,3 +1140,39 @@ body.is-admin .protected-cta {
 .gallery-caption-text {
     color: var(--metal-light);
 }
+
+.survey-suggestions {
+    list-style: none;
+    padding: 8px 0;
+    margin: 0;
+}
+
+.survey-suggestions li {
+    padding: 10px 16px;
+    cursor: pointer;
+    color: #e0e0e0;
+    transition: all 0.2s ease;
+    border-left: 3px solid transparent;
+}
+
+.survey-suggestions li:hover {
+    background-color: #0b0b0b;
+    border-left-color: #c62828;
+    color: #c62828;
+}
+
+#personen,
+#essen {
+    appearance: none;
+    background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23c62828' stroke-width='2'%3e%3cpath d='M6 9l6 6 6-6'/%3e%3c/svg%3e");
+    background-repeat: no-repeat;
+    background-position: right 12px center;
+    background-size: 20px;
+    padding-right: 40px;
+}
+
+#personen option,
+#essen option {
+    background-color: #0b0b0b;
+    color: #e0e0e0;
+}
