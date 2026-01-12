@@ -1306,8 +1306,8 @@ function initSurveyForm() {
     // Autocomplete Setup
     setupAutocomplete(nameInput, 'name-suggestions', guestList);
     
-    // Form Submit Handler
-    surveyForm.addEventListener('submit', handleSurveySubmit);
+    // Form Submit Handler wird via inline onsubmit in HTML aufgerufen
+    // (kein addEventListener hier, um doppelte Submissions zu vermeiden)
     
     surveyInitialized = true;
     console.log('✓ Umfrage bereit!');
