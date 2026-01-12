@@ -1379,7 +1379,8 @@ function selectSuggestion(element, inputId) {
  * Handle Survey Submission
  */
 async function handleSurveySubmit(e) {
-    e.preventDefault();
+    if (e) e.preventDefault();
+    if (e) e.stopPropagation();
     
     const submitBtn = document.getElementById('survey-submit-btn');
     const submitText = document.getElementById('survey-submit-text');
@@ -1441,6 +1442,8 @@ async function handleSurveySubmit(e) {
     submitBtn.setAttribute('aria-busy', 'false');
     if (submitText) submitText.classList.remove('hidden');
     if (submitSpinner) submitSpinner.classList.add('hidden');
+    
+    return false; // Verhindert Form-Reload
 }
 
 // Make survey functions globally available
