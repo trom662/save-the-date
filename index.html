@@ -354,8 +354,8 @@
     <!-- Timeline Section -->
     <section id="timeline" class="py-20 bg-metal-gray">
         <div class="container mx-auto px-4">
-            <h2 class="section-title">Der Zeitplan</h2>
-            <p class="section-subtitle">Timetable für unser Fest ;):</p>
+            <h2 class="section-title" id="timeline-title">Der Zeitplan</h2>
+            <p class="section-subtitle" id="timeline-subtitle">Timetable für unser Fest ;):</p>
             
             <!-- Festival Stage Timeline -->
             <div class="festival-stage-container mt-12 max-w-2xl mx-auto">
@@ -370,75 +370,82 @@
                     
                     <!-- Zeitmarker links -->
                     <div class="time-column left">
-                        <div class="time-slot">15:00</div>
-                        <div class="time-slot">16:00</div>
-                        <div class="time-slot">17:00</div>
-                        <div class="time-slot">18:00</div>
-                        <div class="time-slot">19:00</div>
-                        <div class="time-slot">20:00</div>
-                        <div class="time-slot">21:00</div>
-                        <div class="time-slot">22:00</div>
-                        <div class="time-slot">23:00</div>
-                        <div class="time-slot">00:00</div>
-                        <div class="time-slot">01:00</div>
-                        <div class="time-slot">02:00</div>
+                        <div class="time-slot day-only" data-hour="15">15:00</div>
+                        <div class="time-slot day-only" data-hour="16">16:00</div>
+                        <div class="time-slot day-only" data-hour="17">17:00</div>
+                        <div class="time-slot day-only" data-hour="18">18:00</div>
+                        <div class="time-slot" data-hour="19">19:00</div>
+                        <div class="time-slot" data-hour="20">20:00</div>
+                        <div class="time-slot" data-hour="21">21:00</div>
+                        <div class="time-slot" data-hour="22">22:00</div>
+                        <div class="time-slot" data-hour="23">23:00</div>
+                        <div class="time-slot" data-hour="0">00:00</div>
+                        <div class="time-slot" data-hour="1">01:00</div>
+                        <div class="time-slot" data-hour="2">02:00</div>
                     </div>
                     
                     <!-- Events Spalte -->
                     <div class="events-column">
                         
                         <!-- 15:00 - 16:15 Empfang (1.25h) -->
-                        <div class="event-block" style="--start: 0; --duration: 1.25;">
+                        <div class="event-block day-only" style="--start: 0; --duration: 1.25;" data-start-hour="15">
                             <span class="event-emoji">🥂</span>
                             <h4 class="event-title">EMPFANG</h4>
                             <span class="event-time">15:00 - 16:15</span>
                         </div>
                         
                         <!-- 16:30 - 17:15 Freie Trauung (0.75h) -->
-                        <div class="event-block" style="--start: 1.5; --duration: 0.75;">
+                        <div class="event-block day-only" style="--start: 1.5; --duration: 0.75;" data-start-hour="16.5">
                             <span class="event-emoji">💍</span>
                             <h4 class="event-title">FREIE TRAUUNG</h4>
                             <span class="event-time">16:30 - 17:15</span>
                         </div>
                         
                         <!-- 17:30 - 19:30 Abendessen (2h) -->
-                        <div class="event-block" style="--start: 2.5; --duration: 2;">
+                        <div class="event-block day-only" style="--start: 2.5; --duration: 2;" data-start-hour="17.5">
                             <span class="event-emoji">🍜</span>
                             <h4 class="event-title">ABENDESSEN</h4>
                             <span class="event-time">17:30 - 19:30</span>
                         </div>
                         
                         <!-- 20:00 - 21:00 Doors (1h) -->
-                        <div class="event-block" style="--start: 5; --duration: 1;">
+                        <div class="event-block" style="--start: 5; --duration: 1;" data-start-hour="20">
                             <span class="event-emoji">🚪</span>
                             <h4 class="event-title">DOORS</h4>
                             <span class="event-time">20:00 - 21:00</span>
                         </div>
                         
                         <!-- 21:00 - 02:00 Party (5h) -->
-                        <div class="event-block highlight" style="--start: 6; --duration: 5;">
+                        <div class="event-block highlight lane-left" style="--start: 6; --duration: 5;" data-start-hour="21">
                             <span class="event-emoji">🔥</span>
                             <h4 class="event-title">PARTY</h4>
                             <span class="event-time">21:00 - 02:00</span>
                             <p class="event-detail">DJ Heimer</p>
                         </div>
                         
+                        <!-- 22:00 - 00:00 Pizza Delivery (2h) - parallel zur Party -->
+                        <div class="event-block lane-right" style="--start: 7; --duration: 2;" data-start-hour="22">
+                            <span class="event-emoji">🍕</span>
+                            <h4 class="event-title">PIZZA DELIVERY</h4>
+                            <span class="event-time">22:00 - 00:00</span>
+                        </div>
+                        
                     </div>
                     
                     <!-- Zeitmarker rechts -->
                     <div class="time-column right">
-                        <div class="time-slot">15:00</div>
-                        <div class="time-slot">16:00</div>
-                        <div class="time-slot">17:00</div>
-                        <div class="time-slot">18:00</div>
-                        <div class="time-slot">19:00</div>
-                        <div class="time-slot">20:00</div>
-                        <div class="time-slot">21:00</div>
-                        <div class="time-slot">22:00</div>
-                        <div class="time-slot">23:00</div>
-                        <div class="time-slot">00:00</div>
-                        <div class="time-slot">01:00</div>
-                        <div class="time-slot">02:00</div>
+                        <div class="time-slot day-only" data-hour="15">15:00</div>
+                        <div class="time-slot day-only" data-hour="16">16:00</div>
+                        <div class="time-slot day-only" data-hour="17">17:00</div>
+                        <div class="time-slot day-only" data-hour="18">18:00</div>
+                        <div class="time-slot" data-hour="19">19:00</div>
+                        <div class="time-slot" data-hour="20">20:00</div>
+                        <div class="time-slot" data-hour="21">21:00</div>
+                        <div class="time-slot" data-hour="22">22:00</div>
+                        <div class="time-slot" data-hour="23">23:00</div>
+                        <div class="time-slot" data-hour="0">00:00</div>
+                        <div class="time-slot" data-hour="1">01:00</div>
+                        <div class="time-slot" data-hour="2">02:00</div>
                     </div>
                     
                 </div>

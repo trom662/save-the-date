@@ -36,6 +36,80 @@ const guestList = [
 let surveyInitialized = false;
 
 // ================================================
+// URL PARAMETER - INVITE TYPE DETECTION
+// ================================================
+
+/**
+ * Check URL parameters for invite type (day/evening)
+ * Filters timeline events accordingly
+ */
+function handleInviteType() {
+    const urlParams = new URLSearchParams(window.location.search);
+    // Only support subtle parameter: set=A (day) | set=B (evening)
+    let inviteType = undefined;
+    const setParam = urlParams.get('set');
+    if (setParam) {
+        if (setParam.toUpperCase() === 'A') inviteType = 'day';
+        if (setParam.toUpperCase() === 'B') inviteType = 'evening';
+    }
+    
+    console.log('Invite Type:', inviteType);
+    
+    if (inviteType === 'evening') {
+        // Abendgäste: Nur Events ab 19:30 anzeigen
+        filterTimelineForEvening();
+        updateTextsForEvening();
+    } else if (inviteType === 'day') {
+        // Tagesgäste: Alles anzeigen (Standard)
+        console.log('Day guests - showing full timeline');
+    }
+    // Ohne Parameter: Normal (geschützt via Login)
+}
+
+/**
+ * Filter timeline to show only evening events (from 19:30)
+ */
+function filterTimelineForEvening() {
+    const dayOnlyEvents = document.querySelectorAll('.event-block.day-only');
+    const dayOnlyTimeSlots = document.querySelectorAll('.time-slot.day-only');
+    const eventsColumn = document.querySelector('.events-column');
+    
+    dayOnlyEvents.forEach(event => {
+        event.style.display = 'none';
+    });
+    
+    dayOnlyTimeSlots.forEach(slot => {
+        slot.style.display = 'none';
+    });
+    
+    // Rebase timeline so 19:00 becomes top (offset 4 hours from 15:00)
+    if (eventsColumn) {
+        eventsColumn.classList.add('evening-mode');
+        eventsColumn.style.setProperty('--base-offset', '4');
+    }
+    
+    console.log('Timeline filtered for evening guests');
+}
+
+/**
+ * Update texts for evening guests
+ */
+function updateTextsForEvening() {
+    const titleEl = document.getElementById('timeline-title');
+    const subtitleEl = document.getElementById('timeline-subtitle');
+    
+    if (titleEl) {
+        titleEl.textContent = 'Der Zeitplan ab 19:30 Uhr';
+    }
+    
+    if (subtitleEl) {
+        subtitleEl.textContent = 'Euer Abend mit uns 🎸';
+    }
+    
+    console.log('Texts updated for evening guests');
+}
+
+// ================================================
 // COUNTDOWN TIMER
 // ================================================
 
@@ -700,6 +774,9 @@ function initActiveSection() {
 document.addEventListener('DOMContentLoaded', () => {
     // Wedding date: September 19, 2026 at 15:00
     initCountdown('2026-09-19T15:00:00');
+    
+    // Handle invite type from URL parameters (day/evening)
+    handleInviteType();
     
     initMobileNav();
     initSmoothScroll();

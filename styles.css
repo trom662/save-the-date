@@ -243,12 +243,17 @@ body {
         );
 }
 
+/* Evening Mode: nur 19:00 - 02:00 sichtbar (8 Stunden) */
+.events-column.evening-mode {
+    height: calc(8 * 80px);
+}
+
 /* Event Block - positioniert nach Zeit */
 .event-block {
     position: absolute;
     left: 8px;
     right: 8px;
-    top: calc(var(--start) * 80px + 4px);
+    top: calc((var(--start) - var(--base-offset, 0)) * 80px + 4px);
     height: calc(var(--duration) * 80px - 8px);
     min-height: 60px; /* Mindesthöhe für kurze Events */
     background-color: var(--metal-gray);
@@ -274,6 +279,19 @@ body {
 .event-block.highlight {
     background: linear-gradient(135deg, var(--metal-gray), rgba(198, 40, 40, 0.15));
     border-color: var(--metal-red);
+}
+
+/* Parallel lanes for overlapping events */
+.event-block.lane-left {
+    left: 8px;
+    right: auto;
+    width: calc(50% - 12px);
+}
+
+.event-block.lane-right {
+    left: calc(50% + 4px);
+    right: auto;
+    width: calc(50% - 12px);
 }
 
 /* Event Emoji */
@@ -313,6 +331,12 @@ body {
     flex-shrink: 0;
 }
 
+/* Hide day-only events for evening guests */
+.event-block.day-only[style*="display: none"] {
+    opacity: 0;
+    pointer-events: none;
+}
+
 /* Responsive */
 @media (max-width: 640px) {
     .festival-timeline-grid {
@@ -327,9 +351,12 @@ body {
     .events-column {
         height: calc(12 * 65px);
     }
+    .events-column.evening-mode {
+        height: calc(8 * 65px);
+    }
     
     .event-block {
-        top: calc(var(--start) * 65px + 3px);
+        top: calc((var(--start) - var(--base-offset, 0)) * 65px + 3px);
         height: calc(var(--duration) * 65px - 6px);
         min-height: 50px;
         left: 4px;
