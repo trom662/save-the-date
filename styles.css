@@ -169,77 +169,194 @@ body {
     }
 }
 
-/* ---- Timeline Styles ---- */
-.timeline-item {
+/* ---- Timeline Styles (Festival Stage Layout) ---- */
+
+/* Stage Container */
+.festival-stage-container {
+    background-color: var(--metal-black);
+    border: 1px solid rgba(198, 40, 40, 0.2);
+}
+
+/* Stage Header */
+.festival-stage-header {
+    background: linear-gradient(90deg, var(--metal-gray), var(--metal-black), var(--metal-gray));
+    padding: 0.75rem 1rem;
+    text-align: center;
+    border-bottom: 2px solid var(--metal-red);
+}
+
+.stage-name {
+    font-family: 'Metal Mania', cursive;
+    font-size: 1.25rem;
+    letter-spacing: 0.2em;
+    color: var(--metal-light);
+    text-transform: uppercase;
+}
+
+/* Timeline Grid - 3 Spalten: Zeit | Events | Zeit */
+.festival-timeline-grid {
+    display: grid;
+    grid-template-columns: 50px 1fr 50px;
+    background-color: var(--metal-black);
+}
+
+/* Zeit-Spalten links und rechts */
+.time-column {
     display: flex;
-    gap: 1.5rem;
+    flex-direction: column;
+    background-color: rgba(26, 26, 26, 0.8);
+}
+
+.time-column.left {
+    border-right: 1px solid rgba(224, 224, 224, 0.15);
+}
+
+.time-column.right {
+    border-left: 1px solid rgba(224, 224, 224, 0.15);
+}
+
+/* Einzelne Zeitslots - größer für bessere Lesbarkeit */
+.time-slot {
+    height: 80px;
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+    padding-top: 4px;
+    font-family: 'Inter', sans-serif;
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: rgba(224, 224, 224, 0.6);
+    border-bottom: 1px solid rgba(224, 224, 224, 0.08);
+}
+
+/* Events Spalte - relativ für absolute Positionierung */
+.events-column {
     position: relative;
-    padding-bottom: 2rem;
+    height: calc(12 * 80px); /* 12 Stunden × 80px */
+    background: 
+        repeating-linear-gradient(
+            to bottom,
+            transparent 0px,
+            transparent 79px,
+            rgba(224, 224, 224, 0.08) 79px,
+            rgba(224, 224, 224, 0.08) 80px
+        );
 }
 
-.timeline-item:not(:last-child)::before {
-    content: '';
+/* Event Block - positioniert nach Zeit */
+.event-block {
     position: absolute;
-    left: 1.5rem;
-    top: 3.5rem;
-    bottom: 0;
-    width: 2px;
-    background: linear-gradient(to bottom, var(--metal-red), transparent);
-}
-
-.timeline-marker {
-    flex-shrink: 0;
-    width: 3rem;
-    height: 3rem;
+    left: 8px;
+    right: 8px;
+    top: calc(var(--start) * 80px + 4px);
+    height: calc(var(--duration) * 80px - 8px);
+    min-height: 60px; /* Mindesthöhe für kurze Events */
+    background-color: var(--metal-gray);
+    border: 1px solid rgba(198, 40, 40, 0.4);
     display: flex;
+    flex-direction: column;
     align-items: center;
     justify-content: center;
-    font-size: 1.5rem;
-    background-color: var(--metal-gray);
-    border: 2px solid var(--metal-red);
-    border-radius: 50%;
+    text-align: center;
+    padding: 0.5rem 0.75rem;
+    transition: all var(--transition-medium);
+    overflow: hidden;
+    box-sizing: border-box;
 }
 
-.timeline-content {
-    flex: 1;
-    background-color: var(--metal-black);
-    padding: 1.5rem;
-    border-radius: 0.5rem;
-    border: 1px solid var(--metal-gray);
-    transition: border-color var(--transition-fast);
+.event-block:hover {
+    border-color: var(--metal-red);
+    box-shadow: 0 0 20px rgba(198, 40, 40, 0.3);
+    transform: scale(1.02);
+    z-index: 10;
 }
 
-.timeline-content:hover {
+.event-block.highlight {
+    background: linear-gradient(135deg, var(--metal-gray), rgba(198, 40, 40, 0.15));
     border-color: var(--metal-red);
 }
 
-.timeline-time {
-    font-family: 'Metal Mania', cursive;
-    font-size: 1.35rem;
-    letter-spacing: 0.15em;
-    text-transform: uppercase;
+/* Event Emoji */
+.event-emoji {
+    font-size: 1.25rem;
+    margin-bottom: 0.2rem;
+    line-height: 1;
+    flex-shrink: 0;
+}
+
+/* Event Title */
+.event-block .event-title {
+    font-family: 'Inter', sans-serif;
+    font-size: 0.9rem;
+    font-weight: 800;
+    letter-spacing: 0.05em;
+    color: var(--metal-light);
+    margin: 0;
+    line-height: 1.2;
+    flex-shrink: 0;
+}
+
+/* Event Time */
+.event-block .event-time {
+    font-size: 0.7rem;
+    color: rgba(224, 224, 224, 0.5);
+    margin-top: 0.15rem;
+    flex-shrink: 0;
+}
+
+/* Event Detail (z.B. DJ Name) */
+.event-detail {
+    font-size: 0.7rem;
     color: var(--metal-red);
-    margin-bottom: 0.35rem;
+    margin-top: 0.25rem;
+    font-weight: 600;
+    flex-shrink: 0;
 }
 
-.timeline-title {
-    font-size: 1.15rem;
-    font-weight: 700;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-    color: white;
-    margin-bottom: 0.5rem;
+/* Responsive */
+@media (max-width: 640px) {
+    .festival-timeline-grid {
+        grid-template-columns: 42px 1fr 42px;
+    }
+    
+    .time-slot {
+        font-size: 0.65rem;
+        height: 65px;
+    }
+    
+    .events-column {
+        height: calc(12 * 65px);
+    }
+    
+    .event-block {
+        top: calc(var(--start) * 65px + 3px);
+        height: calc(var(--duration) * 65px - 6px);
+        min-height: 50px;
+        left: 4px;
+        right: 4px;
+        padding: 0.35rem 0.5rem;
+    }
+    
+    .event-emoji {
+        font-size: 1rem;
+    }
+    
+    .event-block .event-title {
+        font-size: 0.75rem;
+    }
+    
+    .event-block .event-time {
+        font-size: 0.6rem;
+    }
 }
-
-.timeline-desc {
-    color: rgba(224, 224, 224, 0.78);
-    line-height: 1.7;
-    margin-bottom: 0.65rem;
-}
-
-.timeline-location {
-    font-size: 0.875rem;
-    color: rgba(224, 224, 224, 0.6);
+    
+    .festival-event-card .timeline-marker {
+        font-size: 2.5rem;
+    }
+    
+    .festival-event-card .timeline-title {
+        font-size: 1.1rem;
+    }
 }
 
 /* ---- Download Button ---- */

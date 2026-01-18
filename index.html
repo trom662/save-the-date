@@ -103,7 +103,7 @@
                 
                 <!-- CTA Button + Mobile Hamburger -->
                 <div class="flex items-center gap-4">
-                    <a href="#umfrage" class="protected-nav bg-metal-red text-white font-bold px-3 py-1.5 text-sm rounded-lg border-2 border-metal-red hover:bg-red-700 transition-all">Zu-/Absagen</a>
+                    <a href="#umfrage" class="protected-nav bg-metal-red text-white font-bold px-3 py-1.5 text-sm rounded-lg border-2 border-metal-red hover:bg-red-700 transition-all whitespace-nowrap">Zusagen</a>
                     <button id="mobile-menu-btn" class="md:hidden text-metal-light hover:text-metal-red transition-colors protected-nav" aria-label="Menü öffnen" aria-expanded="false">
                         <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
@@ -355,40 +355,92 @@
     <section id="timeline" class="py-20 bg-metal-gray">
         <div class="container mx-auto px-4">
             <h2 class="section-title">Der Zeitplan</h2>
-            <p class="section-subtitle">Drei Akte. Ein epischer Tag. Kein Zugabe-Verbot.</p>
+            <p class="section-subtitle">Timetable für unser Fest ;):</p>
             
-            <div class="max-w-3xl mx-auto mt-12">
-                <!-- Event 1: Ceremony -->
-                <div class="timeline-item">
-                    <div class="timeline-marker">💍</div>
-                    <div class="timeline-content">
-                        <h3 class="timeline-time">14:00 Uhr</h3>
-                        <h4 class="timeline-title">Die Zeremonie</h4>
-                        <p class="timeline-desc">Der offizielle Teil. Wir sagen „Ja" – ihr sagt „Endlich!". Tränen erlaubt, Headbanging erwünscht.</p>
-                        <p class="timeline-location">📍 Kulturscheune, Marktpl. 4, 96172 Mühlhausen</p>
-                    </div>
+            <!-- Festival Stage Timeline -->
+            <div class="festival-stage-container mt-12 max-w-2xl mx-auto">
+                
+                <!-- Stage Header -->
+                <div class="festival-stage-header">
+                    <span class="stage-name">KULTURSCHEUNE</span>
                 </div>
                 
-                <!-- Event 2: Reception -->
-                <div class="timeline-item">
-                    <div class="timeline-marker">🥂</div>
-                    <div class="timeline-content">
-                        <h3 class="timeline-time">16:00 Uhr</h3>
-                        <h4 class="timeline-title">Empfang & Dinner</h4>
-                        <p class="timeline-desc">Sektempfang, Gruppenfoto-Chaos und ein Menü, das selbst Lemmy stolz gemacht hätte. Vegetarische Option vorhanden.</p>
-                        <p class="timeline-location">📍 Gleicher Ort, andere Ecke</p>
+                <!-- Timeline Grid mit Stundenraster -->
+                <div class="festival-timeline-grid">
+                    
+                    <!-- Zeitmarker links -->
+                    <div class="time-column left">
+                        <div class="time-slot">15:00</div>
+                        <div class="time-slot">16:00</div>
+                        <div class="time-slot">17:00</div>
+                        <div class="time-slot">18:00</div>
+                        <div class="time-slot">19:00</div>
+                        <div class="time-slot">20:00</div>
+                        <div class="time-slot">21:00</div>
+                        <div class="time-slot">22:00</div>
+                        <div class="time-slot">23:00</div>
+                        <div class="time-slot">00:00</div>
+                        <div class="time-slot">01:00</div>
+                        <div class="time-slot">02:00</div>
                     </div>
-                </div>
-                
-                <!-- Event 3: After-Party -->
-                <div class="timeline-item">
-                    <div class="timeline-marker">🔥</div>
-                    <div class="timeline-content">
-                        <h3 class="timeline-time">21:00 Uhr</h3>
-                        <h4 class="timeline-title">After-Party</h4>
-                        <p class="timeline-desc">DJ, Liveband, offene Bar. Tanzen bis die Boots qualmen. Endet wenn der Letzte geht (oder umfällt).</p>
-                        <p class="timeline-location">📍 Der Keller – folgt den Bässen</p>
+                    
+                    <!-- Events Spalte -->
+                    <div class="events-column">
+                        
+                        <!-- 15:00 - 16:15 Empfang (1.25h) -->
+                        <div class="event-block" style="--start: 0; --duration: 1.25;">
+                            <span class="event-emoji">🥂</span>
+                            <h4 class="event-title">EMPFANG</h4>
+                            <span class="event-time">15:00 - 16:15</span>
+                        </div>
+                        
+                        <!-- 16:30 - 17:15 Freie Trauung (0.75h) -->
+                        <div class="event-block" style="--start: 1.5; --duration: 0.75;">
+                            <span class="event-emoji">💍</span>
+                            <h4 class="event-title">FREIE TRAUUNG</h4>
+                            <span class="event-time">16:30 - 17:15</span>
+                        </div>
+                        
+                        <!-- 17:30 - 19:30 Abendessen (2h) -->
+                        <div class="event-block" style="--start: 2.5; --duration: 2;">
+                            <span class="event-emoji">🍜</span>
+                            <h4 class="event-title">ABENDESSEN</h4>
+                            <span class="event-time">17:30 - 19:30</span>
+                        </div>
+                        
+                        <!-- 20:00 - 21:00 Doors (1h) -->
+                        <div class="event-block" style="--start: 5; --duration: 1;">
+                            <span class="event-emoji">🚪</span>
+                            <h4 class="event-title">DOORS</h4>
+                            <span class="event-time">20:00 - 21:00</span>
+                        </div>
+                        
+                        <!-- 21:00 - 02:00 Party (5h) -->
+                        <div class="event-block highlight" style="--start: 6; --duration: 5;">
+                            <span class="event-emoji">🔥</span>
+                            <h4 class="event-title">PARTY</h4>
+                            <span class="event-time">21:00 - 02:00</span>
+                            <p class="event-detail">DJ Heimer</p>
+                        </div>
+                        
                     </div>
+                    
+                    <!-- Zeitmarker rechts -->
+                    <div class="time-column right">
+                        <div class="time-slot">15:00</div>
+                        <div class="time-slot">16:00</div>
+                        <div class="time-slot">17:00</div>
+                        <div class="time-slot">18:00</div>
+                        <div class="time-slot">19:00</div>
+                        <div class="time-slot">20:00</div>
+                        <div class="time-slot">21:00</div>
+                        <div class="time-slot">22:00</div>
+                        <div class="time-slot">23:00</div>
+                        <div class="time-slot">00:00</div>
+                        <div class="time-slot">01:00</div>
+                        <div class="time-slot">02:00</div>
+                    </div>
+                    
                 </div>
             </div>
         </div>
