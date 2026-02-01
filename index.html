@@ -453,12 +453,9 @@
         </div>
     </section>
 
-    
-
     </div><!-- Ende protected-content -->
 
-
-    <!-- Gallery Section (für alle sichtbar) - Dynamisch geladen -->
+    <!-- Gallery Section (öffentlich) - Dynamisch geladen -->
     <section id="gallery" class="py-20 bg-metal-gray" aria-labelledby="gallery-title">
         <div class="container mx-auto px-4">
             <h2 id="gallery-title" class="section-title">Galerie</h2>
@@ -505,8 +502,10 @@
         </div>
     </section>
 
-    <!-- PROTECTED CONTENT Teil 2 (nur für eingeloggte User) -->
-    <div class="protected-content">
+    <!-- ============================================ -->
+    <!-- PROTECTED CONTENT (nur für eingeloggte User) -->
+    <!-- ============================================ -->
+    <div id="protected-content" class="protected-content">
 
     <!-- Zusagen Section -->
     <section id="zusagen" class="py-20 bg-metal-black hidden">
@@ -543,7 +542,7 @@
     </section>
 
     <!-- Gäste-Umfrage Section (PROTECTED - nur eingeloggt sichtbar) -->
-    <section id="umfrage" class="py-20 bg-metal-gray protected-content">
+    <section id="umfrage" class="py-20 bg-metal-gray">
         <div class="container mx-auto px-4">
             <h2 class="section-title">Zu-/Absage</h2>
             <p class="section-subtitle">Bitte sagt uns doch bis zum 01.03.2025 Bescheid ob ihr kommt! 🎸</p>
