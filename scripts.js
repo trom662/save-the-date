@@ -1,6 +1,7 @@
 /**
  * Save The Date - JavaScript
  * Countdown, Navigation, Lightbox & Smooth Interactions
+ * Apple-Level Polish Edition
  */
 
 // ================================================
@@ -13,6 +14,139 @@ let currentLoginSound = null;
 
 // Google Apps Script Deployment URL
 const GOOGLE_APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwY8nuOUIhwjR8nIbsxIJvoQKGRUppGLKQ_AH5pkIYaEtO8m1dtdVh1Nw1o3KXrSwoqLg/exec';
+
+// ================================================
+// SCROLL-TRIGGERED ANIMATIONS (Apple-Style)
+// ================================================
+
+/**
+ * Initialize Intersection Observer for reveal animations
+ */
+function initScrollAnimations() {
+    const revealElements = document.querySelectorAll('.reveal');
+    
+    if (!revealElements.length) return;
+    
+    const observerOptions = {
+        root: null,
+        rootMargin: '0px 0px -100px 0px',
+        threshold: 0.1
+    };
+    
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.classList.add('visible');
+                // Optionally unobserve after animation
+                // observer.unobserve(entry.target);
+            }
+        });
+    }, observerOptions);
+    
+    revealElements.forEach(el => observer.observe(el));
+}
+
+/**
+ * Initialize staggered list animations
+ */
+function initStaggerAnimations() {
+    const staggerContainers = document.querySelectorAll('[data-stagger]');
+    
+    staggerContainers.forEach(container => {
+        const items = container.querySelectorAll('.stagger-item');
+        
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    items.forEach((item, index) => {
+                        setTimeout(() => {
+                            item.classList.add('visible');
+                        }, index * 100);
+                    });
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, { threshold: 0.2 });
+        
+        observer.observe(container);
+    });
+}
+
+// ================================================
+// PARTICLE EFFECTS
+// ================================================
+
+/**
+ * Create floating particles for hero/welcome sections
+ */
+function createParticles(containerId, count = 20) {
+    const container = document.getElementById(containerId);
+    if (!container) return;
+    
+    for (let i = 0; i < count; i++) {
+        const particle = document.createElement('div');
+        particle.className = 'particle';
+        particle.style.left = Math.random() * 100 + '%';
+        particle.style.animationDelay = Math.random() * 15 + 's';
+        particle.style.animationDuration = (15 + Math.random() * 10) + 's';
+        container.appendChild(particle);
+    }
+}
+
+// ================================================
+// SMOOTH SCROLL ENHANCEMENT
+// ================================================
+
+/**
+ * Enhanced smooth scroll with easing
+ */
+function initSmoothScroll() {
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener('click', function(e) {
+            e.preventDefault();
+            const target = document.querySelector(this.getAttribute('href'));
+            if (target) {
+                const headerOffset = 80;
+                const elementPosition = target.getBoundingClientRect().top;
+                const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
+                
+                window.scrollTo({
+                    top: offsetPosition,
+                    behavior: 'smooth'
+                });
+            }
+        });
+    });
+}
+
+// ================================================
+// NAVBAR SCROLL EFFECTS
+// ================================================
+
+/**
+ * Add scroll-based effects to navbar
+ */
+function initNavbarEffects() {
+    const navbar = document.getElementById('navbar');
+    if (!navbar) return;
+    
+    let lastScroll = 0;
+    
+    window.addEventListener('scroll', () => {
+        const currentScroll = window.pageYOffset;
+        
+        // Add shadow on scroll
+        if (currentScroll > 50) {
+            navbar.style.boxShadow = '0 4px 30px rgba(0, 0, 0, 0.3)';
+            navbar.style.background = 'rgba(10, 10, 10, 0.98)';
+        } else {
+            navbar.style.boxShadow = 'none';
+            navbar.style.background = 'rgba(10, 10, 10, 0.95)';
+        }
+        
+        lastScroll = currentScroll;
+    }, { passive: true });
+}
 
 // Gästeliste für Autocomplete
 const guestList = [
@@ -784,6 +918,13 @@ document.addEventListener('DOMContentLoaded', () => {
     initNavbarScroll();
     initActiveSection();
     initLoginSystem();
+    
+    // Apple-Style Enhancements
+    initScrollAnimations();
+    initStaggerAnimations();
+    initNavbarEffects();
+    createParticles('welcome-particles', 15);
+    createParticles('hero-particles', 25);
     
     initBackgroundMusic();
     // Preload a few important assets (images + audio) to improve first paint and playback

@@ -13,14 +13,30 @@
             theme: {
                 extend: {
                     colors: {
-                        'metal-black': '#0b0b0b',
-                        'metal-red': '#c62828',
-                        'metal-gray': '#1a1a1a',
-                        'metal-light': '#e0e0e0',
+                        'metal-black': '#0a0a0a',
+                        'metal-red': '#dc2626',
+                        'metal-gray': '#141414',
+                        'metal-gray-light': '#1e1e1e',
+                        'metal-light': '#f5f5f5',
+                        'metal-muted': '#a3a3a3',
                     },
                     fontFamily: {
                         'metal': ['Metal Mania', 'cursive'],
                         'sans': ['Inter', 'sans-serif'],
+                    },
+                    animation: {
+                        'float': 'float 6s ease-in-out infinite',
+                        'glow-pulse': 'glow-pulse 2s ease-in-out infinite',
+                    },
+                    keyframes: {
+                        float: {
+                            '0%, 100%': { transform: 'translateY(0)' },
+                            '50%': { transform: 'translateY(-10px)' },
+                        },
+                        'glow-pulse': {
+                            '0%, 100%': { boxShadow: '0 0 20px rgba(220, 38, 38, 0.4)' },
+                            '50%': { boxShadow: '0 0 40px rgba(220, 38, 38, 0.6)' },
+                        }
                     }
                 }
             }
@@ -54,17 +70,28 @@
     
     <!-- Welcome Overlay (click to enter & start music) -->
     <div id="welcome-overlay" class="fixed inset-0 z-[999] bg-metal-black flex items-center justify-center cursor-pointer" onclick="enterSite()">
-        <div class="text-center p-8">
-            <div class="flex items-center justify-center gap-4 mb-6">
-                <img src="assets/maxi2.png" alt="Maxi" class="w-14 h-14 md:w-20 md:h-20 object-contain">
-                <p class="font-metal text-4xl md:text-6xl text-metal-red">Kathrin & Tobi</p>
-                <img src="assets/laika1.png" alt="Laika" class="w-14 h-14 md:w-20 md:h-20 object-contain">
+        <div class="text-center p-8 max-w-lg">
+            <!-- Animated Logo -->
+            <div class="flex items-center justify-center gap-4 mb-8">
+                <img src="assets/maxi2.png" alt="Maxi" class="w-16 h-16 md:w-20 md:h-20 object-contain animate-pulse">
+                <div>
+                    <p class="font-metal text-4xl md:text-5xl text-shimmer">Kathrin & Tobi</p>
+                    <p class="text-metal-muted text-sm mt-2 tracking-widest uppercase">19. September 2026</p>
+                </div>
+                <img src="assets/laika1.png" alt="Laika" class="w-16 h-16 md:w-20 md:h-20 object-contain animate-pulse">
             </div>
-            <button class="cta-button pulse-animation text-lg bg-metal-red" onclick="enterSite();">
-                Eintreten 🎸
+            
+            <button class="cta-button pulse-glow text-lg" onclick="enterSite();">
+                Eintreten
+                <svg class="w-5 h-5 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/>
+                </svg>
             </button>
-            <p class="text-metal-light/50 text-sm mt-4">Ein Klick und schon geht's weiter!</p>
+            <p class="text-metal-muted text-sm mt-6">Klicke zum Starten</p>
         </div>
+        
+        <!-- Particles -->
+        <div class="particles-container" id="welcome-particles"></div>
     </div>
     
     <!-- Background Music -->
@@ -125,64 +152,61 @@
     </nav>
 
     <!-- Hero Section -->
-    <section id="hero" class="min-h-screen flex items-center justify-center relative overflow-hidden pt-2 md:pt-4">
-        <!-- Background Decorative Elements -->
-        <div class="absolute inset-0 hero-bg-pattern opacity-10"></div>
+    <section id="hero" class="hero-section min-h-screen flex items-center justify-center relative overflow-hidden pt-2 md:pt-4">
+        <!-- Gradient Overlay -->
+        <div class="hero-gradient-overlay"></div>
+        
+        <!-- Animated Particles -->
+        <div class="particles-container" id="hero-particles"></div>
         
         <div class="container mx-auto px-4 py-8 md:py-10 relative z-10">
             <div class="flex flex-col items-center text-center">
                 
                 <!-- Banner Logo (transparent) -->
-                <div class="mb-6 md:mb-8">
+                <div class="mb-8 md:mb-12 reveal">
                     <img 
                         src="assets/banner-logo2.png" 
                         alt="Kathrin & Tobi - 19.09.2026 - Hochzeits-Emblem" 
-                        class="w-full max-w-sm md:max-w-md lg:max-w-lg h-auto"
+                        class="w-full max-w-sm md:max-w-md lg:max-w-lg h-auto drop-shadow-2xl"
                     >
                 </div>
                 
                 <!-- Decorative Frame + Photo -->
-                <div class="hero-frame relative mb-12 md:mb-16">
-                    <!-- Decorative Images Around Photo -->
-                    <div class="absolute -inset-4 md:-inset-6 pointer-events-none">
-                        <!-- Maxi Top Left -->
-                        <img src="assets/maxi2.png" alt="" class="absolute top-0 left-0 w-10 h-10 md:w-14 md:h-14 object-contain hero-dog-swing">
-                        <!-- Laika Top Right -->
-                        <img src="assets/laika1.png" alt="" class="absolute top-0 right-0 w-10 h-10 md:w-14 md:h-14 object-contain hero-dog-swing">
-                        <!-- Laika Bottom Left -->
-                        <img src="assets/laika1.png" alt="" class="absolute bottom-0 left-0 w-10 h-10 md:w-14 md:h-14 object-contain hero-dog-swing">
-                        <!-- Maxi Bottom Right -->
-                        <img src="assets/maxi2.png" alt="" class="absolute bottom-0 right-0 w-10 h-10 md:w-14 md:h-14 object-contain hero-dog-swing">
-                    </div>
-                    
-                    <!-- Hero Photo -->
-                    <div class="relative hero-photo-wrapper">
+                <div class="hero-frame relative mb-12 md:mb-16 reveal reveal-delay-1">
+                    <!-- Hero Photo with Modern Styling -->
+                    <div class="hero-photo-modern relative group">
                         <img 
                             src="assets/design-hero.jpg" 
                             alt="Unser Verlobungsfoto - Zwei Metal-Fans auf dem Weg zur Hochzeit" 
-                            class="w-64 h-80 md:w-80 md:h-96 object-cover rounded-lg shadow-2xl border-4 border-metal-red hero-photo"
+                            class="w-72 h-96 md:w-80 md:h-[28rem] object-cover rounded-2xl shadow-2xl"
                         >
-                        <div class="absolute inset-0 bg-gradient-to-t from-metal-black/50 to-transparent rounded-lg"></div>
+                        <!-- Glow Effect on Hover -->
+                        <div class="absolute inset-0 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none"
+                             style="box-shadow: 0 0 60px rgba(220, 38, 38, 0.4)"></div>
                     </div>
+                    
+                    <!-- Decorative Dogs -->
+                    <img src="assets/maxi2.png" alt="" class="absolute -top-4 -left-4 w-12 h-12 md:w-16 md:h-16 object-contain animate-bounce" style="animation-delay: 0.2s">
+                    <img src="assets/laika1.png" alt="" class="absolute -top-4 -right-4 w-12 h-12 md:w-16 md:h-16 object-contain animate-bounce" style="animation-delay: 0.4s">
                 </div>
                 
                 <!-- Headline -->
-                <h1 class="font-metal text-5xl md:text-7xl lg:text-8xl text-white mb-4 tracking-wide">
+                <h1 class="text-5xl md:text-6xl lg:text-7xl font-bold text-white mb-4 tracking-tight reveal reveal-delay-2">
                     Save Our Date
                 </h1>
                 
-                <!-- Date -->
-                <p class="text-3xl md:text-4xl font-bold text-metal-red mb-6">
+                <!-- Date with Accent -->
+                <p class="text-3xl md:text-4xl font-bold mb-6 reveal reveal-delay-2" style="color: var(--metal-red)">
                     19. September 2026
                 </p>
                 
                 <!-- Tagline -->
-                <p class="text-xl md:text-2xl text-metal-light/80 mb-8 max-w-xl italic">
+                <p class="text-xl md:text-2xl text-metal-muted mb-10 max-w-xl reveal reveal-delay-3">
                     „Wir haben Ja gesagt. Jetzt müsst ihr nur noch erscheinen."
                 </p>
                 
-                <!-- Countdown -->
-                <div id="countdown" class="flex flex-wrap justify-center gap-4 md:gap-6 mb-8">
+                <!-- Countdown (Modernized) -->
+                <div id="countdown" class="countdown-container mb-10 reveal reveal-delay-3">
                     <div class="countdown-item">
                         <span id="days" class="countdown-number">000</span>
                         <span class="countdown-label">Tage</span>
@@ -202,26 +226,23 @@
                 </div>
                 
                 <!-- ADD_TO_CALENDAR_BUTTONS -->
-                <div class="calendar-section bg-metal-gray/50 rounded-xl p-6 mb-10 border border-metal-red/30 max-w-lg mx-auto">
+                <div class="glass-card p-8 mb-10 max-w-lg mx-auto reveal reveal-delay-4">
                     <div class="flex items-center justify-center gap-3 mb-4">
-                        <svg class="w-8 h-8 text-metal-red" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                        <svg class="w-6 h-6" style="color: var(--metal-red)" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>
                         </svg>
-                        <h3 class="font-metal text-xl text-metal-red">Termin merken</h3>
-                        <svg class="w-8 h-8 text-metal-red" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>
-                        </svg>
+                        <h3 class="text-xl font-semibold text-white">Termin merken</h3>
                     </div>
-                    <p class="text-metal-light/70 text-sm text-center mb-5">Speichere dir den Termin direkt in deinem Kalender!</p>
+                    <p class="text-metal-muted text-sm text-center mb-6">Speichere dir den Termin direkt in deinem Kalender</p>
                     
                     <div class="flex flex-col gap-3">
                         <!-- Apple/Outlook Calendar (ICS) -->
                         <button 
                             onclick="downloadICS()"
-                            class="inline-flex items-center justify-center gap-3 px-5 py-3 bg-metal-black hover:bg-metal-red text-metal-light font-semibold rounded-lg border border-metal-red/50 hover:border-metal-red transition-all duration-300 shadow-lg group"
+                            class="cta-button-secondary cta-button inline-flex items-center justify-center gap-3 px-5 py-3 rounded-xl"
                             aria-label="Termin als ICS-Datei für Apple oder Outlook Kalender"
                         >
-                            <span class="text-2xl">🍎</span>
+                            <span class="text-xl">🍎</span>
                             <span>Apple / Outlook Kalender</span>
                         </button>
                         
@@ -230,10 +251,10 @@
                             href="https://calendar.google.com/calendar/render?action=TEMPLATE&text=Hochzeit%20von%20Kathrin%20%26%20Tobi&dates=20260919/20260920&details=Save%20the%20Date!&location=to%20be%20announced"
                             target="_blank"
                             rel="noopener noreferrer"
-                            class="inline-flex items-center justify-center gap-3 px-5 py-3 bg-metal-black hover:bg-metal-red text-metal-light font-semibold rounded-lg border border-metal-red/50 hover:border-metal-red transition-all duration-300 shadow-lg group"
+                            class="cta-button-secondary cta-button inline-flex items-center justify-center gap-3 px-5 py-3 rounded-xl"
                             aria-label="Termin zu Google Calendar hinzufügen"
                         >
-                            <svg class="w-6 h-6" viewBox="0 0 24 24" aria-hidden="true">
+                            <svg class="w-5 h-5" viewBox="0 0 24 24" aria-hidden="true">
                                 <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
                                 <path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/>
                                 <path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/>

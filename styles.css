@@ -1,23 +1,183 @@
 /* ================================================
    SAVE THE DATE - Custom Styles
-   Metal-Ästhetik mit ironischem Twist
+   Metal-Ästhetik mit Apple-Level Polish
    ================================================ */
 
 /* ---- CSS Custom Properties ---- */
 :root {
-    --metal-black: #0b0b0b;
-    --metal-gray: #1a1a1a;
-    --metal-red: #c62828;
-    --metal-light: #e0e0e0;
-    --transition-fast: 0.2s ease;
-    --transition-medium: 0.3s ease;
-    --transition-slow: 0.5s ease;
+    /* Colors - Refined Palette */
+    --metal-black: #0a0a0a;
+    --metal-gray: #141414;
+    --metal-gray-light: #1e1e1e;
+    --metal-red: #dc2626;
+    --metal-red-glow: rgba(220, 38, 38, 0.4);
+    --metal-light: #f5f5f5;
+    --metal-muted: #a3a3a3;
+    
+    /* Glass Effect Colors */
+    --glass-bg: rgba(20, 20, 20, 0.7);
+    --glass-border: rgba(255, 255, 255, 0.08);
+    --glass-highlight: rgba(255, 255, 255, 0.05);
+    
+    /* Transitions */
+    --transition-fast: 0.15s cubic-bezier(0.4, 0, 0.2, 1);
+    --transition-medium: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    --transition-slow: 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+    --transition-bounce: 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+    
+    /* Spacing Scale (8px base) */
+    --space-1: 0.25rem;  /* 4px */
+    --space-2: 0.5rem;   /* 8px */
+    --space-3: 0.75rem;  /* 12px */
+    --space-4: 1rem;     /* 16px */
+    --space-6: 1.5rem;   /* 24px */
+    --space-8: 2rem;     /* 32px */
+    --space-12: 3rem;    /* 48px */
+    --space-16: 4rem;    /* 64px */
+    --space-20: 5rem;    /* 80px */
+    --space-24: 6rem;    /* 96px */
+    
+    /* Typography */
+    --text-xs: 0.75rem;
+    --text-sm: 0.875rem;
+    --text-base: 1rem;
+    --text-lg: 1.125rem;
+    --text-xl: 1.25rem;
+    --text-2xl: 1.5rem;
+    --text-3xl: 1.875rem;
+    --text-4xl: 2.25rem;
+    --text-5xl: 3rem;
+    --text-6xl: 3.75rem;
+    --text-7xl: 4.5rem;
+    
+    /* Border Radius */
+    --radius-sm: 0.375rem;
+    --radius-md: 0.5rem;
+    --radius-lg: 0.75rem;
+    --radius-xl: 1rem;
+    --radius-2xl: 1.5rem;
+    --radius-full: 9999px;
+    
+    /* Shadows */
+    --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.3);
+    --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.4), 0 2px 4px -1px rgba(0, 0, 0, 0.3);
+    --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.5), 0 4px 6px -2px rgba(0, 0, 0, 0.3);
+    --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.5), 0 10px 10px -5px rgba(0, 0, 0, 0.3);
+    --shadow-glow: 0 0 40px var(--metal-red-glow);
+}
+
+/* ---- Global Smooth Scrolling ---- */
+html {
+    scroll-behavior: smooth;
+}
+
+/* ---- Scroll-Triggered Animations ---- */
+.reveal {
+    opacity: 0;
+    transform: translateY(30px);
+    transition: opacity 0.8s cubic-bezier(0.4, 0, 0.2, 1), 
+                transform 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.reveal.visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.reveal-delay-1 { transition-delay: 0.1s; }
+.reveal-delay-2 { transition-delay: 0.2s; }
+.reveal-delay-3 { transition-delay: 0.3s; }
+.reveal-delay-4 { transition-delay: 0.4s; }
+
+/* Staggered list animations */
+.stagger-item {
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity 0.5s ease, transform 0.5s ease;
+}
+
+.stagger-item.visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* ---- Glassmorphism Components ---- */
+.glass-card {
+    background: var(--glass-bg);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid var(--glass-border);
+    border-radius: var(--radius-xl);
+}
+
+.glass-card-highlight {
+    background: linear-gradient(
+        135deg,
+        var(--glass-highlight) 0%,
+        transparent 50%
+    );
+}
+
+/* ---- Gradient Text ---- */
+.gradient-text {
+    background: linear-gradient(135deg, var(--metal-light) 0%, var(--metal-red) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+/* ---- Modern Glow Effects ---- */
+.glow-red {
+    box-shadow: var(--shadow-glow);
+}
+
+.glow-red-hover:hover {
+    box-shadow: 0 0 60px var(--metal-red-glow);
+}
+
+/* ---- Subtle Background Grain ---- */
+.grain::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%' height='100%' filter='url(%23noise)'/%3E%3C/svg%3E");
+    opacity: 0.03;
+    pointer-events: none;
+    z-index: 1;
 }
 
 html,
 body {
     overflow-x: hidden;
     overscroll-behavior-x: none;
+}
+
+/* ---- Modern Hero Section ---- */
+.hero-section {
+    position: relative;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+}
+
+.hero-bg-video {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    opacity: 0.4;
+}
+
+.hero-gradient-overlay {
+    position: absolute;
+    inset: 0;
+    background: 
+        radial-gradient(ellipse at 50% 0%, rgba(220, 38, 38, 0.15) 0%, transparent 60%),
+        linear-gradient(to bottom, transparent 0%, var(--metal-black) 100%);
+    pointer-events: none;
 }
 
 #welcome-overlay,
@@ -80,92 +240,168 @@ body {
     opacity: 0.7;
 }
 
-/* ---- Countdown Styles ---- */
+/* ---- Countdown Styles (Modernized) ---- */
+.countdown-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: var(--space-4);
+}
+
 .countdown-item {
     display: flex;
     flex-direction: column;
     align-items: center;
-    background-color: var(--metal-gray);
-    padding: 1rem 1.5rem;
-    border-radius: 0.5rem;
-    border: 1px solid rgba(198, 40, 40, 0.3);
-    min-width: 80px;
+    background: var(--glass-bg);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    padding: var(--space-6) var(--space-8);
+    border-radius: var(--radius-xl);
+    border: 1px solid var(--glass-border);
+    min-width: 100px;
+    position: relative;
+    overflow: hidden;
+    transition: transform var(--transition-medium), box-shadow var(--transition-medium);
+}
+
+.countdown-item::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+}
+
+.countdown-item:hover {
+    transform: translateY(-4px);
+    box-shadow: var(--shadow-xl), var(--shadow-glow);
 }
 
 .countdown-number {
-    font-family: 'Metal Mania', cursive;
-    font-size: 2.5rem;
-    color: var(--metal-red);
+    font-family: 'Inter', sans-serif;
+    font-size: var(--text-5xl);
+    font-weight: 700;
+    color: var(--metal-light);
     line-height: 1;
+    letter-spacing: -0.02em;
 }
 
 .countdown-label {
-    font-size: 0.875rem;
-    color: var(--metal-light);
-    opacity: 0.8;
+    font-size: var(--text-xs);
+    color: var(--metal-muted);
     text-transform: uppercase;
-    letter-spacing: 0.05em;
-    margin-top: 0.25rem;
+    letter-spacing: 0.15em;
+    margin-top: var(--space-2);
+    font-weight: 500;
 }
 
 @media (min-width: 768px) {
     .countdown-number {
-        font-size: 3.5rem;
+        font-size: var(--text-6xl);
     }
     
     .countdown-item {
-        padding: 1.5rem 2rem;
-        min-width: 100px;
+        padding: var(--space-8) var(--space-12);
+        min-width: 140px;
     }
 }
 
-/* ---- CTA Button ---- */
+/* ---- CTA Button (Apple-Style) ---- */
 .cta-button {
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    background-color: var(--metal-red);
+    background: linear-gradient(135deg, var(--metal-red) 0%, #b91c1c 100%);
     color: white;
-    font-weight: 700;
-    font-size: 1.125rem;
-    padding: 1rem 2rem;
-    border-radius: 0.5rem;
-    text-transform: uppercase;
-    letter-spacing: 0.05em;
-    transition: background-color var(--transition-fast), transform var(--transition-fast), box-shadow var(--transition-fast);
+    font-weight: 600;
+    font-size: var(--text-base);
+    padding: var(--space-4) var(--space-8);
+    border-radius: var(--radius-full);
+    text-transform: none;
+    letter-spacing: 0;
+    transition: all var(--transition-medium);
+    position: relative;
+    overflow: hidden;
+    box-shadow: 0 4px 14px rgba(220, 38, 38, 0.4);
+}
+
+.cta-button::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(135deg, rgba(255,255,255,0.2) 0%, transparent 50%);
+    opacity: 0;
+    transition: opacity var(--transition-fast);
 }
 
 .cta-button:hover,
 .cta-button:focus {
-    background-color: #d32f2f;
-    transform: translateY(-2px);
-    box-shadow: 0 10px 20px rgba(198, 40, 40, 0.3);
+    transform: translateY(-2px) scale(1.02);
+    box-shadow: 0 8px 25px rgba(220, 38, 38, 0.5);
+}
+
+.cta-button:hover::before {
+    opacity: 1;
 }
 
 .cta-button:active {
-    transform: translateY(0);
+    transform: translateY(0) scale(0.98);
 }
 
-/* ---- Section Titles ---- */
+/* Secondary Button Style */
+.cta-button-secondary {
+    background: transparent;
+    border: 1px solid var(--glass-border);
+    color: var(--metal-light);
+    box-shadow: none;
+}
+
+.cta-button-secondary:hover {
+    background: var(--glass-bg);
+    border-color: var(--metal-red);
+    box-shadow: var(--shadow-glow);
+}
+
+/* ---- Section Titles (Modern Typography) ---- */
 .section-title {
-    font-family: 'Metal Mania', cursive;
-    font-size: 3rem;
+    font-family: 'Inter', sans-serif;
+    font-size: var(--text-4xl);
+    font-weight: 700;
     color: white;
     text-align: center;
-    margin-bottom: 0.5rem;
+    margin-bottom: var(--space-3);
+    letter-spacing: -0.02em;
 }
 
 .section-subtitle {
-    font-size: 1.125rem;
-    color: rgba(224, 224, 224, 0.7);
+    font-size: var(--text-lg);
+    color: var(--metal-muted);
     text-align: center;
     max-width: 600px;
     margin: 0 auto;
+    line-height: 1.6;
+}
+
+/* Accent title style - for important headings */
+.section-title-accent {
+    font-family: 'Metal Mania', cursive;
+    background: linear-gradient(135deg, var(--metal-light) 0%, var(--metal-red) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
 }
 
 @media (min-width: 768px) {
     .section-title {
-        font-size: 4rem;
+        font-size: var(--text-5xl);
+    }
+}
+
+@media (min-width: 1024px) {
+    .section-title {
+        font-size: var(--text-6xl);
     }
 }
 
@@ -1319,4 +1555,263 @@ body.is-admin .protected-cta {
 #essen option {
     background-color: #0b0b0b;
     color: #e0e0e0;
+}
+/* ================================================
+   APPLE-STYLE ENHANCEMENTS
+   ================================================ */
+
+/* ---- Floating Particles Background ---- */
+.particles-container {
+    position: absolute;
+    inset: 0;
+    overflow: hidden;
+    pointer-events: none;
+}
+
+.particle {
+    position: absolute;
+    width: 4px;
+    height: 4px;
+    background: var(--metal-red);
+    border-radius: 50%;
+    opacity: 0.3;
+    animation: float-particle 15s infinite ease-in-out;
+}
+
+@keyframes float-particle {
+    0%, 100% {
+        transform: translateY(0) translateX(0);
+        opacity: 0;
+    }
+    10% {
+        opacity: 0.3;
+    }
+    90% {
+        opacity: 0.3;
+    }
+    100% {
+        transform: translateY(-100vh) translateX(50px);
+        opacity: 0;
+    }
+}
+
+/* ---- Smooth Section Transitions ---- */
+section {
+    position: relative;
+}
+
+.section-divider {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 200px;
+    background: linear-gradient(to bottom, transparent, var(--metal-black));
+    pointer-events: none;
+}
+
+/* ---- Modern Card Hover Effects ---- */
+.hover-lift {
+    transition: transform var(--transition-medium), box-shadow var(--transition-medium);
+}
+
+.hover-lift:hover {
+    transform: translateY(-8px);
+    box-shadow: var(--shadow-xl);
+}
+
+/* ---- Animated Border Gradient ---- */
+.animated-border {
+    position: relative;
+    background: var(--metal-gray);
+    border-radius: var(--radius-xl);
+}
+
+.animated-border::before {
+    content: '';
+    position: absolute;
+    inset: -2px;
+    border-radius: calc(var(--radius-xl) + 2px);
+    background: linear-gradient(
+        45deg,
+        var(--metal-red),
+        transparent,
+        var(--metal-red),
+        transparent
+    );
+    background-size: 400% 400%;
+    animation: gradient-rotate 8s linear infinite;
+    z-index: -1;
+    opacity: 0.5;
+}
+
+@keyframes gradient-rotate {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+}
+
+/* ---- Pulse Animation (refined) ---- */
+@keyframes pulse-glow {
+    0%, 100% {
+        box-shadow: 0 0 20px var(--metal-red-glow);
+    }
+    50% {
+        box-shadow: 0 0 40px var(--metal-red-glow), 0 0 60px rgba(220, 38, 38, 0.2);
+    }
+}
+
+.pulse-glow {
+    animation: pulse-glow 2s ease-in-out infinite;
+}
+
+/* ---- Text Shimmer Effect ---- */
+@keyframes shimmer {
+    0% {
+        background-position: -200% center;
+    }
+    100% {
+        background-position: 200% center;
+    }
+}
+
+.text-shimmer {
+    background: linear-gradient(
+        90deg,
+        var(--metal-light) 0%,
+        var(--metal-red) 25%,
+        var(--metal-light) 50%,
+        var(--metal-red) 75%,
+        var(--metal-light) 100%
+    );
+    background-size: 200% auto;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    animation: shimmer 3s linear infinite;
+}
+
+/* ---- Smooth Image Loading ---- */
+.img-loading {
+    background: linear-gradient(
+        90deg,
+        var(--metal-gray) 0%,
+        var(--metal-gray-light) 50%,
+        var(--metal-gray) 100%
+    );
+    background-size: 200% 100%;
+    animation: skeleton-loading 1.5s ease-in-out infinite;
+}
+
+@keyframes skeleton-loading {
+    0% { background-position: 200% 0; }
+    100% { background-position: -200% 0; }
+}
+
+/* ---- Focus Visible Styles (Accessibility) ---- */
+:focus-visible {
+    outline: 2px solid var(--metal-red);
+    outline-offset: 2px;
+}
+
+/* ---- Modern Scrollbar ---- */
+::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+}
+
+::-webkit-scrollbar-track {
+    background: var(--metal-black);
+}
+
+::-webkit-scrollbar-thumb {
+    background: var(--metal-gray-light);
+    border-radius: var(--radius-full);
+    border: 2px solid var(--metal-black);
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: var(--metal-red);
+}
+
+/* ---- Navigation Enhancement ---- */
+.nav-link {
+    position: relative;
+    padding-bottom: 4px;
+}
+
+.nav-link::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 0;
+    height: 2px;
+    background: var(--metal-red);
+    transition: width var(--transition-medium);
+}
+
+.nav-link:hover::after {
+    width: 100%;
+}
+
+/* ---- Hero Photo Enhancement ---- */
+.hero-photo-modern {
+    position: relative;
+    border-radius: var(--radius-2xl);
+    overflow: hidden;
+}
+
+.hero-photo-modern img {
+    transition: transform var(--transition-slow);
+}
+
+.hero-photo-modern:hover img {
+    transform: scale(1.05);
+}
+
+.hero-photo-modern::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+        to bottom,
+        transparent 60%,
+        rgba(0, 0, 0, 0.8) 100%
+    );
+    pointer-events: none;
+}
+
+/* ---- Responsive Typography Scale ---- */
+@media (max-width: 640px) {
+    :root {
+        --text-5xl: 2.25rem;
+        --text-6xl: 2.75rem;
+        --text-7xl: 3.25rem;
+    }
+}
+
+/* ---- Reduced Motion ---- */
+@media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+    }
+    
+    html {
+        scroll-behavior: auto;
+    }
+}
+
+/* ---- Print Styles ---- */
+@media print {
+    .protected-content,
+    #music-controls,
+    #welcome-overlay,
+    .particles-container {
+        display: none !important;
+    }
 }
