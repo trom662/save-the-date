@@ -98,19 +98,15 @@ async function validateHTML() {
       }
     },
     {
-      name: 'Protected content properly wrapped',
+      name: 'No protected-content wrappers (all content public)',
       test: () => {
         const protectedCount = (content.match(/class="protected-content"/g) || []).length;
-        return protectedCount >= 2; // Should have at least 2 protected sections
+        return protectedCount === 0;
       }
     },
     {
-      name: 'Gallery is NOT in protected-content',
-      test: () => {
-        const protectedSection = content.match(/<div[^>]*class="protected-content"[^>]*>[\s\S]*?<\/div>/g);
-        if (!protectedSection) return false;
-        return !protectedSection.some(s => s.includes('id="gallery"'));
-      }
+      name: 'No admin login present',
+      test: () => !content.includes('admin-login-btn') && !content.includes('login-modal')
     }
   ];
 

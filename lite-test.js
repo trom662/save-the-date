@@ -75,39 +75,23 @@ async function validateHTML() {
       }
     },
     {
-      name: 'Protected content properly wrapped (2+ instances)',
+      name: '✓ No protected-content wrappers (all content public)',
       test: () => {
         const protectedCount = (content.match(/class="protected-content"/g) || []).length;
-        return protectedCount >= 2;
+        return protectedCount === 0;
       }
     },
     {
-      name: '✓ Gallery is NOT in protected-content',
-      test: () => {
-        // Find all protected-content divs
-        const regex = /<div[^>]*class="protected-content"[^>]*>[\s\S]*?<\/div>/g;
-        const protectedSections = content.match(regex) || [];
-        // Check that gallery is not inside any protected section
-        return !protectedSections.some(s => s.includes('id="gallery"'));
-      }
+      name: '✓ Timeline is public',
+      test: () => content.includes('id="timeline"')
     },
     {
-      name: '✓ Timeline is protected',
-      test: () => {
-        const timelineIdx = content.indexOf('id="timeline"');
-        const lastProtected = content.lastIndexOf('class="protected-content"', timelineIdx);
-        const nextClose = content.indexOf('</div><!-- Ende protected-content -->', lastProtected);
-        return timelineIdx > lastProtected && timelineIdx < nextClose;
-      }
+      name: '✓ Umfrage is public',
+      test: () => content.includes('id="umfrage"')
     },
     {
-      name: '✓ Umfrage is protected',
-      test: () => {
-        const umfrageIdx = content.indexOf('id="umfrage"');
-        const lastProtected = content.lastIndexOf('class="protected-content"', umfrageIdx);
-        const nextClose = content.indexOf('</div><!-- Ende protected-content -->', lastProtected);
-        return umfrageIdx > lastProtected && umfrageIdx < nextClose;
-      }
+      name: '✓ No admin login present',
+      test: () => !content.includes('admin-login-btn') && !content.includes('login-modal')
     },
     {
       name: 'Meta tags present (charset, viewport, description)',

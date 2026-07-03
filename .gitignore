@@ -1,0 +1,17 @@
+# Dependencies
+node_modules/
+
+# Test artifacts
+test-results/
+playwright-report/
+
+# Python
+.venv/
+__pycache__/
+
+# Lokale Backups (Original-Bilder sind in der Git-Historie erhalten)
+backup/originals/
+
+# OS
+Thumbs.db
+.DS_Store

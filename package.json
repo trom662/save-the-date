@@ -7,6 +7,8 @@
     "test": "tests"
   },
   "scripts": {
+    "build:css": "npx --yes tailwindcss@3.4.17 -i tailwind.input.css -o tailwind.css --minify",
+    "watch:css": "npx --yes tailwindcss@3.4.17 -i tailwind.input.css -o tailwind.css --watch",
     "test": "playwright test",
     "test:ui": "playwright test --ui",
     "test:debug": "playwright test --debug",

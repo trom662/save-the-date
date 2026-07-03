@@ -4,53 +4,46 @@ const BASE_URL = 'http://localhost:8000';
 
 test.describe('Save The Date Website - Full Test Suite', () => {
   
-  // ============ SECURITY TESTS ============
-  test.describe('🔐 Security - Protected Content', () => {
+  // ============ VISIBILITY TESTS ============
+  test.describe('👁️ Public Content', () => {
     
-    test('Protected content should be hidden by default', async ({ page }) => {
+    test('All invitation content should be public (no protected elements)', async ({ page }) => {
       await page.goto(BASE_URL);
       await page.click('#welcome-overlay');
       
-      const protectedElements = await page.locator('.protected-content').count();
-      expect(protectedElements).toBeGreaterThan(0);
-      
-      for (let i = 0; i < protectedElements; i++) {
-        const element = page.locator('.protected-content').nth(i);
-        const visibility = await element.evaluate(el => 
-          window.getComputedStyle(el).display
-        );
-        expect(visibility).toBe('none');
-      }
+      const protectedElements = await page.locator('.protected-content, .protected-nav, .protected-cta').count();
+      expect(protectedElements).toBe(0);
     });
 
-    test('Timeline section should be protected', async ({ page }) => {
+    test('Timeline section should be visible', async ({ page }) => {
       await page.goto(BASE_URL);
       await page.click('#welcome-overlay');
       
       const timeline = page.locator('#timeline');
-      const isVisible = await timeline.isVisible();
-      expect(isVisible).toBe(false);
+      await expect(timeline).toBeVisible();
     });
 
-    test('Umfrage section should be protected', async ({ page }) => {
+    test('Umfrage section should be visible', async ({ page }) => {
       await page.goto(BASE_URL);
       await page.click('#welcome-overlay');
       
       const umfrage = page.locator('#umfrage');
-      const isVisible = await umfrage.isVisible();
-      expect(isVisible).toBe(false);
+      await expect(umfrage).toBeVisible();
     });
 
-    test('Gallery should be PUBLIC (not protected)', async ({ page }) => {
+    test('Gallery should be visible', async ({ page }) => {
       await page.goto(BASE_URL);
       await page.click('#welcome-overlay');
       
       const gallery = page.locator('#gallery');
-      const parent = gallery.locator('..');
-      const hasProtectedClass = await parent.evaluate(el => 
-        el.classList.contains('protected-content')
-      );
-      expect(hasProtectedClass).toBe(false);
+      await expect(gallery).toBeVisible();
+    });
+
+    test('No admin login should be present', async ({ page }) => {
+      await page.goto(BASE_URL);
+      
+      await expect(page.locator('#admin-login-btn')).toHaveCount(0);
+      await expect(page.locator('#login-modal')).toHaveCount(0);
     });
   });
 
@@ -154,7 +147,7 @@ test.describe('Save The Date Website - Full Test Suite', () => {
     test('Navigation links should be present', async ({ page }) => {
       await page.goto(BASE_URL);
       
-      const navLinks = ['hero', 'location', 'gallery', 'contact'];
+      const navLinks = ['hero', 'location', 'gallery', 'umfrage'];
       
       for (const link of navLinks) {
         const element = page.locator(`a[href="#${link}"]`);
@@ -166,13 +159,15 @@ test.describe('Save The Date Website - Full Test Suite', () => {
     test('External links should have correct href', async ({ page }) => {
       await page.goto(BASE_URL);
       
-      const githubLink = page.locator('a[href*="github.com"]');
-      const instagramLink = page.locator('a[href*="instagram.com"]');
+      // Externe Links (Google Maps / Kalender) müssen vorhanden und abgesichert sein
+      const externalLinks = page.locator('a[target="_blank"]');
+      const count = await externalLinks.count();
+      expect(count).toBeGreaterThan(0);
       
-      const githubCount = await githubLink.count();
-      const instagramCount = await instagramLink.count();
-      
-      expect(githubCount + instagramCount).toBeGreaterThan(0);
+      for (let i = 0; i < count; i++) {
+        const rel = await externalLinks.nth(i).getAttribute('rel');
+        expect(rel).toContain('noopener');
+      }
     });
 
     test('Contact email link should be valid', async ({ page }) => {
@@ -314,11 +309,11 @@ test.describe('Save The Date Website - Full Test Suite', () => {
     test('Critical CSS should be present', async ({ page }) => {
       await page.goto(BASE_URL);
       
-      const tailwindScript = page.locator('script[src*="tailwind"]');
+      const tailwindCSS = page.locator('link[href="tailwind.css"]');
       const customCSS = page.locator('link[href="styles.css"]');
       
-      await expect(tailwindScript).toBeTruthy();
-      await expect(customCSS).toBeTruthy();
+      await expect(tailwindCSS).toHaveCount(1);
+      await expect(customCSS).toHaveCount(1);
     });
   });
 

@@ -6,47 +6,22 @@
     <meta name="description" content="Save the Date - Eine Hochzeit im Metal-Style. 19.09.2026">
     <title>Save Our Date 🤘 19.09.2026</title>
     
-    <!-- Tailwind CSS via CDN -->
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    colors: {
-                        'metal-black': '#0a0a0a',
-                        'metal-red': '#dc2626',
-                        'metal-gray': '#141414',
-                        'metal-gray-light': '#1e1e1e',
-                        'metal-light': '#f5f5f5',
-                        'metal-muted': '#a3a3a3',
-                    },
-                    fontFamily: {
-                        'metal': ['Metal Mania', 'cursive'],
-                        'sans': ['Inter', 'sans-serif'],
-                    },
-                    animation: {
-                        'float': 'float 6s ease-in-out infinite',
-                        'glow-pulse': 'glow-pulse 2s ease-in-out infinite',
-                    },
-                    keyframes: {
-                        float: {
-                            '0%, 100%': { transform: 'translateY(0)' },
-                            '50%': { transform: 'translateY(-10px)' },
-                        },
-                        'glow-pulse': {
-                            '0%, 100%': { boxShadow: '0 0 20px rgba(220, 38, 38, 0.4)' },
-                            '50%': { boxShadow: '0 0 40px rgba(220, 38, 38, 0.6)' },
-                        }
-                    }
-                }
-            }
-        }
-    </script>
+    <!-- Open Graph / Social Share (WhatsApp, Signal, etc.) -->
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="Save Our Date 🤘 Kathrin & Tobi – 19.09.2026">
+    <meta property="og:description" content="Wir haben Ja gesagt. Jetzt müsst ihr nur noch erscheinen. Eine Hochzeit im Metal-Style.">
+    <meta property="og:url" content="https://highwaytoehe.de/">
+    <meta property="og:image" content="https://highwaytoehe.de/assets/design-hero.jpg">
+    <meta property="og:locale" content="de_DE">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="theme-color" content="#0a0a0a">
     
-    <!-- Google Fonts -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Metal+Mania&display=swap" rel="stylesheet">
+    <!-- Tailwind CSS (statisch vorkompiliert – Build: npm run build:css) -->
+    <link rel="stylesheet" href="tailwind.css">
+    
+    <!-- Selbstgehostete Fonts (DSGVO-freundlich, kein Google-CDN) -->
+    <link rel="preload" href="assets/fonts/metal-mania-latin.woff2" as="font" type="font/woff2" crossorigin>
+    <link rel="preload" href="assets/fonts/inter-latin.woff2" as="font" type="font/woff2" crossorigin>
     
     <!-- Custom Styles -->
     <link rel="stylesheet" href="styles.css">
@@ -57,14 +32,9 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/photoswipe@5.4.4/dist/photoswipe.css">
     <!-- Main Script (deferred to ensure globals exist for inline handlers) -->
     <script src="scripts.js" defer></script>
-    <!-- Preload important images and audio for faster first paint/playback -->
-    <link rel="preload" href="assets/design-hero.jpg" as="image">
+    <!-- Preload important images for faster first paint (Audio lädt erst nach Klick auf "Eintreten") -->
+    <link rel="preload" href="assets/design-hero.jpg" as="image" fetchpriority="high">
     <link rel="preload" href="assets/banner-logo2.png" as="image">
-    <link rel="preload" href="assets/maxi2.png" as="image">
-    <link rel="preload" href="assets/laika1.png" as="image">
-    <link rel="preload" href="assets/gallery-1.jpg" as="image">
-    <link rel="preload" href="assets/IWasAlive.mp3" as="audio" type="audio/mpeg">
-    <link rel="preload" href="assets/tth_05-23_06-03.mp3" as="audio" type="audio/mpeg">
 </head>
 <body class="bg-metal-black text-metal-light font-sans">
     
@@ -94,15 +64,15 @@
         <div class="particles-container" id="welcome-particles"></div>
     </div>
     
-    <!-- Background Music -->
-    <audio id="bg-music" preload="auto">
+    <!-- Background Music (lädt erst nach Nutzer-Interaktion) -->
+    <audio id="bg-music" preload="none">
         <source src="assets/IWasAlive.mp3" type="audio/mpeg">
     </audio>
     
     <!-- Music Controls (fixed position) -->
     <div id="music-controls" class="fixed bottom-4 right-4 z-50 flex items-center">
         <button id="music-toggle" class="bg-metal-gray hover:bg-metal-red text-white p-3 rounded-full shadow-lg transition-all duration-300 border border-metal-red/50" aria-label="Musik an/aus">
-            <span id="music-icon">🔇</span>
+            <span id="music-icon" class="block w-5 h-5"></span>
         </button>
     </div>
 
@@ -123,15 +93,15 @@
                 <!-- Desktop Navigation -->
                 <ul class="hidden md:flex space-x-8 items-center">
                     <li><a href="#hero" class="nav-link">Home</a></li>
-                    <li class="protected-nav"><a href="#location" class="nav-link">Anfahrt</a></li>
-                    <li class="protected-nav"><a href="#timeline" class="nav-link">Zeitplan</a></li>
-                    <li class="protected-nav"><a href="#gallery" class="nav-link">Galerie</a></li>
+                    <li><a href="#location" class="nav-link">Anfahrt</a></li>
+                    <li><a href="#timeline" class="nav-link">Zeitplan</a></li>
+                    <li><a href="#gallery" class="nav-link">Galerie</a></li>
                 </ul>
                 
                 <!-- CTA Button + Mobile Hamburger -->
                 <div class="flex items-center gap-4">
-                    <a href="#umfrage" class="protected-nav bg-metal-red text-white font-bold px-3 py-1.5 text-sm rounded-lg border-2 border-metal-red hover:bg-red-700 transition-all whitespace-nowrap">Zusagen</a>
-                    <button id="mobile-menu-btn" class="md:hidden text-metal-light hover:text-metal-red transition-colors protected-nav" aria-label="Menü öffnen" aria-expanded="false">
+                    <a href="#umfrage" class="bg-metal-red text-white font-bold px-3 py-1.5 text-sm rounded-lg border-2 border-metal-red hover:bg-red-700 transition-all whitespace-nowrap">Zusagen</a>
+                    <button id="mobile-menu-btn" class="md:hidden text-metal-light hover:text-metal-red transition-colors" aria-label="Menü öffnen" aria-expanded="false">
                         <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
                         </svg>
@@ -143,9 +113,9 @@
             <div id="mobile-menu" class="hidden md:hidden mt-4 pb-4">
                 <ul class="flex flex-col space-y-4">
                     <li><a href="#hero" class="mobile-nav-link">Home</a></li>
-                    <li class="protected-nav"><a href="#location" class="mobile-nav-link">Anfahrt</a></li>
-                    <li class="protected-nav"><a href="#timeline" class="mobile-nav-link">Zeitplan</a></li>
-                    <li class="protected-nav"><a href="#gallery" class="mobile-nav-link">Galerie</a></li>
+                    <li><a href="#location" class="mobile-nav-link">Anfahrt</a></li>
+                    <li><a href="#timeline" class="mobile-nav-link">Zeitplan</a></li>
+                    <li><a href="#gallery" class="mobile-nav-link">Galerie</a></li>
                 </ul>
             </div>
         </div>
@@ -179,6 +149,8 @@
                             src="assets/design-hero.jpg" 
                             alt="Unser Verlobungsfoto - Zwei Metal-Fans auf dem Weg zur Hochzeit" 
                             class="w-72 h-96 md:w-80 md:h-[28rem] object-cover rounded-2xl shadow-2xl"
+                            fetchpriority="high"
+                            decoding="async"
                         >
                         <!-- Glow Effect on Hover -->
                         <div class="absolute inset-0 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none"
@@ -211,15 +183,15 @@
                         <span id="days" class="countdown-number">000</span>
                         <span class="countdown-label">Tage</span>
                     </div>
-                    <div class="countdown-item protected-content">
+                    <div class="countdown-item">
                         <span id="hours" class="countdown-number">00</span>
                         <span class="countdown-label">Stunden</span>
                     </div>
-                    <div class="countdown-item protected-content">
+                    <div class="countdown-item">
                         <span id="minutes" class="countdown-number">00</span>
                         <span class="countdown-label">Minuten</span>
                     </div>
-                    <div class="countdown-item protected-content">
+                    <div class="countdown-item">
                         <span id="seconds" class="countdown-number">00</span>
                         <span class="countdown-label">Sekunden</span>
                     </div>
@@ -242,7 +214,11 @@
                             class="cta-button-secondary cta-button inline-flex items-center justify-center gap-3 px-5 py-3 rounded-xl"
                             aria-label="Termin als ICS-Datei für Apple oder Outlook Kalender"
                         >
-                            <span class="text-xl">🍎</span>
+                            <svg class="w-5 h-5" style="color: var(--metal-red)" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24" aria-hidden="true">
+                                <rect x="3" y="4" width="18" height="18" rx="2"/>
+                                <path d="M16 2v4M8 2v4M3 10h18"/>
+                                <path d="M9 16l2 2 4-4"/>
+                            </svg>
                             <span>Apple / Outlook Kalender</span>
                         </button>
                         
@@ -266,7 +242,7 @@
                 </div>
                 
                 <!-- CTA Button -->
-                <a href="#umfrage" class="cta-button group protected-cta">
+                <a href="#umfrage" class="cta-button group">
                     <span>🤘 Ich bin dabei!</span>
                     <svg class="w-5 h-5 ml-2 transform group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3"/>
@@ -275,16 +251,17 @@
             </div>
         </div>
         
-        <!-- Scroll Indicator (nur für Admins) -->
-        <div class="absolute bottom-8 left-1/2 transform -translate-x-1/2 animate-bounce protected-content">
+        <!-- Scroll Indicator -->
+        <div class="absolute bottom-8 left-1/2 transform -translate-x-1/2 animate-bounce">
             <svg class="w-8 h-8 text-metal-red" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3"/>
             </svg>
         </div>
     </section>
-<!-- Location / Anfahrt Section -->
+    <!-- Location / Anfahrt Section -->
     <section id="location" class="py-20 bg-metal-black">
         <div class="container mx-auto px-4">
+            <span class="section-eyebrow">Location</span>
             <h2 class="section-title">Anfahrt</h2>
             <p class="section-subtitle">Damit ihr auch rechtzeitig zur Party findet.</p>
             
@@ -304,7 +281,13 @@
                 <!-- Address & Downloads -->
                 <div class="flex flex-col justify-center space-y-6">
                     <div class="bg-metal-gray p-6 rounded-lg">
-                        <h3 class="text-xl font-bold text-white mb-3">📍 Adresse</h3>
+                        <h3 class="text-xl font-bold text-white mb-3 flex items-center gap-2">
+                            <svg class="w-5 h-5 shrink-0" style="color: var(--metal-red)" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24" aria-hidden="true">
+                                <path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/>
+                                <circle cx="12" cy="10" r="3"/>
+                            </svg>
+                            Adresse
+                        </h3>
                         <address class="not-italic text-metal-light/80">
                             Kulturscheune<br>
                             Marktpl. 4<br>
@@ -313,13 +296,26 @@
                         <a href="https://www.google.com/maps/search/?api=1&query=Kulturscheune+Marktpl.+4+96172+Mühlhausen" 
                            target="_blank" 
                            rel="noopener noreferrer"
-                           class="inline-block mt-3 text-metal-red hover:underline text-sm">
-                            🗺️ In Google Maps öffnen
+                           class="inline-flex items-center gap-1.5 mt-3 text-metal-red hover:underline text-sm">
+                            <svg class="w-4 h-4 shrink-0" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24" aria-hidden="true">
+                                <path d="M15 3h6v6"/>
+                                <path d="M10 14 21 3"/>
+                                <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/>
+                            </svg>
+                            In Google Maps öffnen
                         </a>
                     </div>
                     
                     <div class="bg-metal-gray p-6 rounded-lg">
-                        <h3 class="text-xl font-bold text-white mb-3">🚗 Parken</h3>
+                        <h3 class="text-xl font-bold text-white mb-3 flex items-center gap-2">
+                            <svg class="w-5 h-5 shrink-0" style="color: var(--metal-red)" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24" aria-hidden="true">
+                                <path d="M19 17h2c.6 0 1-.4 1-1v-3c0-.9-.7-1.7-1.5-1.9C18.7 10.6 16 10 16 10s-1.3-1.4-2.2-2.3c-.5-.4-1.1-.7-1.8-.7H5c-.6 0-1.1.4-1.4.9l-1.4 2.9A3.7 3.7 0 0 0 2 12v4c0 .6.4 1 1 1h2"/>
+                                <circle cx="7" cy="17" r="2"/>
+                                <path d="M9 17h6"/>
+                                <circle cx="17" cy="17" r="2"/>
+                            </svg>
+                            Parken
+                        </h3>
                         <p class="text-metal-light/80">
                             Parkmöglichkeit gegenüber des Tors am Marktplatz. <br><br>
                             Wir versuchen noch einen Fahrdienst für euch zu organisieren der euch von der Party aus im nahen Umkreis zur Unterkunft bringt. <br><br>
@@ -327,7 +323,7 @@
                         </p>
                     </div>
                     
-                    <a href="#" class="download-button hidden" aria-label="Anfahrtsskizze als PDF herunterladen">
+                    <a href="#" class="download-button hidden" style="display: none" aria-label="Anfahrtsskizze als PDF herunterladen">
                         <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
                         </svg>
@@ -338,43 +334,10 @@
         </div>
     </section>
     
-    <!-- Coming Soon Banner (nur sichtbar wenn nicht eingeloggt) -->
-    <section id="coming-soon" class="py-16 bg-metal-black guest-hidden">
-        <div class="container mx-auto px-4">
-            <div class="coming-soon-banner">
-                <div class="banner-wimpel">
-                    <div class="wimpel-content">
-                        <div class="flex justify-center gap-2 mb-2">
-                            <img src="assets/maxi2.png" alt="" class="w-8 h-8 object-contain hero-dog-swing">
-                            <img src="assets/laika1.png" alt="" class="w-8 h-8 object-contain hero-dog-swing">
-                            <img src="assets/maxi2.png" alt="" class="w-8 h-8 object-contain hero-dog-swing">
-                        </div>
-                        <h2 class="wimpel-title">Coming Soon</h2>
-                        <p class="wimpel-text">Mehr Infos folgen...</p>
-                        <div class="flex justify-center gap-2 mt-2">
-                            <img src="assets/laika1.png" alt="" class="w-8 h-8 object-contain hero-dog-swing">
-                            <img src="assets/maxi2.png" alt="" class="w-8 h-8 object-contain hero-dog-swing">
-                            <img src="assets/laika1.png" alt="" class="w-8 h-8 object-contain hero-dog-swing">
-                        </div>
-                    </div>
-                    <div class="wimpel-bottom"></div>
-                </div>
-                <p class="text-center text-metal-light/60 mt-8 max-w-md mx-auto">
-                    Merkt euch den Termin schon mal vor! <br>
-                    Wir freuen uns auf euch alle! Details folgen in Kürze.
-                </p>
-            </div>
-        </div>
-    </section>
-
-    <!-- ============================================ -->
-    <!-- PROTECTED CONTENT (nur für eingeloggte User) -->
-    <!-- ============================================ -->
-    <div id="protected-content" class="protected-content">
-
     <!-- Timeline Section -->
     <section id="timeline" class="py-20 bg-metal-gray">
         <div class="container mx-auto px-4">
+            <span class="section-eyebrow">Programm</span>
             <h2 class="section-title" id="timeline-title">Der Zeitplan</h2>
             <p class="section-subtitle" id="timeline-subtitle">Timetable für unser Fest ;):</p>
             
@@ -474,11 +437,10 @@
         </div>
     </section>
 
-    </div><!-- Ende protected-content -->
-
-    <!-- Gallery Section (öffentlich) - Dynamisch geladen -->
-    <section id="gallery" class="py-20 bg-metal-gray" aria-labelledby="gallery-title">
+    <!-- Gallery Section - Dynamisch geladen -->
+    <section id="gallery" class="py-20 bg-metal-black" aria-labelledby="gallery-title">
         <div class="container mx-auto px-4">
+            <span class="section-eyebrow">Impressionen</span>
             <h2 id="gallery-title" class="section-title">Galerie</h2>
             <p class="section-subtitle">Ein paar Impressionen. Mehr gibt's nach der Hochzeit. 📸</p>
             
@@ -523,50 +485,12 @@
         </div>
     </section>
 
-    <!-- ============================================ -->
-    <!-- PROTECTED CONTENT (nur für eingeloggte User) -->
-    <!-- ============================================ -->
-    <div id="protected-content" class="protected-content">
-
-    <!-- Zusagen Section -->
-    <section id="zusagen" class="py-20 bg-metal-black hidden">
-        <div class="container mx-auto px-4">
-            <h2 class="section-title">Zusagen</h2>
-            <p class="section-subtitle">Sag uns Bescheid! Plätze sind limitiert. Wer zuerst kommt, sitzt in der ersten Reihe.</p>
-            
-            <div class="max-w-3xl mx-auto mt-12">
-                <div class="bg-metal-gray p-6 md:p-8 rounded-lg border border-metal-red/30">
-                    <p class="text-metal-light/80 mb-6 text-center">
-                        Bitte fülle das Formular bis zum <strong class="text-metal-red">01.05.2026</strong> aus. 
-                        Keine Sorge, wir fragen nur das Nötigste.
-                    </p>
-                    
-                    <!-- Google Form iframe -->
-                    <div class="google-form-container">
-                        <iframe 
-                            src="https://docs.google.com/forms/d/e/1FAIpQLSdQ5CA3ld5WAm4fHwpYuWyQvVO-48WlIc-3ev3WVf7RkhFAVg/viewform?embedded=true"
-                            title="RSVP Formular"
-                            class="w-full h-[929px] border-0 rounded"
-                            loading="lazy"
-                        >
-                            Wird geladen…
-                        </iframe>
-                    </div>
-                    
-                    <p class="text-metal-light/60 text-sm mt-6 text-center">
-                        <em>Probleme mit dem Formular? Schreib uns direkt: 
-                        <a href="mailto:bromags@outlook.de" class="text-metal-red hover:underline">wedding@example.com</a></em>
-                    </p>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Gäste-Umfrage Section (PROTECTED - nur eingeloggt sichtbar) -->
+    <!-- Gäste-Umfrage Section (RSVP) -->
     <section id="umfrage" class="py-20 bg-metal-gray">
         <div class="container mx-auto px-4">
+            <span class="section-eyebrow">RSVP</span>
             <h2 class="section-title">Zu-/Absage</h2>
-            <p class="section-subtitle">Bitte sagt uns doch bis zum 01.03.2025 Bescheid ob ihr kommt! 🎸</p>
+            <p class="section-subtitle">Bitte sagt uns doch bis zum 01.05.2026 Bescheid ob ihr kommt! 🎸</p>
             
             <div class="max-w-3xl mx-auto mt-12">
                 <div class="bg-metal-black p-8 rounded-lg border-2 border-metal-red/30 hover:border-metal-red/60 transition-all duration-300">
@@ -685,55 +609,43 @@
         </div>
     </section>
 
-    </div><!-- Ende protected-content -->
-
     <!-- Footer -->
-    <footer id="contact" class="py-12 bg-metal-gray border-t border-metal-black">
+    <footer id="contact" class="py-16 bg-metal-black border-t border-metal-gray-light">
         <div class="container mx-auto px-4">
-            <div class="grid md:grid-cols-3 gap-8 mb-8">
-                <!-- Trauzeugen -->
-                <div>
-                    <h3 class="font-metal text-xl text-metal-red mb-4">Trauzeugen</h3>
-                    
-                    <!-- Kathrin's Trauzeuginnen -->
-                    <div class="mb-4">
-                        <p class="text-metal-light font-semibold mb-2">Kathrin's Trauzeuginnen:</p>
-                        <ul class="text-metal-light/80 space-y-2 pl-2">
-                            <li>🥇 Trauzeugin:<br><span class="pl-4">Daniela Hirschmann</span></li>
-                            <li>🥇 Trauzeugin:<br><span class="pl-4">Verena Wolf</span></li>
-                        </ul>
-                    </div>
-                    
-                    <!-- Tobi's Trauzeugen -->
-                    <div>
-                        <p class="text-metal-light font-semibold mb-2">Tobi's Trauzeugen:</p>
-                        <ul class="text-metal-light/80 space-y-2 pl-2">
-                            <li>🥇 Trauzeuge:<br><span class="pl-4">Fabian Prietzel</span></li>
-                            <li>🥇 Trauzeuge:<br><span class="pl-4">Christopher Scherf</span></li>
-                        </ul>
+            <div class="grid md:grid-cols-3 gap-10 mb-12 max-w-5xl mx-auto">
+                <!-- Trauzeugen (gleichwertig, keine Hierarchie) -->
+                <div class="md:col-span-2">
+                    <h3 class="font-metal text-xl text-metal-red mb-5">Trauzeugen</h3>
+                    <div class="grid grid-cols-2 gap-6">
+                        <div class="footer-card">
+                            <p class="footer-card-label">Für Kathrin</p>
+                            <ul class="space-y-1.5 text-metal-light/85">
+                                <li>Daniela Hirschmann</li>
+                                <li>Verena Wolf</li>
+                            </ul>
+                        </div>
+                        <div class="footer-card">
+                            <p class="footer-card-label">Für Tobi</p>
+                            <ul class="space-y-1.5 text-metal-light/85">
+                                <li>Fabian Prietzel</li>
+                                <li>Christopher Scherf</li>
+                            </ul>
+                        </div>
                     </div>
                 </div>
                 
-                <!-- Quick Links -->
+                <!-- Kontakt -->
                 <div>
-                    <h3 class="font-metal text-xl text-metal-red mb-4">Quick Links</h3>
-                    <ul class="space-y-2">
-                        <li><a href="#hero" class="footer-link">Nach oben</a></li>
-                    </ul>
-                </div>
-                
-                <!-- Legal -->
-                <div>
-                    <h3 class="font-metal text-xl text-metal-red mb-4">Rechtliches</h3>
-                    <ul class="space-y-2">
-                        <li><a href="#" class="footer-link">Datenschutz</a></li>
-                        <li>
-                            <button id="admin-login-btn" class="footer-link text-metal-light/40 hover:text-metal-red text-xs mt-2">
-                                🔐 Admin
-                            </button>
-                        </li>
-                    </ul>
-                    <p class="text-metal-light/60 text-sm mt-4">
+                    <h3 class="font-metal text-xl text-metal-red mb-5">Kontakt</h3>
+                    <p class="text-metal-light/70 text-sm mb-3">Fragen, Wünsche oder Probleme mit der Zusage?</p>
+                    <a href="mailto:bromags@outlook.de" class="footer-link inline-flex items-center gap-2">
+                        <svg class="w-4 h-4 shrink-0" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24" aria-hidden="true">
+                            <rect x="2" y="4" width="20" height="16" rx="2"/>
+                            <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/>
+                        </svg>
+                        Schreibt uns
+                    </a>
+                    <p class="text-metal-light/50 text-sm mt-5">
                         Diese Seite verwendet keine Cookies.<br>
                         Außer die vom Catering. 🍪
                     </p>
@@ -741,54 +653,18 @@
             </div>
             
             <!-- Bottom Bar -->
-            <div class="footer-bottom border-t border-metal-black pt-8 text-center">
-                <p class="font-metal text-2xl text-white mb-2 footer-brand">Kathrin & Tobi</p>
+            <div class="footer-bottom border-t border-metal-gray-light pt-8 text-center">
+                <div class="flex items-center justify-center gap-3 mb-3">
+                    <img src="assets/maxi2.png" alt="" class="w-8 h-8 object-contain">
+                    <p class="font-metal text-2xl text-white footer-brand">Kathrin & Tobi</p>
+                    <img src="assets/laika1.png" alt="" class="w-8 h-8 object-contain">
+                </div>
                 <p class="text-metal-light/60 footer-meta">
-                    Made with 🖤 and 🤘 | © 2026
-                </p>
-                <p class="text-metal-light/40 text-sm mt-2 footer-quote">
-                    „Bis dass der Tod uns scheidet – oder der letzte Song gespielt ist."
+                    19. September 2026 · Made with 🖤 and 🤘
                 </p>
             </div>
         </div>
     </footer>
-
-    <!-- Login Modal -->
-    <div id="login-modal" class="login-modal hidden" role="dialog" aria-modal="true" aria-labelledby="login-title">
-        <div class="login-modal-backdrop" onclick="closeLoginModal()"></div>
-        <div class="login-modal-content">
-            <button class="login-modal-close" onclick="closeLoginModal()" aria-label="Schließen">
-                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
-                </svg>
-            </button>
-            <h2 id="login-title" class="font-metal text-2xl text-metal-red mb-6 text-center">🔐 Admin Login</h2>
-            <form id="login-form" onsubmit="handleLogin(event)">
-                <div class="mb-4">
-                    <label for="login-user" class="block text-metal-light text-sm mb-2">Benutzername</label>
-                    <input type="text" id="login-user" name="user" required 
-                           class="w-full px-4 py-2 bg-metal-black border border-metal-gray rounded-lg text-metal-light focus:border-metal-red focus:outline-none"
-                           autocomplete="username">
-                </div>
-                <div class="mb-6">
-                    <label for="login-pass" class="block text-metal-light text-sm mb-2">Passwort</label>
-                    <input type="password" id="login-pass" name="pass" required 
-                           class="w-full px-4 py-2 bg-metal-black border border-metal-gray rounded-lg text-metal-light focus:border-metal-red focus:outline-none"
-                           autocomplete="current-password">
-                </div>
-                <p id="login-error" class="text-red-500 text-sm mb-4 hidden">Ich hab's dir gesagt! :P</p>
-                <button type="submit" class="w-full cta-button">
-                    Finger weg!
-                </button>
-            </form>
-            <p id="logged-in-message" class="hidden text-center">
-                <span class="text-green-500">✓ Eingeloggt als Admin</span>
-                <button onclick="handleLogout()" class="block mx-auto mt-4 text-metal-red hover:underline">
-                    Ausloggen
-                </button>
-            </p>
-        </div>
-    </div>
 
     <!-- PhotoSwipe v5 -->
     <script type="module">

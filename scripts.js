@@ -9,8 +9,17 @@
 // ================================================
 const MUSIC_STORAGE_KEY = 'savethedate_music_enabled';
 
-// Global variable for login sound
-let currentLoginSound = null;
+// SVG-Icons für den Musik-Toggle (Lucide-Style, stroke-basiert)
+const ICON_SPEAKER_ON = `<svg fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24" aria-hidden="true"><path d="M11 5 6 9H2v6h4l5 4V5Z"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14"/></svg>`;
+const ICON_SPEAKER_OFF = `<svg fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24" aria-hidden="true"><path d="M11 5 6 9H2v6h4l5 4V5Z"/><line x1="22" x2="16" y1="9" y2="15"/><line x1="16" x2="22" y1="9" y2="15"/></svg>`;
+
+/** Musik-Icon (SVG) aktualisieren */
+function setMusicIcon(playing) {
+    const musicIcon = document.getElementById('music-icon');
+    if (musicIcon) {
+        musicIcon.innerHTML = playing ? ICON_SPEAKER_ON : ICON_SPEAKER_OFF;
+    }
+}
 
 // Google Apps Script Deployment URL
 const GOOGLE_APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwY8nuOUIhwjR8nIbsxIJvoQKGRUppGLKQ_AH5pkIYaEtO8m1dtdVh1Nw1o3KXrSwoqLg/exec';
@@ -78,8 +87,11 @@ function initStaggerAnimations() {
 
 /**
  * Create floating particles for hero/welcome sections
+ * (respektiert prefers-reduced-motion)
  */
 function createParticles(containerId, count = 20) {
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    
     const container = document.getElementById(containerId);
     if (!container) return;
     
@@ -91,32 +103,6 @@ function createParticles(containerId, count = 20) {
         particle.style.animationDuration = (15 + Math.random() * 10) + 's';
         container.appendChild(particle);
     }
-}
-
-// ================================================
-// SMOOTH SCROLL ENHANCEMENT
-// ================================================
-
-/**
- * Enhanced smooth scroll with easing
- */
-function initSmoothScroll() {
-    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-        anchor.addEventListener('click', function(e) {
-            e.preventDefault();
-            const target = document.querySelector(this.getAttribute('href'));
-            if (target) {
-                const headerOffset = 80;
-                const elementPosition = target.getBoundingClientRect().top;
-                const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
-                
-                window.scrollTo({
-                    top: offsetPosition,
-                    behavior: 'smooth'
-                });
-            }
-        });
-    });
 }
 
 // ================================================
@@ -282,10 +268,20 @@ function initCountdown(targetDate) {
         const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
         const seconds = Math.floor((distance % (1000 * 60)) / 1000);
         
-        daysEl.textContent = String(days).padStart(3, '0');
-        hoursEl.textContent = String(hours).padStart(2, '0');
-        minutesEl.textContent = String(minutes).padStart(2, '0');
-        secondsEl.textContent = String(seconds).padStart(2, '0');
+        setCountdownValue(daysEl, String(days).padStart(3, '0'));
+        setCountdownValue(hoursEl, String(hours).padStart(2, '0'));
+        setCountdownValue(minutesEl, String(minutes).padStart(2, '0'));
+        setCountdownValue(secondsEl, String(seconds).padStart(2, '0'));
+    }
+    
+    /** Wert nur bei Änderung setzen und Tick-Animation triggern */
+    function setCountdownValue(el, value) {
+        if (el.textContent === value) return;
+        el.textContent = value;
+        el.classList.remove('tick');
+        // Reflow erzwingen, damit die Animation neu startet
+        void el.offsetWidth;
+        el.classList.add('tick');
     }
     
     // Initial update
@@ -540,7 +536,7 @@ const galleryCarousel = {
         if (!container) return;
         
         const html = this.images.map((img, index) => {
-            const src = GALLERY_CONFIG.assetsPath + img.file + '?t=' + Date.now();
+            const src = GALLERY_CONFIG.assetsPath + img.file;
             const caption = img.caption || `Bild ${index + 1}`;
             
             return `
@@ -843,28 +839,8 @@ async function initDynamicGallery() {
 
 // ================================================
 // NAVBAR SCROLL EFFECT
+// (konsolidiert in initNavbarEffects weiter oben)
 // ================================================
-
-function initNavbarScroll() {
-    const navbar = document.getElementById('navbar');
-    
-    if (!navbar) return;
-    
-    let lastScroll = 0;
-    
-    window.addEventListener('scroll', () => {
-        const currentScroll = window.scrollY;
-        
-        // Add shadow when scrolled
-        if (currentScroll > 50) {
-            navbar.classList.add('shadow-lg');
-        } else {
-            navbar.classList.remove('shadow-lg');
-        }
-        
-        lastScroll = currentScroll;
-    });
-}
 
 
 // ================================================
@@ -915,9 +891,8 @@ document.addEventListener('DOMContentLoaded', () => {
     initMobileNav();
     initSmoothScroll();
     initDynamicGallery(); // Load dynamic gallery with PhotoSwipe
-    initNavbarScroll();
     initActiveSection();
-    initLoginSystem();
+    initSurveyForm();
     
     // Apple-Style Enhancements
     initScrollAnimations();
@@ -927,8 +902,6 @@ document.addEventListener('DOMContentLoaded', () => {
     createParticles('hero-particles', 25);
     
     initBackgroundMusic();
-    // Preload a few important assets (images + audio) to improve first paint and playback
-    try { preloadImportantAssets(); } catch (e) { /* fail silently */ }
     
     // Check if user already entered (skip overlay)
     if (sessionStorage.getItem('site_entered') === 'true') {
@@ -940,44 +913,6 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 
-/**
- * Preload important images and audio via JS as a fallback to <link rel="preload">.
- * This helps on browsers that may ignore link-based preloads or when cache-busting is used.
- */
-function preloadImportantAssets() {
-    const imageList = [
-        'assets/design-hero.jpg',
-        'assets/banner-logo2.png',
-        'assets/maxi2.png',
-        'assets/laika1.png',
-        'assets/gallery-1.jpg'
-    ];
-
-    imageList.forEach(src => {
-        const img = new Image();
-        img.src = src;
-    });
-
-    // Pre-create audio elements and call load()
-    const audioList = [
-        'assets/IWasAlive.mp3',
-        'assets/tth_05-23_06-03.mp3'
-    ];
-
-    audioList.forEach(src => {
-        try {
-            const a = document.createElement('audio');
-            a.preload = 'auto';
-            a.src = src;
-            // call load to hint the browser
-            a.load();
-        } catch (e) {
-            // ignore
-        }
-    });
-}
-
-
 // ================================================
 // WELCOME OVERLAY & MUSIC START
 // ================================================
@@ -985,7 +920,6 @@ function preloadImportantAssets() {
 function enterSite() {
     const overlay = document.getElementById('welcome-overlay');
     const audio = document.getElementById('bg-music');
-    const musicIcon = document.getElementById('music-icon');
     
     // Hide overlay with fade
     if (overlay) {
@@ -1002,7 +936,7 @@ function enterSite() {
         audio.loop = false; // Disable loop for main music
         audio.play().then(() => {
             localStorage.setItem(MUSIC_STORAGE_KEY, 'true');
-            if (musicIcon) musicIcon.textContent = '🔊';
+            setMusicIcon(true);
             console.log('🎵 Main music started!');
         }).catch(err => {
             console.log('Audio play failed:', err);
@@ -1208,194 +1142,6 @@ window.closeLightbox = closeLightbox;
 
 
 // ================================================
-// ADMIN LOGIN SYSTEM
-// Two-stage visibility: 
-// - Stage 1 (Guest): Only Hero + Countdown (days only) + Coming Soon
-// - Stage 2 (Admin): Full content visible
-// ================================================
-
-const ADMIN_CREDENTIALS = {
-    username: 'bromag',
-    password: 'admin'
-};
-
-const STORAGE_KEY = 'savethedate_admin_logged_in';
-
-/**
- * Check if user is logged in (from localStorage)
- */
-function isLoggedIn() {
-    return localStorage.getItem(STORAGE_KEY) === 'true';
-}
-
-/**
- * Update page visibility based on login state
- */
-function updateVisibility() {
-    if (isLoggedIn()) {
-        document.body.classList.add('is-admin');
-        updateLoginModal(true);
-    } else {
-        document.body.classList.remove('is-admin');
-        updateLoginModal(false);
-    }
-}
-
-/**
- * Update login modal content based on login state
- */
-function updateLoginModal(loggedIn) {
-    const loginForm = document.getElementById('login-form');
-    const loggedInMessage = document.getElementById('logged-in-message');
-    const loginError = document.getElementById('login-error');
-    
-    if (!loginForm || !loggedInMessage) return;
-    
-    if (loggedIn) {
-        loginForm.classList.add('hidden');
-        loggedInMessage.classList.remove('hidden');
-    } else {
-        loginForm.classList.remove('hidden');
-        loggedInMessage.classList.add('hidden');
-        if (loginError) loginError.classList.add('hidden');
-    }
-}
-
-/**
- * Handle login form submission
- */
-function handleLogin(event) {
-    event.preventDefault();
-    
-    const userInput = document.getElementById('login-user');
-    const passInput = document.getElementById('login-pass');
-    const loginError = document.getElementById('login-error');
-    
-    if (!userInput || !passInput) return;
-    
-    const username = userInput.value.trim();
-    const password = passInput.value;
-    
-    if (username === ADMIN_CREDENTIALS.username && password === ADMIN_CREDENTIALS.password) {
-        // Success!
-        localStorage.setItem(STORAGE_KEY, 'true');
-        updateVisibility();
-        
-        // Clear form
-        userInput.value = '';
-        passInput.value = '';
-        
-        // Close modal after short delay to show success
-        setTimeout(() => {
-            closeLoginModal();
-        }, 500);
-        
-        console.log('🔓 Admin logged in');
-    } else {
-        // Error
-        if (loginError) {
-            loginError.classList.remove('hidden');
-            loginError.classList.add('login-error');
-        }
-        
-        // Play sound on wrong password
-        currentLoginSound = new Audio('assets/tth_05-23_06-03.mp3');
-        currentLoginSound.play();
-        
-        // Shake the form
-        const modalContent = document.querySelector('.login-modal-content');
-        if (modalContent) {
-            modalContent.style.animation = 'none';
-            setTimeout(() => {
-                modalContent.style.animation = 'shake 0.5s ease-in-out';
-            }, 10);
-        }
-    }
-}
-
-/**
- * Handle logout
- */
-function handleLogout() {
-    localStorage.removeItem(STORAGE_KEY);
-    updateVisibility();
-    console.log('🔒 Admin logged out');
-}
-
-/**
- * Open login modal
- */
-function openLoginModal() {
-    const modal = document.getElementById('login-modal');
-    if (modal) {
-        modal.classList.remove('hidden');
-        document.body.style.overflow = 'hidden';
-        
-        // Focus first input
-        const firstInput = modal.querySelector('input');
-        if (firstInput && !isLoggedIn()) {
-            setTimeout(() => firstInput.focus(), 100);
-        }
-    }
-}
-
-/**
- * Close login modal
- */
-function closeLoginModal() {
-    const modal = document.getElementById('login-modal');
-    if (modal) {
-        modal.classList.add('hidden');
-        document.body.style.overflow = '';
-    }
-    
-    // Stop login sound if playing
-    if (currentLoginSound) {
-        currentLoginSound.pause();
-        currentLoginSound.currentTime = 0;
-        currentLoginSound = null;
-    }
-}
-
-/**
- * Initialize login system
- */
-function initLoginSystem() {
-    // Check login state on page load
-    updateVisibility();
-    
-    // Setup admin login button
-    const adminBtn = document.getElementById('admin-login-btn');
-    if (adminBtn) {
-        adminBtn.addEventListener('click', openLoginModal);
-    }
-    
-    // Close modal on Escape key
-    document.addEventListener('keydown', (e) => {
-        if (e.key === 'Escape') {
-            const modal = document.getElementById('login-modal');
-            if (modal && !modal.classList.contains('hidden')) {
-                closeLoginModal();
-            }
-        }
-    });
-    
-    console.log(isLoggedIn() ? '🔓 Admin session active' : '🔒 Guest mode');
-    
-    // Survey SOFORT initialisieren wenn Admin eingeloggt (nicht verzögert)
-    if (isLoggedIn()) {
-        initSurveyForm();
-    }
-}
-
-// Make login functions globally available
-window.handleLogin = handleLogin;
-window.handleLogout = handleLogout;
-window.openLoginModal = openLoginModal;
-window.closeLoginModal = closeLoginModal;
-
-
-// ================================================
 // BACKGROUND MUSIC
 // ================================================
 
@@ -1433,11 +1179,8 @@ function initBackgroundMusic() {
     // Check if user previously enabled music
     const musicWasEnabled = localStorage.getItem(MUSIC_STORAGE_KEY) === 'true';
     
-    // Pre-load audio for faster playback
-    audio.load();
-    
     function updateIcon() {
-        musicIcon.textContent = audio.paused ? '🔇' : '🔊';
+        setMusicIcon(!audio.paused);
         toggleBtn.setAttribute('aria-label', audio.paused ? 'Musik einschalten' : 'Musik ausschalten');
     }
     
