@@ -519,10 +519,19 @@ body {
     border-bottom: 1px solid rgba(224, 224, 224, 0.08);
 }
 
+/* Tages-Zeitslots: nur mit gültigem Einladungscode sichtbar */
+.time-slot.day-slot {
+    display: none;
+}
+
+.time-slot.day-slot.visible {
+    display: flex;
+}
+
 /* Events Spalte - relativ für absolute Positionierung */
 .events-column {
     position: relative;
-    height: calc(12 * 80px); /* 12 Stunden × 80px */
+    height: calc(var(--slots, 12) * 80px);
     background: 
         repeating-linear-gradient(
             to bottom,
@@ -531,11 +540,6 @@ body {
             rgba(224, 224, 224, 0.08) 79px,
             rgba(224, 224, 224, 0.08) 80px
         );
-}
-
-/* Evening Mode: nur 19:00 - 02:00 sichtbar (8 Stunden) */
-.events-column.evening-mode {
-    height: calc(8 * 80px);
 }
 
 /* Event Block - positioniert nach Zeit */
@@ -621,12 +625,6 @@ body {
     flex-shrink: 0;
 }
 
-/* Hide day-only events for evening guests */
-.event-block.day-only[style*="display: none"] {
-    opacity: 0;
-    pointer-events: none;
-}
-
 /* Responsive */
 @media (max-width: 640px) {
     .festival-timeline-grid {
@@ -639,10 +637,7 @@ body {
     }
     
     .events-column {
-        height: calc(12 * 65px);
-    }
-    .events-column.evening-mode {
-        height: calc(8 * 65px);
+        height: calc(var(--slots, 12) * 65px);
     }
     
     .event-block {

@@ -159,74 +159,98 @@ let surveyInitialized = false;
 // URL PARAMETER - INVITE TYPE DETECTION
 // ================================================
 
+// ================================================
+// GÄSTEGRUPPEN / EINLADUNGSCODE (Tagesprogramm)
+// ================================================
+// Standard: Abend-Ansicht (Party ab 21:00). Das Tagesprogramm liegt NICHT im
+// Quelltext, sondern AES-256-GCM-verschlüsselt in assets/day-content.enc.json.
+// Tagesgäste erhalten einen Link mit #code=..., der die Inhalte entschlüsselt.
+// Ohne gültigen Code ist das Tagesprogramm technisch nicht einsehbar.
+
+const INVITE_CODE_STORAGE_KEY = 'savethedate_invite_code';
+const DAY_CONTENT_URL = 'assets/day-content.enc.json';
+
 /**
- * Check URL parameters for invite type (day/evening)
- * Filters timeline events accordingly
+ * Einladungscode aus URL-Hash (#code=...) oder localStorage lesen.
+ * Der Hash wird nach dem Einlesen aus der URL entfernt (Verlauf/Schulterblick).
  */
-function handleInviteType() {
-    const urlParams = new URLSearchParams(window.location.search);
-    // Only support subtle parameter: set=A (day) | set=B (evening)
-    let inviteType = undefined;
-    const setParam = urlParams.get('set');
-    if (setParam) {
-        if (setParam.toUpperCase() === 'A') inviteType = 'day';
-        if (setParam.toUpperCase() === 'B') inviteType = 'evening';
+function getInviteCode() {
+    const hashMatch = window.location.hash.match(/code=([^&]+)/);
+    if (hashMatch) {
+        const code = decodeURIComponent(hashMatch[1]);
+        try { localStorage.setItem(INVITE_CODE_STORAGE_KEY, code); } catch (e) { /* ignore */ }
+        // Code aus der Adresszeile entfernen
+        history.replaceState(null, '', window.location.pathname + window.location.search);
+        return code;
     }
-    
-    console.log('Invite Type:', inviteType);
-    
-    if (inviteType === 'evening') {
-        // Abendgäste: Nur Events ab 21:00 anzeigen
-        filterTimelineForEvening();
-        updateTextsForEvening();
-    } else if (inviteType === 'day') {
-        // Tagesgäste: Alles anzeigen (Standard)
-        console.log('Day guests - showing full timeline');
+    try {
+        return localStorage.getItem(INVITE_CODE_STORAGE_KEY);
+    } catch (e) {
+        return null;
     }
-    // Ohne Parameter: Normal (geschützt via Login)
 }
 
 /**
- * Filter timeline to show only evening events (from 21:00)
+ * AES-256-GCM-Entschlüsselung: Schlüssel = SHA-256 des Codes.
+ * Wirft bei falschem Code (GCM-Authentifizierung schlägt fehl).
  */
-function filterTimelineForEvening() {
-    const dayOnlyEvents = document.querySelectorAll('.event-block.day-only');
-    const dayOnlyTimeSlots = document.querySelectorAll('.time-slot.day-only');
-    const eventsColumn = document.querySelector('.events-column');
-    
-    dayOnlyEvents.forEach(event => {
-        event.style.display = 'none';
-    });
-    
-    dayOnlyTimeSlots.forEach(slot => {
-        slot.style.display = 'none';
-    });
-    
-    // Rebase timeline so 19:00 becomes top (offset 4 hours from 15:00)
-    if (eventsColumn) {
-        eventsColumn.classList.add('evening-mode');
-        eventsColumn.style.setProperty('--base-offset', '4');
-    }
-    
-    console.log('Timeline filtered for evening guests');
+async function decryptDayContent(code, payload) {
+    const keyBytes = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(code));
+    const key = await crypto.subtle.importKey('raw', keyBytes, 'AES-GCM', false, ['decrypt']);
+    const iv = Uint8Array.from(atob(payload.iv), c => c.charCodeAt(0));
+    const data = Uint8Array.from(atob(payload.data), c => c.charCodeAt(0));
+    const plaintext = await crypto.subtle.decrypt({ name: 'AES-GCM', iv }, key, data);
+    return new TextDecoder().decode(plaintext);
 }
 
 /**
- * Update texts for evening guests
+ * Versucht, das Tagesprogramm zu laden und freizuschalten.
+ * Bei fehlendem/falschem Code bleibt still die Abend-Ansicht aktiv.
  */
-function updateTextsForEvening() {
+async function initInviteContent() {
+    const code = getInviteCode();
+    if (!code) return;
+    
+    try {
+        const response = await fetch(DAY_CONTENT_URL);
+        if (!response.ok) return;
+        const payload = await response.json();
+        
+        const html = await decryptDayContent(code, payload);
+        unlockDayView(html);
+        console.log('🎫 Tagesprogramm freigeschaltet');
+    } catch (e) {
+        // Falscher Code: gespeicherten Wert verwerfen, Abend-Ansicht bleibt
+        try { localStorage.removeItem(INVITE_CODE_STORAGE_KEY); } catch (err) { /* ignore */ }
+        console.log('🎫 Kein gültiger Einladungscode – Abend-Ansicht');
+    }
+}
+
+/**
+ * Schaltet die Timeline auf die volle Tages-Ansicht um und
+ * injiziert die entschlüsselten Event-Blöcke.
+ */
+function unlockDayView(eventsHtml) {
+    const eventsColumn = document.getElementById('events-column');
+    if (!eventsColumn) return;
+    
+    // Tages-Zeitslots (15:00-20:00) einblenden
+    document.querySelectorAll('.time-slot.day-slot').forEach(slot => {
+        slot.classList.add('visible');
+    });
+    
+    // Raster auf 15:00-02:00 erweitern (12 Slots, Offset 0)
+    eventsColumn.style.setProperty('--base-offset', '0');
+    eventsColumn.style.setProperty('--slots', '12');
+    
+    // Entschlüsselte Tages-Events vor den Abend-Events einfügen
+    eventsColumn.insertAdjacentHTML('afterbegin', eventsHtml);
+    
+    // Texte anpassen
     const titleEl = document.getElementById('timeline-title');
     const subtitleEl = document.getElementById('timeline-subtitle');
-    
-    if (titleEl) {
-        titleEl.textContent = 'Der Zeitplan ab 21:00 Uhr';
-    }
-    
-    if (subtitleEl) {
-        subtitleEl.textContent = 'Euer Abend mit uns 🎸';
-    }
-    
-    console.log('Texts updated for evening guests');
+    if (titleEl) titleEl.textContent = 'Der Zeitplan';
+    if (subtitleEl) subtitleEl.textContent = 'Euer ganzer Tag mit uns 🤘';
 }
 
 // ================================================
@@ -885,8 +909,8 @@ document.addEventListener('DOMContentLoaded', () => {
     // Wedding date: September 19, 2026 at 15:00
     initCountdown('2026-09-19T15:00:00');
     
-    // Handle invite type from URL parameters (day/evening)
-    handleInviteType();
+    // Tagesprogramm nur mit gültigem Einladungscode freischalten
+    initInviteContent();
     
     initMobileNav();
     initSmoothScroll();

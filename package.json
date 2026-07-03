@@ -9,6 +9,7 @@
   "scripts": {
     "build:css": "npx --yes tailwindcss@3.4.17 -i tailwind.input.css -o tailwind.css --minify",
     "watch:css": "npx --yes tailwindcss@3.4.17 -i tailwind.input.css -o tailwind.css --watch",
+    "encrypt:day": "node tools/encrypt-day-content.mjs",
     "test": "playwright test",
     "test:ui": "playwright test --ui",
     "test:debug": "playwright test --debug",
