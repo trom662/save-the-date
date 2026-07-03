@@ -176,7 +176,7 @@ function handleInviteType() {
     console.log('Invite Type:', inviteType);
     
     if (inviteType === 'evening') {
-        // Abendgäste: Nur Events ab 19:30 anzeigen
+        // Abendgäste: Nur Events ab 21:00 anzeigen
         filterTimelineForEvening();
         updateTextsForEvening();
     } else if (inviteType === 'day') {
@@ -187,7 +187,7 @@ function handleInviteType() {
 }
 
 /**
- * Filter timeline to show only evening events (from 19:30)
+ * Filter timeline to show only evening events (from 21:00)
  */
 function filterTimelineForEvening() {
     const dayOnlyEvents = document.querySelectorAll('.event-block.day-only');
@@ -219,7 +219,7 @@ function updateTextsForEvening() {
     const subtitleEl = document.getElementById('timeline-subtitle');
     
     if (titleEl) {
-        titleEl.textContent = 'Der Zeitplan ab 19:30 Uhr';
+        titleEl.textContent = 'Der Zeitplan ab 21:00 Uhr';
     }
     
     if (subtitleEl) {
