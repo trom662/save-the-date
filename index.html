@@ -98,7 +98,7 @@
                 Keine Panik – schreib uns, wir regeln das an der Abendkasse:
             </p>
             
-            <a href="mailto:bromags@outlook.de?subject=T%C3%BCrsteher-Problem%20%F0%9F%A4%98" class="cta-button">
+            <a href="mailto:bromag@outlook.de?subject=T%C3%BCrsteher-Problem%20%F0%9F%A4%98" class="cta-button">
                 <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24" aria-hidden="true">
                     <rect x="2" y="4" width="20" height="16" rx="2"/>
                     <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/>
@@ -302,48 +302,56 @@
             <h2 class="section-title">Anfahrt</h2>
             <p class="section-subtitle">Damit ihr auch rechtzeitig zur Party findet.</p>
             
-            <div class="grid md:grid-cols-2 gap-8 mt-12 max-w-5xl mx-auto">
-                <!-- Map -->
-                <div class="map-container">
-                    <iframe 
-                        title="Anfahrtskarte zur Location"
-                        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2548.8!2d10.7873!3d49.8625!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x47a2231c8d5c6b7d%3A0x4c7d9c3e2b1a0f9e!2sMarktpl.%204%2C%2096172%20M%C3%BChlhausen!5e0!3m2!1sde!2sde!4v1703158800000!5m2!1sde!2sde"
-                        class="w-full h-80 md:h-96 rounded-lg border-2 border-metal-gray"
-                        loading="lazy"
-                        allowfullscreen
-                        referrerpolicy="no-referrer-when-downgrade"
-                    ></iframe>
+            <!-- Standesamt-Block (nur engster Kreis, wird per Code injiziert) -->
+            <div id="extra-location" class="max-w-5xl mx-auto"></div>
+            
+            <!-- Kulturscheune -->
+            <div class="location-block max-w-5xl mx-auto mt-12">
+                <div class="location-block-header">
+                    <h3 class="location-block-title">Kulturscheune Mühlhausen</h3>
+                    <p class="location-block-sub">Unsere Hochzeitslocation – hier wird gefeiert 🤘</p>
                 </div>
                 
-                <!-- Address & Downloads -->
-                <div class="flex flex-col justify-center space-y-6">
-                    <!-- Zusätzliche Location (Standesamt) – wird nur für den engsten Kreis per Code injiziert -->
-                    <div id="extra-location"></div>
-                    <div class="bg-metal-gray p-6 rounded-lg">
-                        <h3 class="text-xl font-bold text-white mb-3 flex items-center gap-2">
-                            <svg class="w-5 h-5 shrink-0" style="color: var(--metal-red)" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24" aria-hidden="true">
-                                <path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/>
-                                <circle cx="12" cy="10" r="3"/>
-                            </svg>
-                            Adresse
-                        </h3>
-                        <address class="not-italic text-metal-light/80">
-                            Kulturscheune<br>
-                            Marktpl. 4<br>
-                            96172 Mühlhausen
-                        </address>
-                        <a href="https://www.google.com/maps/search/?api=1&query=Kulturscheune+Marktpl.+4+96172+Mühlhausen" 
-                           target="_blank" 
-                           rel="noopener noreferrer"
-                           class="inline-flex items-center gap-1.5 mt-3 text-metal-red hover:underline text-sm">
-                            <svg class="w-4 h-4 shrink-0" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24" aria-hidden="true">
-                                <path d="M15 3h6v6"/>
-                                <path d="M10 14 21 3"/>
-                                <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/>
-                            </svg>
-                            In Google Maps öffnen
-                        </a>
+                <div class="grid md:grid-cols-2 gap-8">
+                    <!-- Map Kulturscheune -->
+                    <div class="map-container">
+                        <iframe 
+                            title="Karte: Kulturscheune Mühlhausen"
+                            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2548.8!2d10.7873!3d49.8625!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x47a2231c8d5c6b7d%3A0x4c7d9c3e2b1a0f9e!2sMarktpl.%204%2C%2096172%20M%C3%BChlhausen!5e0!3m2!1sde!2sde!4v1703158800000!5m2!1sde!2sde"
+                            class="w-full h-80 md:h-96 rounded-lg border-2 border-metal-gray"
+                            loading="lazy"
+                            allowfullscreen
+                            referrerpolicy="no-referrer-when-downgrade"
+                        ></iframe>
                     </div>
+                    
+                    <!-- Adresse & Parken -->
+                    <div class="flex flex-col justify-center space-y-6">
+                        <div class="bg-metal-gray p-6 rounded-lg">
+                            <h3 class="text-xl font-bold text-white mb-3 flex items-center gap-2">
+                                <svg class="w-5 h-5 shrink-0" style="color: var(--metal-red)" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24" aria-hidden="true">
+                                    <path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/>
+                                    <circle cx="12" cy="10" r="3"/>
+                                </svg>
+                                So findet ihr uns
+                            </h3>
+                            <address class="not-italic text-metal-light/80">
+                                Kulturscheune<br>
+                                Marktpl. 4<br>
+                                96172 Mühlhausen
+                            </address>
+                            <a href="https://www.google.com/maps/search/?api=1&query=Kulturscheune+Marktpl.+4+96172+Mühlhausen" 
+                               target="_blank" 
+                               rel="noopener noreferrer"
+                               class="inline-flex items-center gap-1.5 mt-3 text-metal-red hover:underline text-sm">
+                                <svg class="w-4 h-4 shrink-0" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24" aria-hidden="true">
+                                    <path d="M15 3h6v6"/>
+                                    <path d="M10 14 21 3"/>
+                                    <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/>
+                                </svg>
+                                In Google Maps öffnen
+                            </a>
+                        </div>
                     
                     <div class="bg-metal-gray p-6 rounded-lg">
                         <h3 class="text-xl font-bold text-white mb-3 flex items-center gap-2">
@@ -362,12 +370,13 @@
                         </p>
                     </div>
                     
-                    <a href="#" class="download-button hidden" style="display: none" aria-label="Anfahrtsskizze als PDF herunterladen">
-                        <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
-                        </svg>
-                        Anfahrtsskizze (PDF) herunterladen
-                    </a>
+                        <a href="#" class="download-button hidden" style="display: none" aria-label="Anfahrtsskizze als PDF herunterladen">
+                            <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+                            </svg>
+                            Anfahrtsskizze (PDF) herunterladen
+                        </a>
+                    </div>
                 </div>
             </div>
         </div>
@@ -396,7 +405,7 @@
                             <p class="hotel-location">Direkt am Schloss · Pommersfelden</p>
                         </div>
                     </div>
-                    <p class="hotel-note">Nächste Option zum Standesamt – mit Blick auf Schloss Weissenstein.</p>
+                    <p class="hotel-note">Mit Blick auf Schloss Weissenstein.</p>
                     <div class="hotel-actions">
                         <a href="tel:+4995489808403" class="hotel-action">
                             <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24" aria-hidden="true"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
@@ -423,7 +432,7 @@
                             <p class="hotel-location">Hauptstraße 18 · Pommersfelden</p>
                         </div>
                     </div>
-                    <p class="hotel-note">Fränkischer Gasthof-Klassiker – kurze Wege, ehrliche Küche.</p>
+                    <p class="hotel-note">Fränkischer Gasthof-Klassiker im Ortskern – kurze Wege.</p>
                     <div class="hotel-actions">
                         <a href="tel:+49954892270" class="hotel-action">
                             <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24" aria-hidden="true"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
@@ -483,6 +492,10 @@
                             <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24" aria-hidden="true"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
                             09548 283
                         </a>
+                        <a href="https://www.booking.com/hotel/de/gasthof-linsner.de.html" target="_blank" rel="noopener noreferrer" class="hotel-action">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24" aria-hidden="true"><path d="M15 3h6v6"/><path d="M10 14 21 3"/><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/></svg>
+                            Auf Booking.com
+                        </a>
                     </div>
                 </div>
                 
@@ -503,6 +516,7 @@
                 <!-- Stage Header -->
                 <div class="festival-stage-header">
                     <span class="stage-name">KULTURSCHEUNE</span>
+                    <span class="stage-date">Live · Sa · 19.09.2026</span>
                 </div>
                 
                 <!-- Timeline Grid mit Stundenraster -->
@@ -772,17 +786,13 @@
                 <div>
                     <h3 class="font-metal text-xl text-metal-red mb-5">Kontakt</h3>
                     <p class="text-metal-light/70 text-sm mb-3">Fragen, Wünsche oder Probleme mit der Zusage?</p>
-                    <a href="mailto:bromags@outlook.de" class="footer-link inline-flex items-center gap-2">
+                    <a href="mailto:bromag@outlook.de" class="footer-link inline-flex items-center gap-2">
                         <svg class="w-4 h-4 shrink-0" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24" aria-hidden="true">
                             <rect x="2" y="4" width="20" height="16" rx="2"/>
                             <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/>
                         </svg>
                         Schreibt uns
                     </a>
-                    <p class="text-metal-light/50 text-sm mt-5">
-                        Diese Seite verwendet keine Cookies.<br>
-                        Außer die vom Catering. 🍪
-                    </p>
                 </div>
             </div>
             
