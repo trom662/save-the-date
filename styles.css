@@ -520,11 +520,13 @@ body {
 }
 
 /* Tages-Zeitslots: nur mit gültigem Einladungscode sichtbar */
-.time-slot.day-slot {
+.time-slot.day-slot,
+.time-slot.inner-slot {
     display: none;
 }
 
-.time-slot.day-slot.visible {
+.time-slot.day-slot.visible,
+.time-slot.inner-slot.visible {
     display: flex;
 }
 
@@ -1188,6 +1190,144 @@ body {
     .countdown-number.tick {
         animation: none;
     }
+}
+
+/* ================================================
+   GATE (Ansicht ohne Einladungscode) & SITE-LOCK
+   ================================================ */
+
+/* Gesperrter Zustand: alle Inhalte verstecken, nur Gate zeigen */
+body.site-locked #hero,
+body.site-locked #location,
+body.site-locked #hotels,
+body.site-locked #timeline,
+body.site-locked #gallery,
+body.site-locked #umfrage,
+body.site-locked #contact,
+body.site-locked #navbar ul,
+body.site-locked #navbar a[href="#umfrage"],
+body.site-locked #mobile-menu-btn {
+    display: none !important;
+}
+
+#gate {
+    display: none;
+}
+
+body.site-locked #gate {
+    display: flex;
+}
+
+.gate-section {
+    min-height: 100vh;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    overflow: hidden;
+    padding: 6rem 1rem 3rem;
+    background:
+        radial-gradient(circle at 50% 20%, rgba(220, 38, 38, 0.12), transparent 60%),
+        var(--metal-black);
+}
+
+.gate-card {
+    position: relative;
+    z-index: 2;
+    max-width: 34rem;
+    text-align: center;
+    padding: var(--space-12) var(--space-8);
+}
+
+.gate-logo {
+    width: min(280px, 70%);
+    height: auto;
+    margin: 0 auto var(--space-6);
+    filter: drop-shadow(0 10px 30px rgba(0, 0, 0, 0.6));
+}
+
+.gate-bouncers {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--space-4);
+    margin-top: var(--space-8);
+    padding-top: var(--space-6);
+    border-top: 1px solid var(--glass-border);
+}
+
+/* ================================================
+   HOTEL / UNTERKUNFTS-KARTEN
+   ================================================ */
+
+.hotel-card {
+    padding: var(--space-6);
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-4);
+    transition: transform var(--transition-medium), border-color var(--transition-medium), box-shadow var(--transition-medium);
+}
+
+.hotel-card:hover {
+    transform: translateY(-4px);
+    border-color: rgba(220, 38, 38, 0.5);
+    box-shadow: var(--shadow-lg), 0 0 30px rgba(220, 38, 38, 0.15);
+}
+
+.hotel-card-header {
+    display: flex;
+    align-items: flex-start;
+    gap: var(--space-4);
+}
+
+.hotel-icon {
+    width: 2rem;
+    height: 2rem;
+    flex-shrink: 0;
+    color: var(--metal-red);
+    margin-top: 2px;
+}
+
+.hotel-name {
+    font-size: var(--text-lg);
+    font-weight: 700;
+    color: white;
+    line-height: 1.3;
+}
+
+.hotel-location {
+    font-size: var(--text-sm);
+    color: var(--metal-muted);
+    margin-top: 2px;
+}
+
+.hotel-note {
+    font-size: var(--text-sm);
+    color: rgba(245, 245, 245, 0.75);
+    line-height: 1.5;
+    flex-grow: 1;
+}
+
+.hotel-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-2) var(--space-6);
+    padding-top: var(--space-3);
+    border-top: 1px solid var(--glass-border);
+}
+
+.hotel-action {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-2);
+    font-size: var(--text-sm);
+    font-weight: 600;
+    color: var(--metal-red);
+    transition: color var(--transition-fast);
+    white-space: nowrap;
+}
+
+.hotel-action:hover {
+    color: white;
 }
 
 /* ---- Footer Cards (Trauzeugen, gleichwertig) ---- */

@@ -36,7 +36,7 @@
     <link rel="preload" href="assets/design-hero.jpg" as="image" fetchpriority="high">
     <link rel="preload" href="assets/banner-logo2.png" as="image">
 </head>
-<body class="bg-metal-black text-metal-light font-sans">
+<body class="bg-metal-black text-metal-light font-sans site-locked">
     
     <!-- Welcome Overlay (click to enter & start music) -->
     <div id="welcome-overlay" class="fixed inset-0 z-[999] bg-metal-black flex items-center justify-center cursor-pointer" onclick="enterSite()">
@@ -79,6 +79,41 @@
     <!-- Corner Volume Control (fixed to bottom-right) -->
         <!-- Removed Corner Volume Control -->
 
+    <!-- ============================================ -->
+    <!-- GATE: Ansicht ohne gültigen Einladungscode    -->
+    <!-- ============================================ -->
+    <section id="gate" class="gate-section">
+        <div class="particles-container" id="gate-particles"></div>
+        <div class="gate-card glass-card">
+            <img src="assets/banner-logo2.png" alt="Kathrin & Tobi – 19.09.2026" class="gate-logo">
+            
+            <h1 class="font-metal text-3xl md:text-4xl text-metal-red mb-4">Halt! Gästeliste?</h1>
+            
+            <p class="text-metal-light/85 mb-3">
+                Hier geht's nur für geladene Gäste weiter. Öffne einfach den
+                persönlichen Link aus deiner Einladung – er ist dein Backstage-Pass.
+            </p>
+            <p class="text-metal-muted text-sm mb-8">
+                Du stehst auf der Gästeliste, aber der Türsteher lässt dich trotzdem nicht rein?
+                Keine Panik – schreib uns, wir regeln das an der Abendkasse:
+            </p>
+            
+            <a href="mailto:bromags@outlook.de?subject=T%C3%BCrsteher-Problem%20%F0%9F%A4%98" class="cta-button">
+                <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24" aria-hidden="true">
+                    <rect x="2" y="4" width="20" height="16" rx="2"/>
+                    <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/>
+                </svg>
+                Kontakt aufnehmen
+            </a>
+            
+            <div class="gate-bouncers">
+                <img src="assets/maxi2.png" alt="" class="w-12 h-12 object-contain">
+                <p class="text-metal-muted text-xs">Unsere Türsteher Maxi & Laika sind unbestechlich.<br>Auch nicht mit Leckerlis. Okay… vielleicht mit Leckerlis.</p>
+                <img src="assets/laika1.png" alt="" class="w-12 h-12 object-contain">
+            </div>
+        </div>
+    </section>
+
     <!-- Navigation -->
     <nav id="navbar" class="fixed top-0 left-0 right-0 z-50 bg-metal-black/95 backdrop-blur-sm border-b border-metal-gray transition-all duration-300">
         <div class="max-w-6xl mx-auto px-4 py-4">
@@ -94,6 +129,7 @@
                 <ul class="hidden md:flex space-x-8 items-center">
                     <li><a href="#hero" class="nav-link">Home</a></li>
                     <li><a href="#location" class="nav-link">Anfahrt</a></li>
+                    <li><a href="#hotels" class="nav-link">Unterkünfte</a></li>
                     <li><a href="#timeline" class="nav-link">Zeitplan</a></li>
                     <li><a href="#gallery" class="nav-link">Galerie</a></li>
                 </ul>
@@ -114,6 +150,7 @@
                 <ul class="flex flex-col space-y-4">
                     <li><a href="#hero" class="mobile-nav-link">Home</a></li>
                     <li><a href="#location" class="mobile-nav-link">Anfahrt</a></li>
+                    <li><a href="#hotels" class="mobile-nav-link">Unterkünfte</a></li>
                     <li><a href="#timeline" class="mobile-nav-link">Zeitplan</a></li>
                     <li><a href="#gallery" class="mobile-nav-link">Galerie</a></li>
                 </ul>
@@ -280,6 +317,8 @@
                 
                 <!-- Address & Downloads -->
                 <div class="flex flex-col justify-center space-y-6">
+                    <!-- Zusätzliche Location (Standesamt) – wird nur für den engsten Kreis per Code injiziert -->
+                    <div id="extra-location"></div>
                     <div class="bg-metal-gray p-6 rounded-lg">
                         <h3 class="text-xl font-bold text-white mb-3 flex items-center gap-2">
                             <svg class="w-5 h-5 shrink-0" style="color: var(--metal-red)" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24" aria-hidden="true">
@@ -334,6 +373,123 @@
         </div>
     </section>
     
+    <!-- Unterkünfte / Hotels Section -->
+    <section id="hotels" class="py-20 bg-metal-gray">
+        <div class="container mx-auto px-4">
+            <span class="section-eyebrow">Übernachten</span>
+            <h2 class="section-title">Unterkünfte</h2>
+            <p class="section-subtitle">Damit ihr nach der letzten Zugabe nicht weit müsst – unsere Empfehlungen im Umkreis. Sagt beim Buchen gern, dass ihr zur Hochzeit kommt. 🤘</p>
+            
+            <div class="grid sm:grid-cols-2 gap-6 mt-12 max-w-4xl mx-auto" data-stagger>
+                
+                <!-- Bei Francesco -->
+                <div class="hotel-card glass-card stagger-item">
+                    <div class="hotel-card-header">
+                        <svg class="hotel-icon" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24" aria-hidden="true">
+                            <path d="M2 20v-8a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v8"/>
+                            <path d="M4 10V6a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v4"/>
+                            <path d="M2 18h20"/>
+                            <path d="M6 10v-2h4v2"/>
+                        </svg>
+                        <div>
+                            <h3 class="hotel-name">Boutique Hotel Bei Francesco</h3>
+                            <p class="hotel-location">Direkt am Schloss · Pommersfelden</p>
+                        </div>
+                    </div>
+                    <p class="hotel-note">Nächste Option zum Standesamt – mit Blick auf Schloss Weissenstein.</p>
+                    <div class="hotel-actions">
+                        <a href="tel:+4995489808403" class="hotel-action">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24" aria-hidden="true"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+                            09548 9808403
+                        </a>
+                        <a href="https://bei-francesco.de/zimmer/" target="_blank" rel="noopener noreferrer" class="hotel-action">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24" aria-hidden="true"><path d="M15 3h6v6"/><path d="M10 14 21 3"/><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/></svg>
+                            Zur Website
+                        </a>
+                    </div>
+                </div>
+                
+                <!-- Grüner Baum -->
+                <div class="hotel-card glass-card stagger-item">
+                    <div class="hotel-card-header">
+                        <svg class="hotel-icon" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24" aria-hidden="true">
+                            <path d="M2 20v-8a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v8"/>
+                            <path d="M4 10V6a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v4"/>
+                            <path d="M2 18h20"/>
+                            <path d="M6 10v-2h4v2"/>
+                        </svg>
+                        <div>
+                            <h3 class="hotel-name">Hotel Grüner Baum</h3>
+                            <p class="hotel-location">Hauptstraße 18 · Pommersfelden</p>
+                        </div>
+                    </div>
+                    <p class="hotel-note">Fränkischer Gasthof-Klassiker – kurze Wege, ehrliche Küche.</p>
+                    <div class="hotel-actions">
+                        <a href="tel:+49954892270" class="hotel-action">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24" aria-hidden="true"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+                            09548 9227-0
+                        </a>
+                        <a href="https://www.hotel-gruener-baum.de/" target="_blank" rel="noopener noreferrer" class="hotel-action">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24" aria-hidden="true"><path d="M15 3h6v6"/><path d="M10 14 21 3"/><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/></svg>
+                            Zur Website
+                        </a>
+                    </div>
+                </div>
+                
+                <!-- Landgasthof Weichlein -->
+                <div class="hotel-card glass-card stagger-item">
+                    <div class="hotel-card-header">
+                        <svg class="hotel-icon" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24" aria-hidden="true">
+                            <path d="M2 20v-8a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v8"/>
+                            <path d="M4 10V6a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v4"/>
+                            <path d="M2 18h20"/>
+                            <path d="M6 10v-2h4v2"/>
+                        </svg>
+                        <div>
+                            <h3 class="hotel-name">Landgasthof Weichlein</h3>
+                            <p class="hotel-location">Weingartsgreuth 20 · Wachenroth</p>
+                        </div>
+                    </div>
+                    <p class="hotel-note">Fränkischer Landgasthof mit Biergarten – nur wenige Minuten zur Kulturscheune.</p>
+                    <div class="hotel-actions">
+                        <a href="tel:+499548349" class="hotel-action">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24" aria-hidden="true"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+                            09548 349
+                        </a>
+                        <a href="https://www.gasthofweichlein.com/" target="_blank" rel="noopener noreferrer" class="hotel-action">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24" aria-hidden="true"><path d="M15 3h6v6"/><path d="M10 14 21 3"/><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/></svg>
+                            Zur Website
+                        </a>
+                    </div>
+                </div>
+                
+                <!-- Hotel Relax -->
+                <div class="hotel-card glass-card stagger-item">
+                    <div class="hotel-card-header">
+                        <svg class="hotel-icon" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24" aria-hidden="true">
+                            <path d="M2 20v-8a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v8"/>
+                            <path d="M4 10V6a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v4"/>
+                            <path d="M2 18h20"/>
+                            <path d="M6 10v-2h4v2"/>
+                        </svg>
+                        <div>
+                            <h3 class="hotel-name">Hotel Relax</h3>
+                            <p class="hotel-location">Hauptstraße 7 · Wachenroth</p>
+                        </div>
+                    </div>
+                    <p class="hotel-note">Unkompliziert und fair – perfekt, wenn ihr einfach nur ein Bett braucht.</p>
+                    <div class="hotel-actions">
+                        <a href="tel:+499548283" class="hotel-action">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24" aria-hidden="true"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+                            09548 283
+                        </a>
+                    </div>
+                </div>
+                
+            </div>
+        </div>
+    </section>
+    
     <!-- Timeline Section -->
     <section id="timeline" class="py-20 bg-metal-gray">
         <div class="container mx-auto px-4">
@@ -354,6 +510,9 @@
                     
                     <!-- Zeitmarker links -->
                     <div class="time-column left">
+                        <div class="time-slot inner-slot" data-hour="12">12:00</div>
+                        <div class="time-slot inner-slot" data-hour="13">13:00</div>
+                        <div class="time-slot inner-slot" data-hour="14">14:00</div>
                         <div class="time-slot day-slot" data-hour="15">15:00</div>
                         <div class="time-slot day-slot" data-hour="16">16:00</div>
                         <div class="time-slot day-slot" data-hour="17">17:00</div>
@@ -390,6 +549,9 @@
                     
                     <!-- Zeitmarker rechts -->
                     <div class="time-column right">
+                        <div class="time-slot inner-slot" data-hour="12">12:00</div>
+                        <div class="time-slot inner-slot" data-hour="13">13:00</div>
+                        <div class="time-slot inner-slot" data-hour="14">14:00</div>
                         <div class="time-slot day-slot" data-hour="15">15:00</div>
                         <div class="time-slot day-slot" data-hour="16">16:00</div>
                         <div class="time-slot day-slot" data-hour="17">17:00</div>

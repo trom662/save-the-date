@@ -160,15 +160,25 @@ let surveyInitialized = false;
 // ================================================
 
 // ================================================
-// GÄSTEGRUPPEN / EINLADUNGSCODE (Tagesprogramm)
+// GÄSTEGRUPPEN / EINLADUNGSCODE
 // ================================================
-// Standard: Abend-Ansicht (Party ab 21:00). Das Tagesprogramm liegt NICHT im
-// Quelltext, sondern AES-256-GCM-verschlüsselt in assets/day-content.enc.json.
-// Tagesgäste erhalten einen Link mit #code=..., der die Inhalte entschlüsselt.
-// Ohne gültigen Code ist das Tagesprogramm technisch nicht einsehbar.
+// Ohne gültigen Code: Gate-Seite ("nur für geladene Gäste").
+// Drei Stufen, jeweils per eigenem Code freigeschaltet:
+//   evening = Abendgäste  (Programm ab 21:00)
+//   day     = Tagesgäste  (volles Programm ab 15:00)
+//   inner   = Engster Kreis (zusätzlich Standesamt ab 12:30 + zweite Location)
+// Die Inhalte der Stufen day/inner liegen AES-256-GCM-verschlüsselt in
+// assets/*.enc.json – ohne passenden Code sind sie technisch nicht einsehbar.
+// Die Stufe wird ermittelt, indem der Code der Reihe nach gegen alle
+// Payloads probiert wird (GCM-Authentifizierung schlägt bei falschem Key fehl).
 
 const INVITE_CODE_STORAGE_KEY = 'savethedate_invite_code';
-const DAY_CONTENT_URL = 'assets/day-content.enc.json';
+
+const INVITE_TIERS = [
+    { name: 'inner',   url: 'assets/inner-content.enc.json' },
+    { name: 'day',     url: 'assets/day-content.enc.json' },
+    { name: 'evening', url: 'assets/evening-content.enc.json' }
+];
 
 /**
  * Einladungscode aus URL-Hash (#code=...) oder localStorage lesen.
@@ -194,63 +204,82 @@ function getInviteCode() {
  * AES-256-GCM-Entschlüsselung: Schlüssel = SHA-256 des Codes.
  * Wirft bei falschem Code (GCM-Authentifizierung schlägt fehl).
  */
-async function decryptDayContent(code, payload) {
+async function decryptPayload(code, payload) {
     const keyBytes = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(code));
     const key = await crypto.subtle.importKey('raw', keyBytes, 'AES-GCM', false, ['decrypt']);
     const iv = Uint8Array.from(atob(payload.iv), c => c.charCodeAt(0));
     const data = Uint8Array.from(atob(payload.data), c => c.charCodeAt(0));
     const plaintext = await crypto.subtle.decrypt({ name: 'AES-GCM', iv }, key, data);
-    return new TextDecoder().decode(plaintext);
+    return JSON.parse(new TextDecoder().decode(plaintext));
 }
 
 /**
- * Versucht, das Tagesprogramm zu laden und freizuschalten.
- * Bei fehlendem/falschem Code bleibt still die Abend-Ansicht aktiv.
+ * Prüft den Code gegen alle Stufen und schaltet die passende frei.
+ * Ohne gültigen Code bleibt die Gate-Seite aktiv.
  */
 async function initInviteContent() {
     const code = getInviteCode();
-    if (!code) return;
+    if (!code) return; // Gate bleibt
     
-    try {
-        const response = await fetch(DAY_CONTENT_URL);
-        if (!response.ok) return;
-        const payload = await response.json();
-        
-        const html = await decryptDayContent(code, payload);
-        unlockDayView(html);
-        console.log('🎫 Tagesprogramm freigeschaltet');
-    } catch (e) {
-        // Falscher Code: gespeicherten Wert verwerfen, Abend-Ansicht bleibt
-        try { localStorage.removeItem(INVITE_CODE_STORAGE_KEY); } catch (err) { /* ignore */ }
-        console.log('🎫 Kein gültiger Einladungscode – Abend-Ansicht');
+    for (const tier of INVITE_TIERS) {
+        try {
+            const response = await fetch(tier.url);
+            if (!response.ok) continue;
+            const payload = await response.json();
+            const content = await decryptPayload(code, payload);
+            
+            unlockSite(tier.name, content);
+            console.log(`🎫 Zugang freigeschaltet: ${tier.name}`);
+            return;
+        } catch (e) {
+            // Falscher Code für diese Stufe – nächste probieren
+        }
     }
+    
+    // Kein Treffer: gespeicherten Code verwerfen, Gate bleibt
+    try { localStorage.removeItem(INVITE_CODE_STORAGE_KEY); } catch (e) { /* ignore */ }
+    console.log('🎫 Kein gültiger Einladungscode – Gate aktiv');
 }
 
 /**
- * Schaltet die Timeline auf die volle Tages-Ansicht um und
- * injiziert die entschlüsselten Event-Blöcke.
+ * Seite entsperren und stufen-spezifische Inhalte anwenden.
+ * content: { gridOffset, gridSlots, timelineHtml, locationHtml, subtitle }
  */
-function unlockDayView(eventsHtml) {
+function unlockSite(tierName, content) {
+    document.body.classList.remove('site-locked');
+    
     const eventsColumn = document.getElementById('events-column');
-    if (!eventsColumn) return;
     
-    // Tages-Zeitslots (15:00-20:00) einblenden
-    document.querySelectorAll('.time-slot.day-slot').forEach(slot => {
-        slot.classList.add('visible');
-    });
+    // Raster anpassen (Abend-Standard bleibt bei fehlenden Angaben erhalten)
+    if (eventsColumn && typeof content.gridOffset === 'number' && content.gridSlots) {
+        eventsColumn.style.setProperty('--base-offset', String(content.gridOffset));
+        eventsColumn.style.setProperty('--slots', String(content.gridSlots));
+    }
     
-    // Raster auf 15:00-02:00 erweitern (12 Slots, Offset 0)
-    eventsColumn.style.setProperty('--base-offset', '0');
-    eventsColumn.style.setProperty('--slots', '12');
+    // Zusätzliche Zeitslots einblenden
+    if (tierName === 'day' || tierName === 'inner') {
+        document.querySelectorAll('.time-slot.day-slot').forEach(s => s.classList.add('visible'));
+    }
+    if (tierName === 'inner') {
+        document.querySelectorAll('.time-slot.inner-slot').forEach(s => s.classList.add('visible'));
+    }
     
-    // Entschlüsselte Tages-Events vor den Abend-Events einfügen
-    eventsColumn.insertAdjacentHTML('afterbegin', eventsHtml);
+    // Entschlüsselte Timeline-Events vor den Abend-Events einfügen
+    if (eventsColumn && content.timelineHtml) {
+        eventsColumn.insertAdjacentHTML('afterbegin', content.timelineHtml);
+    }
+    
+    // Zusätzliche Location (z.B. Standesamt) in die Anfahrt-Sektion injizieren
+    if (content.locationHtml) {
+        const extraLocation = document.getElementById('extra-location');
+        if (extraLocation) extraLocation.innerHTML = content.locationHtml;
+    }
     
     // Texte anpassen
-    const titleEl = document.getElementById('timeline-title');
     const subtitleEl = document.getElementById('timeline-subtitle');
-    if (titleEl) titleEl.textContent = 'Der Zeitplan';
-    if (subtitleEl) subtitleEl.textContent = 'Euer ganzer Tag mit uns 🤘';
+    if (subtitleEl && content.subtitle) {
+        subtitleEl.textContent = content.subtitle;
+    }
 }
 
 // ================================================

@@ -12,8 +12,9 @@ __pycache__/
 # Lokale Backups (Original-Bilder sind in der Git-Historie erhalten)
 backup/originals/
 
-# Vertrauliches Tagesprogramm im Klartext (nur verschlüsselt committen!)
+# Vertrauliche Gästegruppen-Inhalte im Klartext (nur verschlüsselt committen!)
 tools/day-content.html
+tools/content-*.json
 
 # OS
 Thumbs.db

@@ -4,39 +4,47 @@ const BASE_URL = 'http://localhost:8000';
 
 test.describe('Save The Date Website - Full Test Suite', () => {
   
-  // ============ VISIBILITY TESTS ============
-  test.describe('👁️ Public Content', () => {
+  // ============ ZUGANGS-/GATE-TESTS ============
+  test.describe('🚪 Gate & Gästegruppen', () => {
     
-    test('All invitation content should be public (no protected elements)', async ({ page }) => {
+    test('Without code: gate is shown, content is hidden', async ({ page }) => {
       await page.goto(BASE_URL);
       await page.click('#welcome-overlay');
       
-      const protectedElements = await page.locator('.protected-content, .protected-nav, .protected-cta').count();
-      expect(protectedElements).toBe(0);
+      await expect(page.locator('#gate')).toBeVisible();
+      await expect(page.locator('#timeline')).toBeHidden();
+      await expect(page.locator('#umfrage')).toBeHidden();
+      await expect(page.locator('#gallery')).toBeHidden();
+      await expect(page.locator('#hotels')).toBeHidden();
+      await expect(page.locator('#hero')).toBeHidden();
     });
 
-    test('Timeline section should be visible', async ({ page }) => {
+    test('Gate offers a contact link', async ({ page }) => {
       await page.goto(BASE_URL);
       await page.click('#welcome-overlay');
       
-      const timeline = page.locator('#timeline');
-      await expect(timeline).toBeVisible();
+      const contactLink = page.locator('#gate a[href^="mailto:"]');
+      await expect(contactLink).toBeVisible();
     });
 
-    test('Umfrage section should be visible', async ({ page }) => {
-      await page.goto(BASE_URL);
+    test('Wrong code: gate stays, no error surfaced', async ({ page }) => {
+      await page.goto(`${BASE_URL}/#code=definitiv-falsch`);
       await page.click('#welcome-overlay');
+      await page.waitForTimeout(800);
       
-      const umfrage = page.locator('#umfrage');
-      await expect(umfrage).toBeVisible();
+      await expect(page.locator('#gate')).toBeVisible();
+      await expect(page.locator('#timeline')).toBeHidden();
+      // Code darf nicht in der URL verbleiben
+      expect(page.url()).not.toContain('code=');
     });
 
-    test('Gallery should be visible', async ({ page }) => {
+    test('Day-program is not present in HTML source (encrypted)', async ({ page }) => {
       await page.goto(BASE_URL);
-      await page.click('#welcome-overlay');
       
-      const gallery = page.locator('#gallery');
-      await expect(gallery).toBeVisible();
+      const pageContent = await page.content();
+      expect(pageContent).not.toContain('FREIE TRAUUNG');
+      expect(pageContent).not.toContain('STANDESAMT');
+      expect(pageContent).not.toContain('ABENDESSEN');
     });
 
     test('No admin login should be present', async ({ page }) => {
@@ -44,6 +52,53 @@ test.describe('Save The Date Website - Full Test Suite', () => {
       
       await expect(page.locator('#admin-login-btn')).toHaveCount(0);
       await expect(page.locator('#login-modal')).toHaveCount(0);
+    });
+
+    // Unlock-Tests: Codes werden NICHT im Repo gespeichert.
+    // Lokal ausführen mit z.B.:
+    //   $env:INVITE_CODE_EVENING='...'; $env:INVITE_CODE_DAY='...'; $env:INVITE_CODE_INNER='...'; npm test
+    const CODES = {
+      evening: process.env.INVITE_CODE_EVENING,
+      day: process.env.INVITE_CODE_DAY,
+      inner: process.env.INVITE_CODE_INNER
+    };
+
+    test('Evening code unlocks evening view', async ({ page }) => {
+      test.skip(!CODES.evening, 'INVITE_CODE_EVENING nicht gesetzt');
+      await page.goto(`${BASE_URL}/#code=${encodeURIComponent(CODES.evening)}`);
+      await page.click('#welcome-overlay');
+      
+      await expect(page.locator('#timeline')).toBeVisible();
+      await expect(page.locator('#hotels')).toBeVisible();
+      await expect(page.locator('#gate')).toBeHidden();
+      // Tagesprogramm darf NICHT auftauchen
+      const content = await page.content();
+      expect(content).not.toContain('FREIE TRAUUNG');
+      expect(content).not.toContain('STANDESAMTLICHE');
+    });
+
+    test('Day code unlocks full day, but no Standesamt', async ({ page }) => {
+      test.skip(!CODES.day, 'INVITE_CODE_DAY nicht gesetzt');
+      await page.goto(`${BASE_URL}/#code=${encodeURIComponent(CODES.day)}`);
+      await page.click('#welcome-overlay');
+      await page.waitForTimeout(800);
+      
+      await expect(page.locator('#timeline')).toBeVisible();
+      const content = await page.content();
+      expect(content).toContain('FREIE TRAUUNG');
+      expect(content).not.toContain('STANDESAMTLICHE');
+    });
+
+    test('Inner-circle code unlocks Standesamt + second location', async ({ page }) => {
+      test.skip(!CODES.inner, 'INVITE_CODE_INNER nicht gesetzt');
+      await page.goto(`${BASE_URL}/#code=${encodeURIComponent(CODES.inner)}`);
+      await page.click('#welcome-overlay');
+      await page.waitForTimeout(800);
+      
+      const content = await page.content();
+      expect(content).toContain('STANDESAMTLICHE TRAUUNG');
+      expect(content).toContain('Hauptstraße 11');
+      await expect(page.locator('#extra-location > div')).toBeVisible();
     });
   });
 
